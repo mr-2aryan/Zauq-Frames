@@ -1,0 +1,49 @@
+.panel {
+  padding: clamp(32px, 5vw, 56px);
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(28px, 3.4vw, 40px);
+  color: #ffffff;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-sage);
+  color: var(--color-dark);
+  font-weight: 800;
+}
+
+.stepTitle {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stepText {
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--color-on-dark-muted);
+}

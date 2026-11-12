@@ -1,0 +1,40 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(40px, 6vw, 72px) 24px;
+  text-align: center;
+}
+
+.icon {
+  color: var(--color-primary);
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 48px);
+}
+
+.text {
+  max-width: 620px;
+  font-size: 17px;
+  color: var(--color-ink-2);
+}
+
+.text strong {
+  color: var(--color-ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.small {
+  font-size: 13px;
+  color: var(--color-muted);
+}

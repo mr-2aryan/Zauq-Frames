@@ -1,0 +1,24 @@
+﻿{
+  "name": "zauq-frames",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Zauq Frames - custom photo frames storefront (React + Vite client, Node + Express API).",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c green,cyan \"npm run dev -w server\" \"npm run dev -w client\"",
+    "dev:client": "npm run dev -w client",
+    "dev:server": "npm run dev -w server",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "lint": "npm run lint -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7"
+  },
+  "engines": {
+    "node": ">=22.22"
+  }
+}

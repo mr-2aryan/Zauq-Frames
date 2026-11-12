@@ -1,0 +1,11 @@
+.top {
+  padding-top: var(--section-space);
+}
+
+.both {
+  padding-block: var(--section-space);
+}
+
+.none {
+  padding: 0;
+}

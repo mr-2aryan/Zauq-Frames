@@ -1,0 +1,126 @@
+.page {
+  padding-top: 32px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(30px, 3.6vw, 44px);
+  letter-spacing: -0.03em;
+}
+
+.count {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.description {
+  margin-top: 8px;
+  max-width: 640px;
+  color: var(--color-ink-2);
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sortLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.select {
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 28px;
+}
+
+.sidebar {
+  flex: 1 1 240px;
+  max-width: 300px;
+}
+
+.results {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    max-width: none;
+  }
+}
+
+.active {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.activeLabel {
+  margin-right: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.activeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-tint);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.activeChip:hover {
+  background: var(--color-sage);
+}
+
+.clear {
+  min-height: 36px;
+  margin-left: 4px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}

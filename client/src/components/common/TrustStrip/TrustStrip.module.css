@@ -1,0 +1,32 @@
+.strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.icon {
+  flex: none;
+  color: var(--color-primary);
+}
+
+.title {
+  display: block;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 14px;
+  color: var(--color-muted);
+}

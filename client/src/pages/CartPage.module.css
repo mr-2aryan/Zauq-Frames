@@ -1,0 +1,89 @@
+.page {
+  padding-top: 32px;
+}
+
+.title {
+  margin-top: 14px;
+  font-weight: 800;
+  font-size: clamp(30px, 3.6vw, 44px);
+  letter-spacing: -0.03em;
+}
+
+.count {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.items {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-line);
+}
+
+.continue {
+  margin-top: 20px;
+}
+
+.aside {
+  flex: 1 1 380px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  padding: 24px;
+}
+
+.cardTitle {
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(48px, 8vw, 88px) 24px;
+  text-align: center;
+}
+
+.emptyIcon {
+  color: var(--color-primary);
+}
+
+.emptyTitle {
+  font-weight: 800;
+  font-size: clamp(30px, 4vw, 44px);
+}
+
+.emptyText {
+  color: var(--color-ink-2);
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+}

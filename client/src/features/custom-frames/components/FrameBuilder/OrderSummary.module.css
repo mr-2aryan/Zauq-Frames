@@ -1,0 +1,26 @@
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-tint);
+}
+
+.meta {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--color-ink-2);
+}
+
+.button {
+  margin-top: 12px;
+}
+
+.error {
+  margin-top: 10px;
+  color: var(--color-danger);
+  font-size: 14px;
+  font-weight: 600;
+}

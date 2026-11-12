@@ -1,0 +1,43 @@
+.nav {
+  display: flex;
+}
+
+.row {
+  gap: 26px;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.link {
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+.row .link {
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.row .active {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.column .link {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 17px;
+}
+
+.column .active {
+  color: var(--color-primary);
+}

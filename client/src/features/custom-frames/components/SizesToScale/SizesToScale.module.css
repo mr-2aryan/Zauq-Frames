@@ -1,0 +1,51 @@
+.panel {
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 32px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.size {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.swatch {
+  max-width: 100%;
+  margin-bottom: 8px;
+  border: 7px solid #121110;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 var(--color-sage);
+}
+
+.label {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.price {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 15px;
+}
+
+.price s {
+  font-size: 13px;
+  color: var(--color-muted-2);
+}
+
+.use {
+  max-width: 200px;
+  font-size: 14px;
+  color: var(--color-muted);
+}

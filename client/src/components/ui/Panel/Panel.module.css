@@ -1,0 +1,30 @@
+.panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.tint {
+  background: var(--color-tint);
+}
+
+.surface {
+  background: var(--color-surface);
+}
+
+.dark {
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+}
+
+.outline {
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+}
+
+.lg {
+  border-radius: var(--radius-lg);
+}
+
+.xl {
+  border-radius: var(--radius-2xl);
+}

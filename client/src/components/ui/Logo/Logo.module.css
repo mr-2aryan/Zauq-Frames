@@ -1,0 +1,39 @@
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-sans);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wordmark {
+  font-size: var(--logo-size);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  margin-right: -0.18em;
+}
+
+.tagline {
+  font-size: calc(var(--logo-size) * 0.29);
+  font-weight: 700;
+  letter-spacing: 0.46em;
+  margin-right: -0.46em;
+  margin-top: calc(var(--logo-size) * 0.2);
+}
+
+.dark .wordmark {
+  color: var(--color-ink);
+}
+
+.dark .tagline {
+  color: var(--color-primary);
+}
+
+.light .wordmark {
+  color: #ffffff;
+}
+
+.light .tagline {
+  color: var(--color-sage);
+}

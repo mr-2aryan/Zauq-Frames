@@ -1,0 +1,58 @@
+/* Design tokens — "Olive Market" (concept D). Every colour, font, radius and
+   spacing value in the app comes from here. */
+:root {
+  /* Surfaces */
+  --color-bg: #ffffff;
+  --color-surface: #f4f3ee;
+  --color-surface-2: #f8f8f4;
+  --color-tint: #eef1e2;
+  --color-sage: #dce3c3;
+  --color-line: #ecebe4;
+  --color-line-strong: #dddcd4;
+
+  /* Text */
+  --color-ink: #1c1f17;
+  --color-ink-2: #4a4e40;
+  --color-muted: #5b5f51;
+  --color-muted-2: #6a6d60;
+
+  /* Brand */
+  --color-primary: #3e4a1f;
+  --color-primary-hover: #2b3414;
+  --color-primary-text: #5f6d33;
+  --color-dark: #1f2510;
+  --color-dark-2: #2b3317;
+  --color-dark-line: #2e361a;
+  --color-on-dark: #f2f4ea;
+  --color-on-dark-muted: #c7cdb4;
+
+  /* Status */
+  --color-sale: #b4471d;
+  --color-danger: #b42318;
+  --color-success: #2f6b2a;
+
+  /* Type */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Shape */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(28, 31, 23, 0.06);
+  --shadow-md: 0 10px 30px rgba(28, 31, 23, 0.14);
+  --shadow-frame: 0 2px 4px rgba(0, 0, 0, 0.18), 0 18px 36px rgba(0, 0, 0, 0.18);
+
+  /* Layout */
+  --container-max: 1344px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-space: clamp(56px, 7vw, 88px);
+
+  /* Stacking */
+  --z-floating: 40;
+  --z-menu: 45;
+  --z-toast: 50;
+  --z-skip-link: 60;
+}

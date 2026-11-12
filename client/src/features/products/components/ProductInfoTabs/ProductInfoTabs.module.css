@@ -1,0 +1,103 @@
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.tab {
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabActive {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.panel {
+  margin-top: 28px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.text {
+  color: var(--color-ink-2);
+}
+
+.text + .text {
+  margin-top: 0;
+}
+
+.specs {
+  margin: 0;
+}
+
+.specs div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.specs dt {
+  color: var(--color-muted);
+}
+
+.specs dd {
+  margin: 0;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+}
+
+.table thead th {
+  background: var(--color-surface);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.sizeNote {
+  margin-bottom: 14px;
+  font-weight: 700;
+}

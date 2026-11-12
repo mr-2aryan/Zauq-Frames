@@ -1,0 +1,62 @@
+.price {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+
+.from {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.amount {
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.list {
+  color: var(--color-muted-2);
+}
+
+.saving {
+  font-weight: 800;
+  color: var(--color-sale);
+}
+
+.sm .from,
+.sm .list,
+.sm .saving {
+  font-size: 13px;
+}
+
+.sm .amount {
+  font-size: 15px;
+}
+
+.md .from,
+.md .list {
+  font-size: 14px;
+}
+
+.md .amount {
+  font-size: 17px;
+}
+
+.md .saving {
+  font-size: 12px;
+}
+
+.lg .from,
+.lg .list {
+  font-size: 18px;
+}
+
+.lg .amount {
+  font-size: 34px;
+  letter-spacing: -0.02em;
+}
+
+.lg .saving {
+  font-size: 14px;
+}

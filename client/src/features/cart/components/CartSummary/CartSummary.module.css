@@ -1,0 +1,43 @@
+.list {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.row dt {
+  color: var(--color-ink-2);
+}
+
+.row dd {
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.savings dt,
+.savings dd {
+  color: var(--color-sale);
+}
+
+.total {
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-line-strong);
+  font-size: 18px;
+}
+
+.total dt {
+  color: var(--color-ink);
+  font-weight: 800;
+}
+
+.total dd {
+  font-size: 22px;
+  font-weight: 800;
+}

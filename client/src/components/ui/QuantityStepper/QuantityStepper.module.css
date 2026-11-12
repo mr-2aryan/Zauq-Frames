@@ -1,0 +1,59 @@
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+}
+
+.button {
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.button:disabled {
+  color: var(--color-line-strong);
+  cursor: not-allowed;
+}
+
+.input {
+  border: 0;
+  background: transparent;
+  text-align: center;
+  font-weight: 800;
+  color: var(--color-ink);
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.md .button {
+  width: 46px;
+  height: 54px;
+}
+
+.md .input {
+  width: 36px;
+  height: 54px;
+  font-size: 16px;
+}
+
+.sm .button {
+  width: 40px;
+  height: 40px;
+}
+
+.sm .input {
+  width: 30px;
+  height: 40px;
+  font-size: 15px;
+}

@@ -1,0 +1,43 @@
+.page {
+  padding-top: 24px;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(28px, 4vw, 48px);
+  margin-top: 24px;
+}
+
+.gallery {
+  flex: 1 1 520px;
+  min-width: 0;
+}
+
+.info {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.collection {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-primary-text);
+}
+
+.title {
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: clamp(32px, 3.6vw, 44px);
+  letter-spacing: -0.03em;
+}
+
+.summary {
+  margin: 12px 0 22px;
+  color: var(--color-ink-2);
+}
+
+.tabs {
+  margin-top: var(--section-space);
+}

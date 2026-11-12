@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(26px, 3vw, 34px);
+  letter-spacing: -0.02em;
+}
+
+.description {
+  margin-top: 6px;
+  color: var(--color-muted);
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Zauq Premium Frames — Product Catalogue 2026</title>
+<meta name="author" content="Zauq Premium Frames">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+/* =====================================================================
+   Zauq — Product Catalogue 2026 · 12 pages, A4 portrait (see DESIGN.md)
+   Layout is measured from the A4 trim. --bleed is 0 for the A4 PDF and
+   3mm for the print PDF; full-bleed colour and images extend into it.
+   ===================================================================== */
+:root {
+  --bleed: 0mm;
+  --W: 210mm; --H: 297mm;
+  --mx: 12mm;
+
+  --olive: #475325; --olive-deep: #343d1b; --sage: #d3dbae; --mist: #e4e8d2;
+  --cream: #f3efe6; --sand: #e8e1d2; --white: #ffffff;
+  --ink: #121110; --ink-2: #3b3833; --muted: #7d776d; --line: #d8d0c2; --coral: #ff5a36;
+
+  --sans: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --serif: 'Instrument Serif', Georgia, serif;
+}
+
+@page { margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #8a857c; color: var(--ink-2);
+  font-family: var(--sans); font-size: 8.9pt; line-height: 1.55;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; -webkit-font-smoothing: antialiased;
+}
+@media screen { body { padding: 30px 0; } .page { margin: 0 auto 30px; box-shadow: 0 10px 40px rgba(0,0,0,.35); } }
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+p { margin: 0; }
+p + p { margin-top: 2.2mm; }
+h1, h2, h3, h4 { margin: 0; color: var(--ink); }
+ol, ul { margin: 0; padding: 0; list-style: none; }
+dl, dd { margin: 0; }
+strong { font-weight: 700; color: var(--ink); }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- Page ---------- */
+.page {
+  position: relative; overflow: hidden; background: var(--white); break-after: page;
+  width: calc(var(--W) + 2 * var(--bleed)); height: calc(var(--H) + 2 * var(--bleed));
+}
+.page:last-of-type { break-after: auto; }
+/* Position from the trim: top/left/right/bottom in mm, offset by the bleed. */
+.abs { position: absolute; }
+.box { position: absolute; left: calc(var(--bleed) + var(--mx)); right: calc(var(--bleed) + var(--mx)); }
+
+/* Running head & folio */
+.runhead { position: absolute; top: calc(var(--bleed) + 7.5mm); left: calc(var(--bleed) + var(--mx)); right: calc(var(--bleed) + var(--mx));
+  display: flex; justify-content: space-between; align-items: center; }
+.folio { position: absolute; bottom: calc(var(--bleed) + 7mm); left: calc(var(--bleed) + var(--mx)); right: calc(var(--bleed) + var(--mx));
+  display: flex; justify-content: space-between; align-items: center; }
+.pgnum { width: 8mm; height: 8mm; border-radius: 50%; background: var(--olive); color: var(--white);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 7.5pt; }
+.on-olive .pgnum { background: var(--white); color: var(--olive); }
+
+/* ---------- Type ---------- */
+.kicker { font-weight: 700; font-size: 6.8pt; letter-spacing: .2em; text-transform: uppercase; color: var(--olive); display: inline-flex; align-items: center; gap: 2.5mm; }
+.kicker::before { content: ''; width: 7mm; height: .6mm; background: currentColor; }
+.kicker.plain::before { display: none; }
+.meta { font-weight: 600; font-size: 6.4pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.h-xl { font-weight: 800; font-size: 40pt; line-height: .95; letter-spacing: -.02em; text-transform: uppercase; }
+.h-lg { font-weight: 800; font-size: 25pt; line-height: 1.02; letter-spacing: -.015em; }
+.h-md { font-weight: 700; font-size: 13pt; line-height: 1.15; letter-spacing: -.005em; }
+.h-sm { font-weight: 700; font-size: 10.2pt; line-height: 1.2; }
+.it { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.lead { font-size: 10.6pt; line-height: 1.5; color: var(--ink-2); }
+.small { font-size: 8pt; line-height: 1.5; }
+.olive { color: var(--olive); } .sage { color: var(--sage); } .white { color: var(--white); } .cream { color: var(--cream); }
+
+/* ---------- Logo ---------- */
+.logo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; white-space: nowrap; color: var(--ink); }
+.logo .w { font-size: var(--s); font-weight: 800; letter-spacing: .14em; margin-right: -.14em; line-height: .9; }
+.logo .t { font-size: calc(var(--s) * .205); font-weight: 600; letter-spacing: .42em; margin-right: -.42em; margin-top: calc(var(--s) * .14); }
+
+/* ---------- Shapes & images ---------- */
+.arch { overflow: hidden; border-radius: 999px 999px 0 0; background: var(--sand); }
+.arch img, .ph img { width: 100%; height: 100%; object-fit: cover; }
+.ph { overflow: hidden; background: var(--sand); }
+.arch-shadow { border-radius: 999px 999px 0 0; background: var(--olive); }
+.arch-line { border-radius: 999px 999px 0 0; border: .5mm solid var(--olive); }
+.circle { border-radius: 50%; }
+.icon { width: 5.2mm; height: 5.2mm; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.icon-dot { width: 11mm; height: 11mm; border-radius: 50%; background: var(--olive); color: var(--white); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.icon-dot.light { background: var(--mist); color: var(--olive); }
+
+/* ---------- Product cards ---------- */
+.cards3 { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 6mm; row-gap: 7mm; }
+.cards4 { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 5mm; }
+.card { display: flex; flex-direction: column; }
+.card .visual { position: relative; height: 47mm; background: var(--cream); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.card .visual > img { width: 100%; height: 100%; object-fit: cover; }
+.card h3 { margin-top: 3mm; }
+.card p { margin-top: 1.3mm; }
+.card .spec { margin-top: auto; padding-top: 2.4mm; display: flex; gap: 1.6mm; flex-wrap: wrap; }
+.tag { border: .3mm solid var(--olive); color: var(--olive); font-weight: 600; font-size: 6.4pt; letter-spacing: .06em; padding: .7mm 2mm; border-radius: 999px; }
+.tag.fill { background: var(--olive); color: var(--white); }
+.pframe { background: #121110; padding: 1.3mm; box-shadow: 0 .5mm 1mm rgba(0,0,0,.25), 0 2.4mm 5mm rgba(0,0,0,.18); }
+.pframe img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+
+/* ---------- Collection header ---------- */
+.col-band { position: absolute; left: 0; right: 0; top: 0; height: calc(var(--bleed) + 98mm); background: var(--olive); }
+.col-text { position: absolute; top: calc(var(--bleed) + 16mm); left: calc(var(--bleed) + var(--mx)); width: 104mm; color: var(--cream); }
+.col-text .num { font-weight: 800; font-size: 54pt; line-height: .8; color: var(--sage); letter-spacing: -.02em; }
+.col-text h2 { color: var(--white); margin-top: 4mm; }
+.col-text p { color: #e9e6da; margin-top: 3.5mm; }
+.col-text .ideal { margin-top: 3.5mm; font-weight: 600; font-size: 6.6pt; letter-spacing: .16em; text-transform: uppercase; color: var(--sage); }
+/* Arch sits fully inside the olive band, with a sage outline arch offset behind it. */
+.col-arch { position: absolute; top: calc(var(--bleed) + 10mm); right: calc(var(--bleed) + var(--mx) + 4mm); width: 56mm; height: 80mm; }
+.col-arch-line { position: absolute; top: calc(var(--bleed) + 14mm); right: calc(var(--bleed) + var(--mx)); width: 56mm; height: 80mm;
+  border: .45mm solid var(--sage); border-radius: 999px 999px 0 0; }
+
+/* ---------- Generic blocks ---------- */
+.panel { background: var(--cream); padding: 6mm; }
+.olive-panel { background: var(--olive); color: #e9e6da; padding: 7mm; }
+.olive-panel h3, .olive-panel h2 { color: var(--white); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.feat { display: flex; gap: 3.5mm; align-items: flex-start; }
+.feat h3 { margin-bottom: 1mm; }
+.numlist li { display: grid; grid-template-columns: 9mm 1fr; padding: 2.4mm 0; border-top: .25mm solid rgba(255,255,255,.22); align-items: baseline; }
+.numlist .n { font-family: var(--serif); font-style: italic; font-size: 15pt; color: var(--sage); line-height: 1; }
+.checks li { display: flex; gap: 2.5mm; padding: 1.7mm 0; border-top: .25mm solid var(--line); font-size: 8.2pt; line-height: 1.4; }
+.checks li:last-child { border-bottom: .25mm solid var(--line); }
+.checks li::before { content: ''; flex: none; width: 1.8mm; height: 1.8mm; margin-top: 1.3mm; border-radius: 50%; background: var(--olive); }
+
+.toc li { display: grid; grid-template-columns: 11mm 1fr auto; column-gap: 3mm; align-items: center; padding: 3mm 0; border-top: .25mm solid rgba(255,255,255,.22); }
+.toc .n { width: 8mm; height: 8mm; border-radius: 50%; background: var(--sage); color: var(--olive); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 7.5pt; }
+.toc .t { color: var(--white); font-weight: 700; font-size: 10pt; }
+.toc .d { display: block; color: #cfd2bd; font-weight: 400; font-size: 7.6pt; }
+.toc .pg { color: var(--sage); font-family: var(--serif); font-style: italic; font-size: 13pt; }
+
+.steps-h { display: grid; grid-template-columns: repeat(5, 1fr); column-gap: 4mm; position: relative; }
+.steps-h::before { content: ''; position: absolute; left: 5mm; right: 5mm; top: 5mm; height: .4mm; background: var(--sage); }
+.steps-h li { position: relative; }
+.steps-h .dot { width: 10mm; height: 10mm; border-radius: 50%; background: var(--olive); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 8pt; position: relative; }
+.steps-h h3 { margin: 3mm 0 1mm; }
+
+.ptable { width: 100%; border-collapse: collapse; }
+.ptable th { background: var(--olive); color: var(--white); font-weight: 700; font-size: 6.8pt; letter-spacing: .14em; text-transform: uppercase; text-align: left; padding: 2.6mm 3.5mm; }
+.ptable td { padding: 2.7mm 3.5mm; font-size: 8.6pt; border-bottom: .25mm solid var(--line); }
+.ptable tr:nth-child(even) td { background: var(--cream); }
+.ptable .sz { font-weight: 800; color: var(--ink); font-size: 10pt; }
+.ptable .price { font-weight: 800; color: var(--olive); font-size: 11pt; text-align: right; white-space: nowrap; }
+.ptable th:last-child { text-align: right; }
+
+.faq { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; row-gap: 0; }
+.faq div { padding: 3.2mm 0; border-top: .25mm solid var(--line); }
+.faq dt { font-weight: 700; font-size: 9pt; color: var(--ink); }
+.faq dd { font-size: 8pt; line-height: 1.5; margin-top: .8mm; }
+</style>
+</head>
+<body>
+
+<!-- Line icons -->
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M4 20l7-7"/><path d="M14.5 3.5l6 6-7 7-6-6z"/><path d="M11 8l5 5"/></symbol>
+    <symbol id="i-hang" viewBox="0 0 24 24"><circle cx="12" cy="4" r="1.3"/><path d="M12 5.3L5 11M12 5.3L19 11"/><rect x="4" y="11" width="16" height="10" rx="1"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></symbol>
+    <symbol id="i-office" viewBox="0 0 24 24"><rect x="4" y="3" width="11" height="18"/><path d="M15 9h5v12h-5M7 7h2M7 11h2M7 15h2M11 7h1M11 11h1M11 15h1"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12"/><path d="M3 9h18M12 9v12M12 9c-2-4-6-4-6-1.5S9 9 12 9zM12 9c2-4 6-4 6-1.5S15 9 12 9z"/></symbol>
+    <symbol id="i-hotel" viewBox="0 0 24 24"><path d="M3 20V8l9-4 9 4v12"/><path d="M9 20v-5h6v5M8 10h1M15 10h1"/></symbol>
+    <symbol id="i-brand" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="1"/><path d="M6 14h12v7H6z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7l9 6 9-6"/></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  </defs>
+</svg>
+
+
+<!-- ============================ 01 · COVER ============================ -->
+<section class="page" style="background:var(--cream)">
+  <div class="abs circle" style="width:120mm;height:120mm;background:var(--mist);left:calc(var(--bleed) - 46mm);top:calc(var(--bleed) + 150mm)"></div>
+
+  <div class="abs" style="top:calc(var(--bleed) + 16mm);left:calc(var(--bleed) + var(--mx))">
+    <span class="logo" style="--s:26pt"><span class="w">ZAUQ</span><span class="t">PREMIUM FRAMES</span></span>
+  </div>
+  <div class="abs meta" style="top:calc(var(--bleed) + 19mm);right:calc(var(--bleed) + var(--mx))">Edition 2026</div>
+
+  <div class="abs arch-shadow" style="left:calc(var(--bleed) + 104mm);top:calc(var(--bleed) + 64mm);width:96mm;height:137.14mm"></div>
+  <div class="abs arch" style="left:calc(var(--bleed) + 98mm);top:calc(var(--bleed) + 58mm);width:96mm;height:137.14mm"><img src="images/arch-cover.jpg" alt="Vinyl Dance artwork framed on a softly lit wall"></div>
+
+  <div class="abs" style="left:calc(var(--bleed) + var(--mx));top:calc(var(--bleed) + 62mm);width:78mm">
+    <div class="kicker">Wall art · Custom frames</div>
+    <h1 class="h-xl" style="margin-top:5mm">Product<br>Catalogue</h1>
+    <div class="it olive" style="font-size:46pt;line-height:1;margin-top:1mm">2026</div>
+    <p class="lead" style="margin-top:7mm">Curated wall art and custom frames for workplaces, corporate gifting and hospitality — made to order in Rawalpindi.</p>
+    <ul class="checks" style="margin-top:7mm">
+      <li><strong>Islamic Calligraphy</strong></li>
+      <li><strong>Modern &amp; Minimal</strong></li>
+      <li><strong>Art &amp; Culture</strong></li>
+      <li><strong>Custom &amp; Branded Frames</strong></li>
+    </ul>
+  </div>
+
+  <div class="abs" style="left:0;right:0;bottom:0;height:calc(var(--bleed) + 30mm);background:var(--olive)"></div>
+  <div class="abs" style="left:calc(var(--bleed) + var(--mx));right:calc(var(--bleed) + var(--mx));bottom:calc(var(--bleed) + 11mm);display:flex;justify-content:space-between;color:var(--white);font-weight:600;font-size:8.4pt">
+    <span style="display:inline-flex;align-items:center;gap:2mm"><svg class="icon"><use href="#i-web"/></svg>zauqframes.com</span>
+    <span style="display:inline-flex;align-items:center;gap:2mm"><svg class="icon"><use href="#i-chat"/></svg>0323 5992853</span>
+    <span style="display:inline-flex;align-items:center;gap:2mm"><svg class="icon"><use href="#i-mail"/></svg>zauqframes.store@gmail.com</span>
+    <span style="display:inline-flex;align-items:center;gap:2mm"><svg class="icon"><use href="#i-insta"/></svg>@zauqframes</span>
+  </div>
+</section>
+
+
+<!-- ============================ 02 · WELCOME & CONTENTS ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">Zauq Premium Frames</span><span class="meta">Product Catalogue 2026</span></div>
+
+  <div class="box" style="top:calc(var(--bleed) + 20mm);display:grid;grid-template-columns:1fr 60mm;column-gap:10mm;align-items:start">
+    <div>
+      <div class="kicker">Welcome</div>
+      <h2 class="h-lg" style="margin-top:4mm">Welcome to <span class="it olive">Zauq</span></h2>
+      <p class="lead" style="margin-top:5mm">Thank you for taking the time to explore our collection.</p>
+      <p style="margin-top:3mm">Zauq began with a simple belief: the walls around us should hold things that mean something. A verse that steadies us, a landscape that calms us, a photograph of the people we built something with. We create curated wall art and custom frames that bring that meaning into homes, offices and the spaces where people gather.</p>
+      <p>In this catalogue you will find our three collections, our custom and branded framing service, and everything a business needs to place an order — sizes, prices, delivery and how we work. If something catches your eye, or you have an idea of your own, we would love to hear from you.</p>
+      <p style="margin-top:4mm"><span class="it" style="font-size:13pt;color:var(--ink)">— The Zauq team,</span> <span class="small" style="color:var(--muted)">Rawalpindi</span></p>
+    </div>
+    <div style="position:relative;height:84mm">
+      <div class="abs arch-line" style="left:4mm;top:4mm;width:56mm;height:80mm"></div>
+      <div class="abs arch" style="left:0;top:0;width:56mm;height:80mm"><img src="images/arch-welcome.jpg" alt="Ma Tawfiqi Illa Billah calligraphy in an interior"></div>
+    </div>
+  </div>
+
+  <div class="abs" style="left:0;right:0;bottom:0;height:calc(var(--bleed) + 134mm);background:var(--olive)"></div>
+  <div class="box on-olive" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="kicker" style="color:var(--sage)">Contents</div>
+    <h2 class="h-lg white" style="margin-top:3mm">Inside this <span class="it sage">catalogue</span></h2>
+    <div class="grid2" style="margin-top:6mm">
+      <ol class="toc">
+        <li><span class="n">01</span><span class="t">About Zauq<span class="d">Our story, our name and what we stand for</span></span><span class="pg">03</span></li>
+        <li><span class="n">02</span><span class="t">Services for Business<span class="d">Workplaces, gifting and hospitality</span></span><span class="pg">04</span></li>
+        <li><span class="n">03</span><span class="t">Islamic Calligraphy<span class="d">Six pieces of timeless script and pattern</span></span><span class="pg">05</span></li>
+        <li><span class="n">04</span><span class="t">Modern &amp; Minimal<span class="d">Calm abstracts and landscapes</span></span><span class="pg">06</span></li>
+        <li><span class="n">05</span><span class="t">Art &amp; Culture<span class="d">Bold pieces, plus a guide by space</span></span><span class="pg">07</span></li>
+      </ol>
+      <ol class="toc">
+        <li><span class="n">06</span><span class="t">Custom &amp; Branded Frames<span class="d">Your photograph, artwork or logo</span></span><span class="pg">08</span></li>
+        <li><span class="n">07</span><span class="t">Quality &amp; Craftsmanship<span class="d">Frame, print, finish and packing</span></span><span class="pg">09</span></li>
+        <li><span class="n">08</span><span class="t">Sizes &amp; Price List<span class="d">Dimensions, prices and delivery</span></span><span class="pg">10</span></li>
+        <li><span class="n">09</span><span class="t">How to Order &amp; FAQ<span class="d">Process, terms and common questions</span></span><span class="pg">11</span></li>
+        <li><span class="n">10</span><span class="t">Contact<span class="d">Studio, phone, email and website</span></span><span class="pg">12</span></li>
+      </ol>
+    </div>
+  </div>
+  <div class="folio on-olive"><span class="meta" style="color:var(--sage)">zauqframes.com</span><span class="pgnum">02</span></div>
+</section>
+
+
+<!-- ============================ 03 · ABOUT ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">About Zauq</span><span class="meta">Product Catalogue 2026</span></div>
+
+  <div class="box" style="top:calc(var(--bleed) + 20mm);display:grid;grid-template-columns:1fr 66mm;column-gap:10mm;align-items:start">
+    <div>
+      <div class="kicker">About us</div>
+      <h2 class="h-lg" style="margin-top:4mm">Art with <span class="it olive">taste,</span><br>framed by hand</h2>
+      <p class="lead" style="margin-top:5mm">Zauq Premium Frames is a framing studio in Rawalpindi creating curated wall art and custom frames for homes and businesses.</p>
+      <p style="margin-top:3mm">Our collection brings together Islamic calligraphy, modern and minimal prints and contemporary art. Alongside it, we print and frame our clients’ own photographs, artwork and logos to exactly the same standard.</p>
+      <p>Every piece is made to order. We print in high quality, set each artwork in an elegant black frame and finish it by hand, so it arrives ready to hang. A single statement piece and a set for an entire office receive the same attention.</p>
+      <p>We work with individuals and with organisations — offices, banks, hotels, cafés, clinics and showrooms — who want their spaces to feel considered and their gifts to feel personal.</p>
+    </div>
+    <div style="position:relative;height:92mm">
+      <div class="abs arch-shadow" style="left:5mm;top:5mm;width:61mm;height:87.14mm;background:var(--sage)"></div>
+      <div class="abs arch" style="left:0;top:0;width:61mm;height:87.14mm"><img src="images/arch-about.jpg" alt="Square Kufic calligraphy in a modern interior"></div>
+    </div>
+  </div>
+
+  <div class="box" style="top:calc(var(--bleed) + 146mm)">
+    <div class="panel" style="display:grid;grid-template-columns:34mm 1fr;column-gap:6mm;align-items:center">
+      <div style="text-align:center">
+        <div class="it olive" style="font-size:36pt;line-height:1">Zauq</div>
+        <div class="meta" style="margin-top:2.5mm">Urdu · noun</div>
+      </div>
+      <div>
+        <h3 class="h-md">What our name means</h3>
+        <p style="margin-top:1.5mm">Zauq is the Urdu word for <span class="it" style="font-size:11pt;color:var(--ink)">taste</span> — a refined sense of what is beautiful. It is the standard we hold every frame to: artwork chosen with care, proportions that suit the space, and a finish we are proud to put our name on.</p>
+      </div>
+    </div>
+
+    <div class="kicker" style="margin-top:8mm">Why Zauq</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);column-gap:5mm;margin-top:4mm">
+      <div><span class="icon-dot"><svg class="icon"><use href="#i-hand"/></svg></span><h3 class="h-sm" style="margin-top:3mm">Made to order</h3><p class="small" style="margin-top:1mm">Every piece cut and finished by hand in our Rawalpindi studio.</p></div>
+      <div><span class="icon-dot"><svg class="icon"><use href="#i-frame"/></svg></span><h3 class="h-sm" style="margin-top:3mm">Premium finish</h3><p class="small" style="margin-top:1mm">Elegant black frames with high-quality, colour-rich prints.</p></div>
+      <div><span class="icon-dot"><svg class="icon"><use href="#i-hang"/></svg></span><h3 class="h-sm" style="margin-top:3mm">Ready to hang</h3><p class="small" style="margin-top:1mm">Hanging hardware is pre-installed on every frame.</p></div>
+      <div><span class="icon-dot"><svg class="icon"><use href="#i-truck"/></svg></span><h3 class="h-sm" style="margin-top:3mm">Nationwide</h3><p class="small" style="margin-top:1mm">Packed securely and delivered to any city in Pakistan.</p></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:5mm;margin-top:8mm;border-top:.6mm solid var(--olive);padding-top:4mm">
+      <div><h3 class="h-md"><span class="it olive" style="font-size:15pt">Taste</span></h3><p class="small" style="margin-top:1mm">A curated collection, chosen for meaning, balance and colour.</p></div>
+      <div><h3 class="h-md"><span class="it olive" style="font-size:15pt">Craft</span></h3><p class="small" style="margin-top:1mm">Every frame made for its artwork and finished by hand.</p></div>
+      <div><h3 class="h-md"><span class="it olive" style="font-size:15pt">Care</span></h3><p class="small" style="margin-top:1mm">Files checked, frames packed securely, help whenever needed.</p></div>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">03</span></div>
+</section>
+
+
+<!-- ============================ 04 · SERVICES FOR BUSINESS ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">Services for Business</span><span class="meta">Product Catalogue 2026</span></div>
+  <div class="box" style="top:calc(var(--bleed) + 20mm)">
+    <div class="kicker">Our services</div>
+    <h2 class="h-lg" style="margin-top:4mm">Zauq for <span class="it olive">business</span></h2>
+    <p class="lead" style="margin-top:4mm;max-width:160mm">Art changes how a space feels — for the people who work in it and for those who visit. We help companies choose, produce and deliver framed pieces that suit their spaces, their culture and their budget.</p>
+
+    <div class="grid2" style="margin-top:8mm;row-gap:6mm">
+      <div class="panel feat"><span class="icon-dot"><svg class="icon"><use href="#i-office"/></svg></span><div><h3 class="h-md">Office &amp; workspace décor</h3><p class="small">Curated pieces for receptions, meeting rooms, corridors and executive offices. We help you choose artwork that reflects your brand, in sizes that suit each wall — so the whole space feels considered.</p><p class="meta olive" style="margin-top:2mm">Head offices · Banks · Co-working</p></div></div>
+      <div class="panel feat"><span class="icon-dot"><svg class="icon"><use href="#i-gift"/></svg></span><div><h3 class="h-md">Corporate gifting</h3><p class="small">Framed calligraphy, contemporary art or personalised pieces for Eid, Ramadan, work anniversaries, retirements and client appreciation — a gift that is kept and displayed long after the occasion.</p><p class="meta olive" style="margin-top:2mm">Clients · Employees · Partners</p></div></div>
+      <div class="panel feat"><span class="icon-dot"><svg class="icon"><use href="#i-hotel"/></svg></span><div><h3 class="h-md">Hospitality &amp; retail</h3><p class="small">Cohesive sets for hotels, restaurants, cafés, clinics and showrooms. We can carry a mood, palette or theme across rooms and floors, and produce matching pieces in the quantities you need.</p><p class="meta olive" style="margin-top:2mm">Hotels · Restaurants · Clinics</p></div></div>
+      <div class="panel feat"><span class="icon-dot"><svg class="icon"><use href="#i-brand"/></svg></span><div><h3 class="h-md">Branded &amp; custom pieces</h3><p class="small">Your logo, founding story, team photographs or campaign artwork, printed and framed to order. Ideal for launches, anniversaries and milestones that deserve a permanent place on the wall.</p><p class="meta olive" style="margin-top:2mm">Launches · Milestones · Awards</p></div></div>
+    </div>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="olive-panel" style="display:grid;grid-template-columns:1fr 62mm;column-gap:8mm;align-items:center">
+      <div>
+        <div class="kicker" style="color:var(--sage)">Why companies choose us</div>
+        <ol class="numlist" style="margin-top:4mm">
+          <li><span class="n">1</span><p class="small"><strong class="white">One partner, start to finish.</strong> From choosing pieces to delivery, you deal with one team.</p></li>
+          <li><span class="n">2</span><p class="small"><strong class="white">Made to order.</strong> Every frame is produced for your order, in the sizes you need.</p></li>
+          <li><span class="n">3</span><p class="small"><strong class="white">A consistent finish.</strong> Every piece in an order shares the same frame and finish.</p></li>
+          <li><span class="n">4</span><p class="small"><strong class="white">Personalisation.</strong> Add your logo, photographs or brand artwork.</p></li>
+          <li><span class="n">5</span><p class="small"><strong class="white">Nationwide delivery.</strong> Packed securely and delivered to any city in Pakistan.</p></li>
+        </ol>
+      </div>
+      <div class="arch" style="height:88.57mm"><img src="images/arch-business.jpg" alt="Flowing Curves print above a sideboard"></div>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">04</span></div>
+</section>
+
+
+<!-- ============================ 05 · ISLAMIC CALLIGRAPHY ============================ -->
+<section class="page">
+  <div class="col-band"></div>
+  <div class="col-text">
+    <div class="num">01</div>
+    <div class="kicker" style="color:var(--sage);margin-top:4mm">Collection</div>
+    <h2 class="h-lg">Islamic <span class="it sage">Calligraphy</span></h2>
+    <p class="small" style="font-size:8.6pt">Timeless Arabic calligraphy in styles from classic to contemporary — from a traditional Bismillah beside a woven border to geometric Kufic in copper and black. Each piece pairs meaningful words with considered design, so it sits as comfortably in a modern office as in a traditional home. Thoughtful gifts for Ramadan and Eid.</p>
+    <div class="ideal">Ideal for — receptions · executive offices · prayer rooms · gifting</div>
+  </div>
+  <div class="col-arch-line"></div>
+  <div class="col-arch arch"><img src="images/arch-ic.jpg" alt="Black and Gold calligraphy above a Quran stand"></div>
+
+  <div class="box cards3" style="top:calc(var(--bleed) + 112mm)">
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-bismillah.jpg" alt="Bismillah"></div></div><h3 class="h-sm">Bismillah</h3><p class="small">Bismillah ir-Rahman ir-Rahim in flowing script on warm cream, beside a woven red border and dried florals.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-tawakkul.jpg" alt="Tawakkul, Sabr, Shukr"></div></div><h3 class="h-sm">Tawakkul · Sabr · Shukr</h3><p class="small">Trust in Allah, Patience, Gratitude — white calligraphy with translations on deep red, beside a geometric border.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-dua.jpg" alt="Ud'uni Astajib Lakum"></div></div><h3 class="h-sm">Ud’uni Astajib Lakum</h3><p class="small">“Call upon Me; I will respond to you.” Circular white script within layered tones of blue.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-tawfiq.jpg" alt="Ma Tawfiqi Illa Billah"></div></div><h3 class="h-sm">Ma Tawfiqi Illa Billah</h3><p class="small">“My success is only by Allah.” On a cream panel between teal and soft florals — fitting for new ventures.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-gold.jpg" alt="Black and Gold"></div></div><h3 class="h-sm">Black &amp; Gold</h3><p class="small">A calligraphy panel within ornate gold illumination on black. Formal and rich — suited to boardrooms.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><div class="pframe" style="width:28mm"><img src="images/isl-kufic.jpg" alt="Square Kufic"></div></div><h3 class="h-sm">Square Kufic</h3><p class="small">Geometric Kufic script in warm copper on black. Architectural and modern, for contemporary walls.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+  </div>
+  <div class="folio"><span class="meta">All pieces in a black frame, ready to hang · other sizes on request</span><span class="pgnum">05</span></div>
+</section>
+
+
+<!-- ============================ 06 · MODERN & MINIMAL ============================ -->
+<section class="page">
+  <div class="col-band"></div>
+  <div class="col-text">
+    <div class="num">02</div>
+    <div class="kicker" style="color:var(--sage);margin-top:4mm">Collection</div>
+    <h2 class="h-lg">Modern <span class="it sage">&amp; Minimal</span></h2>
+    <p class="small" style="font-size:8.6pt">Soft, earthy palettes and contemporary forms, curated for calm, modern spaces. These pieces add warmth and character without overwhelming a room — and work beautifully in pairs and trios along a corridor, behind a reception desk or across a meeting-room wall.</p>
+    <div class="ideal">Ideal for — workspaces · meeting rooms · lounges · clinics</div>
+  </div>
+  <div class="col-arch-line"></div>
+  <div class="col-arch arch"><img src="images/arch-mm.jpg" alt="Sunset Peaks print in an arched alcove"></div>
+
+  <div class="box cards3" style="top:calc(var(--bleed) + 112mm)">
+    <article class="card"><div class="visual"><img src="images/card-mm-01.jpg" alt="Colour Town"></div><h3 class="h-sm">Colour Town</h3><p class="small">Sun-washed houses stacked in vivid reds, ochres and blues — bright and optimistic.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><img src="images/card-mm-02.jpg" alt="Sunset Peaks"></div><h3 class="h-sm">Sunset Peaks</h3><p class="small">Layered mountains, a low orange sun and a line of birds in soft, earthy tones.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><img src="images/card-mm-03.jpg" alt="Botanical Abstract"></div><h3 class="h-sm">Botanical Abstract</h3><p class="small">Organic shapes and a single leaf in terracotta, sand and black — warm and understated.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><img src="images/card-mm-04.jpg" alt="Flowing Curves"></div><h3 class="h-sm">Flowing Curves</h3><p class="small">Bold curves in navy, rust and ochre, traced with a single fine line.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><img src="images/card-mm-05.jpg" alt="Deer Motif"></div><h3 class="h-sm">Deer Motif</h3><p class="small">A graphic deer emblem in deep navy on warm cream — striking and symmetrical.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+    <article class="card"><div class="visual"><img src="images/card-mm-06.jpg" alt="Vinyl Dance"></div><h3 class="h-sm">Vinyl Dance</h3><p class="small">A pair dancing on a spinning record — playful, retro and full of warmth.</p><div class="spec"><span class="tag fill">18 × 24 in</span><span class="tag">Portrait</span></div></article>
+  </div>
+  <div class="folio"><span class="meta">All pieces in a black frame, ready to hang · other sizes on request</span><span class="pgnum">06</span></div>
+</section>
+
+
+<!-- ============================ 07 · ART & CULTURE ============================ -->
+<section class="page">
+  <div class="col-band"></div>
+  <div class="col-text">
+    <div class="num">03</div>
+    <div class="kicker" style="color:var(--sage);margin-top:4mm">Collection</div>
+    <h2 class="h-lg">Art <span class="it sage">&amp; Culture</span></h2>
+    <p class="small" style="font-size:8.6pt">Bold, expressive pieces inspired by street art, music, sport and film. Full of energy and personality, they suit the spaces where people create, meet and unwind — studios, cafés, gyms and breakout areas.</p>
+    <div class="ideal">Ideal for — creative studios · cafés · gyms · breakout spaces</div>
+  </div>
+  <div class="col-arch-line"></div>
+  <div class="col-arch arch"><img src="images/arch-ac.jpg" alt="The Samurai print in a dark interior"></div>
+
+  <div class="box cards4" style="top:calc(var(--bleed) + 112mm)">
+    <article class="card"><div class="visual" style="height:46mm"><img src="images/card-ac-01.jpg" alt="Dream Big"></div><h3 class="h-sm">Dream Big</h3><p class="small">A street-art astronaut in neon tones, layered with graffiti and texture.</p><div class="spec"><span class="tag fill">18 × 24 in</span></div></article>
+    <article class="card"><div class="visual" style="height:46mm"><img src="images/card-ac-02.jpg" alt="The Samurai"></div><h3 class="h-sm">The Samurai</h3><p class="small">An ink-wash warrior beneath a red sun, in striking monochrome.</p><div class="spec"><span class="tag fill">18 × 24 in</span></div></article>
+    <article class="card"><div class="visual" style="height:46mm"><img src="images/card-ac-03.jpg" alt="Cassette Culture"></div><h3 class="h-sm">Cassette Culture</h3><p class="small">A collage tribute to mixtapes, playlists and late-night music.</p><div class="spec"><span class="tag fill">18 × 24 in</span></div></article>
+    <article class="card"><div class="visual" style="height:46mm"><img src="images/card-ac-04.jpg" alt="Sunset Dunk"></div><h3 class="h-sm">Sunset Dunk</h3><p class="small">A basketball silhouette against a burning orange city sunset.</p><div class="spec"><span class="tag fill">18 × 24 in</span></div></article>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="panel" style="padding:6mm 7mm">
+      <div class="kicker">Choosing the right piece</div>
+      <h3 class="h-md" style="margin-top:2mm">A guide by space</h3>
+      <div class="grid2" style="margin-top:4mm;row-gap:4mm">
+        <div class="feat"><span class="icon-dot light" style="width:9mm;height:9mm"><svg class="icon" style="width:4.4mm;height:4.4mm"><use href="#i-office"/></svg></span><div><h3 class="h-sm">Receptions &amp; lobbies</h3><p class="small">One large statement piece (18 × 24 or 24 × 36 in). Calligraphy and bold colour make a strong first impression.</p></div></div>
+        <div class="feat"><span class="icon-dot light" style="width:9mm;height:9mm"><svg class="icon" style="width:4.4mm;height:4.4mm"><use href="#i-frame"/></svg></span><div><h3 class="h-sm">Boardrooms &amp; meeting rooms</h3><p class="small">Calm abstracts and landscapes from Modern &amp; Minimal, as a single piece or a matching pair.</p></div></div>
+        <div class="feat"><span class="icon-dot light" style="width:9mm;height:9mm"><svg class="icon" style="width:4.4mm;height:4.4mm"><use href="#i-hang"/></svg></span><div><h3 class="h-sm">Offices &amp; corridors</h3><p class="small">A series in one size (12 × 16 or 16 × 20 in), hung at a consistent height, brings rhythm to long walls.</p></div></div>
+        <div class="feat"><span class="icon-dot light" style="width:9mm;height:9mm"><svg class="icon" style="width:4.4mm;height:4.4mm"><use href="#i-brand"/></svg></span><div><h3 class="h-sm">Cafés, gyms &amp; breakout spaces</h3><p class="small">Art &amp; Culture pieces add energy and give a space its own personality.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">All pieces in a black frame, ready to hang · other sizes on request</span><span class="pgnum">07</span></div>
+</section>
+
+
+<!-- ============================ 08 · CUSTOM & BRANDED ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">Custom &amp; Branded Frames</span><span class="meta">Product Catalogue 2026</span></div>
+  <div class="box" style="top:calc(var(--bleed) + 20mm);display:grid;grid-template-columns:1fr 66mm;column-gap:10mm;align-items:start">
+    <div>
+      <div class="kicker">Made to order</div>
+      <h2 class="h-lg" style="margin-top:4mm">Custom &amp; <span class="it olive">branded</span> frames</h2>
+      <p class="lead" style="margin-top:4mm">Some pieces can only come from you. We print and frame your own photographs, artwork and logos to the same standard as our collections — cut to order, finished by hand and ready to hang.</p>
+      <h3 class="h-md" style="margin-top:6mm">What we can frame</h3>
+      <ul class="checks" style="margin-top:2.5mm">
+        <li><span><strong>Photographs</strong> — teams, events, annual dinners, founders and milestones</span></li>
+        <li><span><strong>Brand artwork</strong> — logos, values, mission statements and campaign visuals</span></li>
+        <li><span><strong>Commissioned art</strong> — calligraphy or illustrations created for you</span></li>
+        <li><span><strong>Recognition</strong> — awards, press features and achievements</span></li>
+        <li><span><strong>Personal gifts</strong> — framed photographs for clients and staff</span></li>
+      </ul>
+    </div>
+    <div style="position:relative;height:140mm">
+      <div class="abs arch-shadow" style="left:5mm;top:5mm;width:61mm;height:135mm;background:var(--sage)"></div>
+      <div class="abs arch" style="left:0;top:0;width:61mm;height:135mm;background:var(--cream);display:flex;align-items:flex-end;justify-content:center;padding-bottom:18mm">
+        <div class="pframe" style="width:42mm;padding:1.6mm">
+          <div style="aspect-ratio:3/4;background:var(--sand);display:flex;align-items:center;justify-content:center;text-align:center">
+            <span class="it" style="font-size:11pt;color:var(--ink-2);line-height:1.2">Your photograph,<br>artwork<br>or logo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" style="top:calc(var(--bleed) + 180mm)">
+    <div class="kicker">How it works</div>
+    <ol class="steps-h" style="margin-top:5mm;grid-template-columns:repeat(4,1fr)">
+      <li><span class="dot">01</span><h3 class="h-sm">Share your image</h3><p class="small">Send a clear, high-quality photograph, artwork or design by WhatsApp or email.</p></li>
+      <li><span class="dot">02</span><h3 class="h-sm">Choose a size</h3><p class="small">Pick the size and orientation that suit the wall — we are happy to advise.</p></li>
+      <li><span class="dot">03</span><h3 class="h-sm">We check &amp; confirm</h3><p class="small">We review every file and contact you before printing if anything needs attention.</p></li>
+      <li><span class="dot">04</span><h3 class="h-sm">Framed &amp; delivered</h3><p class="small">Printed, framed and finished by hand, then packed securely and delivered.</p></li>
+    </ol>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="olive-panel" style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:6mm">
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-print"/></svg></span><div><h3 class="h-sm">File format</h3><p class="small">JPG or PNG files, up to 20 MB each.</p></div></div>
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-check"/></svg></span><div><h3 class="h-sm">Resolution</h3><p class="small">The higher the resolution, the sharper the print.</p></div></div>
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-frame"/></svg></span><div><h3 class="h-sm">Sizes</h3><p class="small">Five sizes from 8 × 10 to 24 × 36 in, portrait or landscape.</p></div></div>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">08</span></div>
+</section>
+
+
+<!-- ============================ 09 · QUALITY & CRAFTSMANSHIP ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">Quality &amp; Craftsmanship</span><span class="meta">Product Catalogue 2026</span></div>
+  <div class="box" style="top:calc(var(--bleed) + 20mm)">
+    <div class="kicker">Quality</div>
+    <h2 class="h-lg" style="margin-top:4mm">Quality &amp; <span class="it olive">craftsmanship</span></h2>
+    <p class="lead" style="margin-top:4mm;max-width:160mm">A frame is only as good as its details. Every Zauq piece is produced to order and leaves the studio finished, protected and ready for the wall — whether it is one frame for a reception or fifty for a gifting programme.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 68mm;column-gap:8mm;margin-top:7mm">
+      <div class="ph" style="height:97.14mm"><img src="images/craft-corner.jpg" alt="Close-up of a Zauq black frame corner" style="object-position:45% 50%"></div>
+      <div class="ph" style="height:97.14mm"><img src="images/craft-side.jpg" alt="Deer Motif print in a black frame on a light wall"></div>
+    </div>
+
+    <div class="grid2" style="margin-top:9mm;row-gap:8mm">
+      <div class="feat"><span class="icon-dot"><svg class="icon"><use href="#i-frame"/></svg></span><div><h3 class="h-md">The frame</h3><p class="small">A premium black frame with a clean, modern profile. It lets the artwork lead and suits any interior, from a boardroom to a café.</p></div></div>
+      <div class="feat"><span class="icon-dot"><svg class="icon"><use href="#i-print"/></svg></span><div><h3 class="h-md">The print</h3><p class="small">High-quality printing with rich colour and crisp detail. Every file is checked before printing, and we contact you if anything needs attention.</p></div></div>
+      <div class="feat"><span class="icon-dot"><svg class="icon"><use href="#i-hang"/></svg></span><div><h3 class="h-md">The finish</h3><p class="small">Each frame is cut for its artwork and finished by hand in Rawalpindi. Hanging hardware is pre-installed, so every piece is ready to hang.</p></div></div>
+      <div class="feat"><span class="icon-dot"><svg class="icon"><use href="#i-box"/></svg></span><div><h3 class="h-md">Packing &amp; delivery</h3><p class="small">Frames are packed securely to travel safely across the country, and delivered to any city in Pakistan — to one office or to many.</p></div></div>
+    </div>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="olive-panel" style="display:flex;align-items:center;gap:6mm;padding:6mm 7mm">
+      <span class="icon-dot light"><svg class="icon"><use href="#i-check"/></svg></span>
+      <p style="font-family:var(--serif);font-style:italic;font-size:15pt;color:var(--white);line-height:1.25">Our promise — if a frame arrives damaged or different from your order, we will put it right.</p>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">09</span></div>
+</section>
+
+
+<!-- ============================ 10 · SIZES & PRICE LIST ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">Sizes &amp; Price List</span><span class="meta">Product Catalogue 2026</span></div>
+  <div class="box" style="top:calc(var(--bleed) + 20mm)">
+    <div class="kicker">Specifications</div>
+    <h2 class="h-lg" style="margin-top:4mm">Sizes &amp; <span class="it olive">price list</span></h2>
+    <p style="margin-top:4mm;max-width:160mm">Five standard sizes, from desk-friendly to statement scale. Every frame is made to order in the size you choose, portrait or landscape — shown here side by side at the same scale.</p>
+
+    <div class="panel" style="margin-top:6mm;display:flex;align-items:flex-end;justify-content:space-between;padding:7mm 9mm 5mm">
+      <div><div style="width:12mm;height:15mm;border:.5mm solid var(--ink);background:var(--white);box-shadow:1.2mm 1.2mm 0 var(--olive)"></div><div class="h-sm" style="margin-top:3mm">8 × 10 in</div><div class="meta">20 × 25 cm</div></div>
+      <div><div style="width:18mm;height:24mm;border:.5mm solid var(--ink);background:var(--white);box-shadow:1.2mm 1.2mm 0 var(--olive)"></div><div class="h-sm" style="margin-top:3mm">12 × 16 in</div><div class="meta">30 × 41 cm</div></div>
+      <div><div style="width:24mm;height:30mm;border:.5mm solid var(--ink);background:var(--white);box-shadow:1.2mm 1.2mm 0 var(--olive)"></div><div class="h-sm" style="margin-top:3mm">16 × 20 in</div><div class="meta">41 × 51 cm</div></div>
+      <div><div style="width:27mm;height:36mm;border:.5mm solid var(--ink);background:var(--white);box-shadow:1.2mm 1.2mm 0 var(--olive)"></div><div class="h-sm" style="margin-top:3mm">18 × 24 in</div><div class="meta">46 × 61 cm</div></div>
+      <div><div style="width:36mm;height:54mm;border:.5mm solid var(--ink);background:var(--white);box-shadow:1.2mm 1.2mm 0 var(--olive)"></div><div class="h-sm" style="margin-top:3mm">24 × 36 in</div><div class="meta">61 × 91 cm</div></div>
+    </div>
+
+    <table class="ptable" style="margin-top:6mm">
+      <thead><tr><th>Size</th><th>Centimetres</th><th>Recommended for</th><th>Price (PKR)</th></tr></thead>
+      <tbody>
+        <tr><td class="sz">8 × 10 in</td><td>20.3 × 25.4</td><td>Desks, shelves, bedside walls and small spaces</td><td class="price">Rs 1,500</td></tr>
+        <tr><td class="sz">12 × 16 in</td><td>30.5 × 40.6</td><td>Bedrooms, workspaces and gallery walls</td><td class="price">Rs 2,000</td></tr>
+        <tr><td class="sz">16 × 20 in</td><td>40.6 × 50.8</td><td>Balanced and versatile for modern interiors</td><td class="price">Rs 2,200</td></tr>
+        <tr><td class="sz">18 × 24 in</td><td>45.7 × 61.0</td><td>The premium statement size for feature walls</td><td class="price">Rs 2,500</td></tr>
+        <tr><td class="sz">24 × 36 in</td><td>61.0 × 91.4</td><td>Bold artwork and spacious walls</td><td class="price">Rs 4,000</td></tr>
+      </tbody>
+    </table>
+    <p class="meta" style="margin-top:2.5mm">Custom frame prices, per frame, including a black frame</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:5mm;margin-top:6mm">
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-frame"/></svg></span><div><h3 class="h-sm">Included</h3><p class="small">Black frame, high-quality print and pre-installed hanging hardware.</p></div></div>
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-truck"/></svg></span><div><h3 class="h-sm">Delivery</h3><p class="small">Flat Rs 200 anywhere in Pakistan for retail orders.</p></div></div>
+      <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-clock"/></svg></span><div><h3 class="h-sm">Lead time</h3><p class="small">Approximately 7–12 working days, made to order.</p></div></div>
+    </div>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 17mm)">
+    <div class="olive-panel" style="display:grid;grid-template-columns:52mm 1fr;column-gap:8mm;align-items:center;padding:6mm 7mm">
+      <h3 class="h-md">Corporate &amp; <span class="it sage" style="font-size:16pt">volume orders</span></h3>
+      <p class="small">Collection pieces, bulk quantities and branded work are quoted per project. Share your quantities, sizes, delivery locations and deadline, and we will send a tailored proposal. Prices are in PKR and may change; quotations are confirmed in writing.</p>
+    </div>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">10</span></div>
+</section>
+
+
+<!-- ============================ 11 · HOW TO ORDER & FAQ ============================ -->
+<section class="page">
+  <div class="runhead"><span class="kicker plain">How to Order &amp; FAQ</span><span class="meta">Product Catalogue 2026</span></div>
+  <div class="box" style="top:calc(var(--bleed) + 20mm)">
+    <div class="kicker">Working together</div>
+    <h2 class="h-lg" style="margin-top:4mm">How to <span class="it olive">order</span></h2>
+    <p style="margin-top:3.5mm;max-width:160mm">A simple process from first conversation to finished wall, with one team looking after your order throughout.</p>
+
+    <ol class="steps-h" style="margin-top:6mm">
+      <li><span class="dot">01</span><h3 class="h-sm">Brief</h3><p class="small">Tell us the space or occasion, number of pieces, sizes and deadline.</p></li>
+      <li><span class="dot">02</span><h3 class="h-sm">Quotation</h3><p class="small">We suggest pieces — or custom designs — and send a written quote.</p></li>
+      <li><span class="dot">03</span><h3 class="h-sm">Approval</h3><p class="small">You confirm the selection and files; we check every file.</p></li>
+      <li><span class="dot">04</span><h3 class="h-sm">Production</h3><p class="small">Printed, cut and hand-finished. Approx. 7–12 working days.</p></li>
+      <li><span class="dot">05</span><h3 class="h-sm">Delivery</h3><p class="small">Packed securely and delivered anywhere in Pakistan.</p></li>
+    </ol>
+
+    <div class="grid2" style="margin-top:7mm">
+      <div class="panel" style="padding:5mm 6mm">
+        <h3 class="h-sm">To request a quotation, include</h3>
+        <ul class="checks" style="margin-top:2mm">
+          <li>Number of pieces and preferred sizes</li>
+          <li>Chosen pieces, collections or your own artwork</li>
+          <li>Delivery city or cities</li>
+          <li>Your deadline or occasion</li>
+        </ul>
+      </div>
+      <div class="panel" style="padding:5mm 6mm">
+        <h3 class="h-sm">Terms at a glance</h3>
+        <ul class="checks" style="margin-top:2mm">
+          <li>Prices in PKR; quotations confirmed in writing</li>
+          <li>Retail delivery: flat Rs 200 across Pakistan</li>
+          <li>Custom pieces: no change-of-mind returns</li>
+          <li>Damaged or incorrect frames are put right</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="kicker" style="margin-top:7mm">Frequently asked questions</div>
+    <dl class="faq" style="margin-top:3mm">
+      <div><dt>Can we order in bulk for our company?</dt><dd>Yes. Tell us how many pieces you need, the sizes and your deadline, and we will quote for the whole order.</dd></div>
+      <div><dt>How long does an order take?</dt><dd>Made-to-order frames take approximately 7–12 working days. For larger orders, the timeline is confirmed in your quotation.</dd></div>
+      <div><dt>Which sizes are available?</dt><dd>Five standard sizes from 8 × 10 to 24 × 36 in. Collection pieces are shown at 18 × 24 in; other sizes on request.</dd></div>
+      <div><dt>Can you frame our logo or photographs?</dt><dd>Yes. Custom and branded frames are made from your files — JPG or PNG up to 20 MB — and every file is checked before printing.</dd></div>
+      <div><dt>Can we mix pieces from different collections?</dt><dd>Yes. Many spaces work best with a considered mix, and we are happy to suggest combinations.</dd></div>
+      <div><dt>Do you deliver outside Rawalpindi?</dt><dd>Yes — anywhere in Pakistan, to one address or to several.</dd></div>
+      <div><dt>Do the frames arrive ready to hang?</dt><dd>Yes. Hanging hardware is pre-installed on every frame.</dd></div>
+      <div><dt>Are corporate prices different from retail?</dt><dd>Retail prices are on page 10. Volume and corporate orders are quoted per project.</dd></div>
+    </dl>
+  </div>
+  <div class="folio"><span class="meta">zauqframes.com</span><span class="pgnum">11</span></div>
+</section>
+
+
+<!-- ============================ 12 · BACK COVER ============================ -->
+<section class="page on-olive" style="background:var(--olive)">
+  <div class="abs circle" style="width:140mm;height:140mm;background:var(--olive-deep);right:calc(var(--bleed) - 50mm);top:calc(var(--bleed) - 40mm)"></div>
+
+  <div class="abs" style="top:calc(var(--bleed) + 18mm);left:calc(var(--bleed) + var(--mx))">
+    <span class="logo" style="--s:24pt;color:var(--white)"><span class="w">ZAUQ</span><span class="t">PREMIUM FRAMES</span></span>
+  </div>
+
+  <div class="abs arch-line" style="right:calc(var(--bleed) + var(--mx) - 5mm);top:calc(var(--bleed) + 57mm);width:88mm;height:125.71mm;border-color:var(--sage)"></div>
+  <div class="abs arch" style="right:calc(var(--bleed) + var(--mx));top:calc(var(--bleed) + 52mm);width:88mm;height:125.71mm"><img src="images/arch-back.jpg" alt="Framed Porsche 911 GT3 RS poster in a dark lounge"></div>
+
+  <div class="abs" style="left:calc(var(--bleed) + var(--mx));top:calc(var(--bleed) + 80mm);width:84mm;color:#e9e6da">
+    <div class="kicker" style="color:var(--sage)">Contact us</div>
+    <h2 class="h-xl white" style="margin-top:4mm;font-size:34pt">Let’s work<br><span class="it sage" style="font-size:40pt">together</span></h2>
+    <p style="margin-top:6mm">Whether you are furnishing a new office, planning gifts for Ramadan and Eid, or marking a company milestone, we would be glad to help. Tell us what you have in mind and we will reply with suggestions and a quotation.</p>
+  </div>
+
+  <div class="box" style="bottom:calc(var(--bleed) + 28mm);display:grid;grid-template-columns:repeat(3,1fr);column-gap:6mm;row-gap:7mm;color:var(--white);border-top:.3mm solid rgba(211,219,174,.45);padding-top:8mm">
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-chat"/></svg></span><div><div class="meta" style="color:var(--sage)">Phone &amp; WhatsApp</div><a href="https://wa.me/923235992853" class="h-sm white" style="display:block;margin-top:1mm">0323 5992853</a></div></div>
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-mail"/></svg></span><div><div class="meta" style="color:var(--sage)">Email</div><a href="mailto:zauqframes.store@gmail.com" class="h-sm white" style="display:block;margin-top:1mm;font-size:8.8pt">zauqframes.store@gmail.com</a></div></div>
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-web"/></svg></span><div><div class="meta" style="color:var(--sage)">Website</div><a href="https://zauqframes.com" class="h-sm white" style="display:block;margin-top:1mm">zauqframes.com</a></div></div>
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-insta"/></svg></span><div><div class="meta" style="color:var(--sage)">Instagram</div><a href="https://www.instagram.com/zauqframes/" class="h-sm white" style="display:block;margin-top:1mm">@zauqframes</a></div></div>
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-pin"/></svg></span><div><div class="meta" style="color:var(--sage)">Studio</div><div class="h-sm white" style="margin-top:1mm">Rawalpindi, Pakistan</div></div></div>
+    <div class="feat"><span class="icon-dot light"><svg class="icon"><use href="#i-clock"/></svg></span><div><div class="meta" style="color:var(--sage)">Hours</div><div class="h-sm white" style="margin-top:1mm;white-space:nowrap">Mon–Sat · 9am–6pm</div></div></div>
+  </div>
+  <div class="folio"><span class="meta" style="color:var(--sage)">© 2026 Zauq Frames · Framed with taste</span><span class="meta" style="color:var(--sage)">Rawalpindi · Pakistan</span></div>
+</section>
+
+</body>
+</html>

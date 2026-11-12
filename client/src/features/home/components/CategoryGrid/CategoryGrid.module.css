@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 20px;
+}
+
+.placeholder {
+  height: 300px;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.link {
+  font-weight: 700;
+}

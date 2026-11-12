@@ -1,0 +1,36 @@
+.button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: var(--z-floating);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 20px 0 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.button:hover {
+  background: var(--color-primary-hover);
+  color: #ffffff;
+}
+
+@media (max-width: 560px) {
+  .label {
+    display: none;
+  }
+
+  .button {
+    width: 54px;
+    padding: 0;
+    justify-content: center;
+  }
+}
