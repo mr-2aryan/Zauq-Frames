@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { PageHero } from '@/components/common';
 import { ArrowRightIcon, BoxIcon, HangIcon, ImageIcon, TruckIcon, WhatsAppIcon } from '@/components/icons';
 import { Button, Container, Section, SectionHeader } from '@/components/ui';
@@ -7,7 +7,9 @@ import { SITE } from '@/config/site';
 import { useCart } from '@/context/cart/useCart';
 import { useCatalog } from '@/context/catalog/useCatalog';
 import { CartItemRow, CartSummary } from '@/features/cart';
+import { formatDayRange } from '@/features/orders';
 import { ProductGrid, useProducts } from '@/features/products';
+import { resolveAssetUrl } from '@/services/apiClient';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './CartPage.module.css';
 
@@ -21,22 +23,83 @@ export default function CartPage() {
   const currency = items[0]?.currency ?? catalog?.currency ?? 'PKR';
   const deliveryFee = catalog?.deliveryFee ?? null;
   const empty = items.length === 0;
+  const total = subtotal + (deliveryFee ?? 0);
+  // If they order today: made to order, then the courier. "Today" is read once, when the page opens.
+  const [today] = useState(() => Date.now());
+  const DAY = 86_400_000;
+  const arrives = formatDayRange(new Date(today + SITE.leadDays.min * DAY).toISOString(), new Date(today + SITE.leadDays.max * DAY).toISOString());
+  const thumbs = items.slice(0, 3).map((item) => ({ key: item.id, src: item.type === 'product' ? item.image : resolveAssetUrl(item.photo?.url ?? item.image), crop: item.crop }));
+
+  // The hero's right side: the order at a glance.
+  const glance = (
+    <div className={styles.glance}>
+      <div className={styles.fan} aria-hidden="true">
+        {thumbs.map((thumb, index) => (
+          <span key={thumb.key} className={styles.mini} style={{ '--i': index - (thumbs.length - 1) / 2 }}>
+            <img src={thumb.src} alt="" style={thumb.crop ? { objectPosition: `${thumb.crop.x}% ${thumb.crop.y}%` } : undefined} />
+          </span>
+        ))}
+        {count > 0 && <span className={styles.badge}>{count}</span>}
+      </div>
+      <dl className={styles.glanceList}>
+        <div>
+          <dt>Total</dt>
+          <dd className={styles.glanceTotal}>{formatPrice(total, currency)}</dd>
+        </div>
+        <div>
+          <dt>Order today, at your door</dt>
+          <dd>{arrives}</dd>
+        </div>
+        <div>
+          <dt>Delivery, anywhere in Pakistan</dt>
+          <dd>{deliveryFee === null ? '—' : formatPrice(deliveryFee, currency)}</dd>
+        </div>
+      </dl>
+      <Button to={ROUTES.checkout} block>
+        Check out <ArrowRightIcon size={17} />
+      </Button>
+    </div>
+  );
 
   return (
     <>
       <title>{empty ? `Your cart | ${SITE.name}` : `Your cart (${count}) | ${SITE.name}`}</title>
       <PageHero
-        size="sm"
         breadcrumbs={[{ label: 'Home', to: ROUTES.home }, { label: 'Cart' }]}
         kicker={empty ? 'Your cart' : `${count} ${count === 1 ? 'piece' : 'pieces'} in your cart`}
         title="Your"
-        titleLight="cart"
+        titleLight={empty ? 'cart is empty.' : 'cart.'}
         lead={
           empty
-            ? 'Nothing here yet — find a piece you love, or frame one of your own photos.'
-            : `Every frame is made to order after checkout. Review your pieces, then check out — delivery is a flat ${deliveryFee === null ? '' : formatPrice(deliveryFee, currency)} anywhere in Pakistan.`
+            ? 'Nothing here yet — find a piece you love, or frame one of your own photos in any of five sizes.'
+            : 'Every frame is made to order after checkout. Check your pieces and sizes below, then head to checkout — it takes about a minute.'
         }
-      />
+        actions={
+          empty ? (
+            <>
+              <Button to={ROUTES.shop}>Shop the collection</Button>
+              <Button to={ROUTES.customFrames} variant="secondary">
+                Frame your photo
+              </Button>
+            </>
+          ) : null
+        }
+        media={empty ? null : glance}
+      >
+        {!empty && (
+          <ol className={styles.progress} aria-label="Order steps">
+            <li className={styles.progressNow} aria-current="step">
+              <span>1</span> Cart
+            </li>
+            <li>
+              <span>2</span> Details &amp; payment
+            </li>
+            <li>
+              <span>3</span> Confirmation
+            </li>
+          </ol>
+        )}
+      </PageHero>
 
       <Container className={styles.page}>
         {empty ? (

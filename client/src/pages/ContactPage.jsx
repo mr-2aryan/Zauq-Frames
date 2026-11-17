@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
-import { HashLink } from '@/components/common';
 import { ArrowRightIcon, FacebookIcon, InstagramIcon, MailIcon, WhatsAppIcon } from '@/components/icons';
 import { Breadcrumbs, Container } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
@@ -138,9 +137,9 @@ export default function ContactPage() {
                   </Link>
                 </li>
                 <li>
-                  <HashLink to={`${ROUTES.home}#sizes`}>
+                  <Link to={ROUTES.sizes}>
                     Frame sizes &amp; prices <ArrowRightIcon size={16} />
-                  </HashLink>
+                  </Link>
                 </li>
                 <li>
                   <Link to={ROUTES.customFrames}>

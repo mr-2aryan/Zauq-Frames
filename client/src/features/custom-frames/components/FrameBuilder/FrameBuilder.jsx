@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from 'react';
-import { clearHandedOffPhoto, peekHandedOffPhoto } from '../../data/photoHandoff.js';
+import { clearHandedOffPhoto, onPhotoHandedOff, peekHandedOffPhoto } from '../../data/photoHandoff.js';
 import { useAddCustomFrame } from '../../hooks/useAddCustomFrame.js';
 import { useCropPosition } from '../../hooks/useCropPosition.js';
 import { usePhotoFile } from '../../hooks/usePhotoFile.js';
@@ -34,15 +34,27 @@ export function FrameBuilder({ catalog }) {
   const { select: selectPhoto } = photo;
   const { presetNextPosition } = crop;
   useEffect(() => {
+    // A photo handed over while the builder is already on screen (the hero above it).
+    const unsubscribe = onPhotoHandedOff((choice) => {
+      if (choice.sizeId && sizes.some((option) => option.id === choice.sizeId)) setSizeId(choice.sizeId);
+      if (choice.orientation) setOrientation(choice.orientation);
+      if (choice.crop) presetNextPosition(choice.crop);
+      selectPhoto(choice.file);
+      clearHandedOffPhoto();
+    });
+
     const handoff = peekHandedOffPhoto();
-    if (!handoff) return undefined;
+    if (!handoff) return unsubscribe;
     // Keep the photo exactly where it was placed on the home page.
     if (handoff.crop) presetNextPosition(handoff.crop);
     selectPhoto(handoff.file);
     // Cleared on the next tick, so React's development double-mount picks it up too.
     const timer = window.setTimeout(clearHandedOffPhoto, 0);
-    return () => window.clearTimeout(timer);
-  }, [selectPhoto, presetNextPosition]);
+    return () => {
+      window.clearTimeout(timer);
+      unsubscribe();
+    };
+  }, [selectPhoto, presetNextPosition, sizes]);
 
   const size = sizes.find((option) => option.id === sizeId) ?? sizes[0];
 

@@ -24,6 +24,7 @@ import ReturnsPage from '@/pages/ReturnsPage';
 import RouteErrorPage from '@/pages/RouteErrorPage';
 import ShippingPage from '@/pages/ShippingPage';
 import ShopPage from '@/pages/ShopPage';
+import SizesPage from '@/pages/SizesPage';
 import TermsPage from '@/pages/TermsPage';
 import TrackOrderPage from '@/pages/TrackOrderPage';
 
@@ -65,6 +66,7 @@ export const router = createBrowserRouter([
           { path: ROUTES.terms, element: <TermsPage /> },
           { path: ROUTES.privacy, element: <PrivacyPage /> },
           { path: ROUTES.refunds, element: <RefundsPage /> },
+          { path: ROUTES.sizes, element: <SizesPage /> },
           { path: ROUTES.blog, element: <BlogPage /> },
           { path: `${ROUTES.blog}/:slug`, element: <BlogPostPage /> },
           ...UPCOMING_PAGES.map(({ path, title }) => ({ path, element: <ComingSoonPage />, handle: { title } })),

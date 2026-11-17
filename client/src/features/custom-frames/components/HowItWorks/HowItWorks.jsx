@@ -1,18 +1,21 @@
 import { useId } from 'react';
-import { Panel, Section } from '@/components/ui';
+import { Container } from '@/components/ui';
 import { HOW_IT_WORKS_STEPS } from '../../data/content.js';
 import styles from './HowItWorks.module.css';
 
-/** Four-step explainer on a dark panel. */
+/** Four-step explainer on a full-width dark band. */
 export function HowItWorks({ steps = HOW_IT_WORKS_STEPS }) {
   const headingId = useId();
 
   return (
-    <Section id="how" aria-labelledby={headingId}>
-      <Panel tone="dark" className={styles.panel}>
-        <h2 id={headingId} className={styles.title} data-reveal="fade-up">
-          How it works
-        </h2>
+    <section id="how" className={styles.band} aria-labelledby={headingId}>
+      <Container>
+        <header className={styles.header} data-reveal="fade-up">
+          <p className={styles.kicker}>From photo to wall</p>
+          <h2 id={headingId} className={styles.title}>
+            How it <span className={styles.light}>works</span>
+          </h2>
+        </header>
         <ol className={styles.steps}>
           {steps.map((step, index) => (
             <li key={step.title} className={styles.step} data-reveal="fade-up" style={{ '--reveal-delay': `${index * 100}ms` }}>
@@ -22,7 +25,7 @@ export function HowItWorks({ steps = HOW_IT_WORKS_STEPS }) {
             </li>
           ))}
         </ol>
-      </Panel>
-    </Section>
+      </Container>
+    </section>
   );
 }

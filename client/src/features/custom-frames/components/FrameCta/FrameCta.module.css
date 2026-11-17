@@ -1,20 +1,87 @@
-.panel {
+/* Full-width tint band, with the same faint oversized frame as the page heroes. */
+.band {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--section-space);
+  background: var(--color-tint);
+}
+
+.band::before,
+.band::after {
+  content: '';
+  position: absolute;
+  width: 360px;
+  height: 440px;
+  border: 26px solid var(--color-primary);
+  border-radius: 6px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.band::before {
+  top: -140px;
+  left: -90px;
+  transform: rotate(-12deg);
+}
+
+.band::after {
+  right: -110px;
+  bottom: -180px;
+  transform: rotate(10deg);
+}
+
+.inner {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: clamp(40px, 6vw, 72px) 24px;
+  padding-block: clamp(64px, 9vw, 120px);
   text-align: center;
 }
 
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
 .title {
+  font-size: clamp(40px, 5.4vw, 72px);
   font-weight: 800;
-  font-size: clamp(32px, 4.4vw, 52px);
-  letter-spacing: -0.035em;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.light {
+  font-weight: 300;
+  color: var(--color-primary);
 }
 
 .text {
-  margin-bottom: 10px;
+  max-width: 560px;
+  margin-bottom: 12px;
   font-size: 18px;
+  line-height: 1.6;
   color: var(--color-ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .text {
+    font-size: 16px;
+  }
+
+  .band::before,
+  .band::after {
+    display: none;
+  }
 }

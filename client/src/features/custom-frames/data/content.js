@@ -14,12 +14,13 @@ export const HOW_IT_WORKS_STEPS = Object.freeze([
 ]);
 
 /** `tilt` is in degrees; `tone` maps to a chip colour in Occasions.module.css. */
+/** What people frame — `icon` names one of Occasions' icons; `sizes` is a suggestion, not a rule. */
 export const OCCASIONS = Object.freeze([
-  { label: 'Family photos', tone: 'coral', tilt: -3 },
-  { label: 'Wedding memories', tone: 'sage', tilt: 2 },
-  { label: 'Travel moments', tone: 'paper', tilt: 0 },
-  { label: 'Calligraphy', tone: 'olive', tilt: -1.5 },
-  { label: 'Original designs', tone: 'paper', tilt: 3 },
+  { label: 'Family photos', icon: 'family', tone: 'coral', text: 'Portraits, Eid mornings, three generations in one frame.', sizes: '16 × 20 or 18 × 24 in' },
+  { label: 'Wedding memories', icon: 'wedding', tone: 'sage', text: 'The nikkah, the mehndi, the walima — your favourite moment from the day.', sizes: '18 × 24 or 24 × 36 in' },
+  { label: 'Travel moments', icon: 'travel', tone: 'sky', text: 'Northern peaks or a beach at sunset — the view you keep going back to.', sizes: 'Landscape, 24 × 18 in' },
+  { label: 'Calligraphy', icon: 'calligraphy', tone: 'olive', text: 'A verse, a dua or a name written by hand, kept where you’ll see it every day.', sizes: '12 × 16 or 18 × 24 in' },
+  { label: 'Original designs', icon: 'design', tone: 'paper', text: 'Your own artwork, illustration or design — printed and framed like a gallery piece.', sizes: 'Any of the five sizes' },
 ]);
 
 export const PHOTO_RULES = Object.freeze({

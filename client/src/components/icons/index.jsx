@@ -110,6 +110,16 @@ export const MailIcon = (p) => (
 export const BookIcon = (p) => (
   <IconBase {...p}><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z" /><path d="M12 6.5v13" /></IconBase>
 );
+export const HeartIcon = (p) => (
+  <IconBase {...p}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></IconBase>
+);
+/** Peaks and a sun, for travel. */
+export const MountainIcon = (p) => (
+  <IconBase {...p}><path d="M3 19l6-9 4 6 2.5-3.5L21 19z" /><circle cx="17" cy="6.5" r="2" /></IconBase>
+);
+export const UsersIcon = (p) => (
+  <IconBase {...p}><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19c.8-3.3 3-5 5.5-5s4.7 1.7 5.5 5" /><circle cx="17" cy="9" r="2.6" /><path d="M15.5 14.2c2.4.2 4.1 1.7 4.8 4.3" /></IconBase>
+);
 export const CheckIcon = (p) => (
   <IconBase {...p}><path d="M5 12.5l4.5 4.5L19 7.5" /></IconBase>
 );

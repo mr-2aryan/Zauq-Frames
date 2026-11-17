@@ -8,7 +8,7 @@ export const SUPPORT_NAV = Object.freeze([
   { label: 'Contact', to: ROUTES.contact, icon: 'mail' },
   { label: 'FAQ', to: ROUTES.faqs, icon: 'help' },
   { label: 'About Us', to: ROUTES.about, icon: 'info' },
-  { label: 'Sizes', to: `${ROUTES.home}#sizes`, icon: 'ruler' },
+  { label: 'Sizes', to: ROUTES.sizes, icon: 'ruler' },
   { label: 'Blog', to: ROUTES.blog, icon: 'book' },
 ]);
 
@@ -54,12 +54,17 @@ export const FOOTER_NAV = Object.freeze([
       { label: 'Shipping & delivery', to: ROUTES.shipping },
       { label: 'Returns & exchanges', to: ROUTES.returns },
       { label: 'FAQs', to: ROUTES.faqs },
-      { label: 'Frame sizes', to: `${ROUTES.home}#sizes` },
       { label: 'Care guide', to: ROUTES.care },
-      { label: 'Contact us', to: ROUTES.contact },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
       { label: 'About us', to: ROUTES.about },
       { label: 'Craftsmanship', to: ROUTES.craftsmanship },
+      { label: 'Frame sizes', to: ROUTES.sizes },
       { label: 'Blog', to: ROUTES.blog },
+      { label: 'Contact us', to: ROUTES.contact },
     ],
   },
 ]);

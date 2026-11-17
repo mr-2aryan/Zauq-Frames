@@ -1,32 +1,211 @@
 .layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: clamp(32px, 5vw, 72px);
+}
+
+.intro {
+  position: sticky;
+  top: calc(var(--header-height) + 32px);
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 24px 64px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
 }
 
 .title {
-  flex: 1 1 420px;
+  font-size: clamp(32px, 3.8vw, 52px);
   font-weight: 800;
-  font-size: clamp(28px, 3.6vw, 44px);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
 }
 
-.pills {
-  flex: 1 1 380px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.light {
+  display: block;
+  font-weight: 300;
+  color: var(--color-primary);
+}
+
+.text {
+  max-width: 440px;
+  margin-bottom: 6px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+/* Two columns of cards; the first spans both. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.pill {
-  padding: 12px 20px;
-  border-radius: var(--radius-pill);
+.card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: 24px;
+  background: #ffffff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover {
+  border-color: var(--color-line-strong);
+  box-shadow: 0 18px 40px rgba(28, 31, 23, 0.08);
+  transform: translateY(-3px);
+}
+
+.cardWide {
+  grid-column: 1 / -1;
+  padding: 24px;
   background: var(--color-tint);
+  border-color: transparent;
+}
+
+/* A small black frame around a coloured motif. */
+.frame {
+  flex: none;
+  display: block;
+  width: 86px;
+  aspect-ratio: 3 / 4;
+  padding: 6px;
+  border: 5px solid #17190f;
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(28, 31, 23, 0.18);
+  transform: rotate(-3deg);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:nth-child(even) .frame {
+  transform: rotate(2.5deg);
+}
+
+.card:hover .frame {
+  transform: rotate(0deg) scale(1.04);
+}
+
+.cardWide .frame {
+  width: 104px;
+}
+
+.art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.coral .art {
+  background: linear-gradient(160deg, #f4c8ae, #d9805e);
+  color: #5a2a14;
+}
+
+.sage .art {
+  background: linear-gradient(160deg, #e5ead2, #b9c79a);
   color: var(--color-primary);
+}
+
+.sky .art {
+  background: linear-gradient(170deg, #cfe0ea, #8fb1c4);
+  color: #23465a;
+}
+
+.olive .art {
+  background: linear-gradient(160deg, #56642c, var(--color-primary));
+  color: #f1e3b5;
+}
+
+.paper .art {
+  background: linear-gradient(160deg, #f7f1e6, #e7dcc8);
+  color: #7a5a2e;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.cardWide .cardTitle {
+  font-size: 22px;
+}
+
+.cardText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+}
+
+.size {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 12px;
   font-weight: 700;
+  color: var(--color-primary);
+}
+
+.cardWide .size {
+  background: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .frame,
+  .cardWide .frame {
+    width: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .frame {
+    transition: none;
+  }
 }

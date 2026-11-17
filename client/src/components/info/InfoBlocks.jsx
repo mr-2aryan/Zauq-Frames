@@ -132,7 +132,7 @@ export function CheckList({ items, tone = 'good' }) {
 }
 
 /**
- * The dark closing band with a title, a line and buttons.
+ * The dark closing band — full width, edge to edge — with a title, a line and buttons.
  * @param {{ title: import('react').ReactNode, text?: import('react').ReactNode, actions: import('react').ReactNode }} props
  */
 export function CtaBand({ title, text, actions }) {

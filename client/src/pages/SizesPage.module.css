@@ -1,0 +1,199 @@
+.art {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  font-family: inherit;
+}
+
+/* The comparison table: a card on desktop, stacked cards on phones. */
+.tableWrap {
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 24px;
+  background: #ffffff;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table thead th {
+  background: var(--color-surface);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody th {
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.table td:nth-child(2) {
+  white-space: nowrap;
+  color: var(--color-ink-2);
+}
+
+.table td:nth-child(3) {
+  color: var(--color-ink-2);
+}
+
+.table td:last-child {
+  white-space: nowrap;
+}
+
+.table td:last-child strong {
+  font-size: 17px;
+}
+
+.table td:last-child s {
+  margin-left: 8px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.premium {
+  background: var(--color-tint);
+}
+
+.tag {
+  margin-left: 10px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  color: #ffffff;
+}
+
+/* Portrait beside landscape. */
+.orientations {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 32px;
+}
+
+.portrait,
+.landscape {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 10px solid #17190f;
+  background: #ffffff;
+  box-shadow: 0 18px 36px rgba(28, 31, 23, 0.18);
+}
+
+.portrait {
+  width: 150px;
+  aspect-ratio: 3 / 4;
+}
+
+.landscape {
+  width: 200px;
+  aspect-ratio: 4 / 3;
+}
+
+.portrait span,
+.landscape span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  background: var(--color-tint);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.faq {
+  max-width: 860px;
+}
+
+@media (max-width: 720px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr {
+    display: block;
+  }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'size price'
+      'cm cm'
+      'use use';
+    gap: 4px 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .table tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .table th,
+  .table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .table tbody th {
+    grid-area: size;
+  }
+
+  .table td:nth-child(2) {
+    grid-area: cm;
+    font-size: 13px;
+  }
+
+  .table td:nth-child(3) {
+    grid-area: use;
+    font-size: 14px;
+  }
+
+  .table td:last-child {
+    grid-area: price;
+    text-align: right;
+  }
+
+  .orientations {
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .portrait {
+    width: 110px;
+  }
+
+  .landscape {
+    width: 146px;
+  }
+}

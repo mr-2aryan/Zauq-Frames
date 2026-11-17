@@ -7,6 +7,8 @@ export const SITE = Object.freeze({
   hours: 'Mon–Sat · 9 am – 6 pm',
   /** From order to delivery at the door, shipping included. */
   leadTime: '7–10 days',
+  /** The same lead time in days, for delivery-date estimates (keep in step with `leadTime`). */
+  leadDays: Object.freeze({ min: 7, max: 10 }),
   /** The courier's part of the lead time. */
   shippingTime: '3–4 days',
   email: 'zauqframes.store@gmail.com',

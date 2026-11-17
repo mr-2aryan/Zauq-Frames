@@ -375,8 +375,13 @@
 }
 
 /* Closing band */
+/* The closing band runs edge to edge; its content keeps to the page container. */
 .ctaSection {
-  padding-top: var(--section-space);
+  margin-top: var(--section-space);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(220, 227, 195, 0.16), transparent 42%),
+    var(--color-dark);
+  color: var(--color-on-dark);
 }
 
 .cta {
@@ -385,12 +390,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 24px 40px;
-  padding: clamp(32px, 5vw, 56px);
-  border-radius: 32px;
-  background:
-    radial-gradient(circle at 90% 10%, rgba(220, 227, 195, 0.16), transparent 45%),
-    var(--color-dark);
-  color: var(--color-on-dark);
+  padding-block: clamp(56px, 7vw, 96px);
 }
 
 .ctaTitle {
