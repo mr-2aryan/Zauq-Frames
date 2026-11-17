@@ -1,7 +1,7 @@
 .card {
   position: relative;
   display: block;
-  height: 300px;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: var(--radius-xl);
   background: var(--color-tint);
@@ -36,8 +36,9 @@
 }
 
 .title {
-  font-size: 21px;
+  font-size: clamp(17px, 1.5vw, 21px);
   font-weight: 800;
+  line-height: 1.2;
 }
 
 .meta {

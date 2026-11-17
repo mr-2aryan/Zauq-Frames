@@ -10,12 +10,12 @@ export function HowItWorks({ steps = HOW_IT_WORKS_STEPS }) {
   return (
     <Section id="how" aria-labelledby={headingId}>
       <Panel tone="dark" className={styles.panel}>
-        <h2 id={headingId} className={styles.title}>
+        <h2 id={headingId} className={styles.title} data-reveal="fade-up">
           How it works
         </h2>
         <ol className={styles.steps}>
           {steps.map((step, index) => (
-            <li key={step.title} className={styles.step}>
+            <li key={step.title} className={styles.step} data-reveal="fade-up" style={{ '--reveal-delay': `${index * 100}ms` }}>
               <span className={styles.number}>{index + 1}</span>
               <h3 className={styles.stepTitle}>{step.title}</h3>
               <p className={styles.stepText}>{step.text}</p>

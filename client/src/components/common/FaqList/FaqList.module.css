@@ -8,10 +8,19 @@
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   background: #ffffff;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.item[open] {
-  background: var(--color-surface-2);
+.open {
+  border-color: var(--color-sage);
+  background: var(--color-tint);
+}
+
+.heading {
+  margin: 0;
+  font-size: inherit;
 }
 
 .question {
@@ -19,17 +28,24 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+  width: 100%;
   padding: 18px 22px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
   font-size: 17px;
   font-weight: 700;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
 }
 
-.question::-webkit-details-marker {
-  display: none;
+.question:hover {
+  color: var(--color-primary);
 }
 
+/* Plus that turns into a minus. */
 .marker {
   position: relative;
   flex: none;
@@ -47,18 +63,54 @@
   height: 2px;
   border-radius: 2px;
   background: var(--color-primary);
-  transition: transform 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .marker::after {
   transform: rotate(90deg);
 }
 
-.item[open] .marker::after {
+.open .marker::after {
   transform: rotate(0deg);
+}
+
+/* Smooth open and close: the row animates from 0fr to 1fr, so any answer length works. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.open .panel {
+  grid-template-rows: 1fr;
+}
+
+.panelInner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .answer {
   padding: 0 22px 20px;
   color: var(--color-ink-2);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.open .answer {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .panel,
+  .answer,
+  .marker::before,
+  .marker::after {
+    transition: none;
+  }
 }

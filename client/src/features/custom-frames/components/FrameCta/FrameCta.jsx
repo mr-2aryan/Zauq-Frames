@@ -8,7 +8,7 @@ export function FrameCta() {
 
   return (
     <Section aria-labelledby={headingId}>
-      <Panel tone="tint" className={styles.panel}>
+      <Panel tone="tint" className={styles.panel} data-reveal="zoom-in">
         <h2 id={headingId} className={styles.title}>
           Ready to frame it?
         </h2>

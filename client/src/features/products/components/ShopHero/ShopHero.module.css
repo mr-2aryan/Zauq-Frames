@@ -1,0 +1,284 @@
+/* Full-width tint band; the content keeps to the page container. */
+.band {
+  overflow: hidden;
+  background: var(--color-tint);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  padding-block: clamp(36px, 5vw, 64px);
+}
+
+.title {
+  margin-top: 18px;
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.count {
+  font-weight: 300;
+  color: var(--color-primary);
+}
+
+.lead {
+  margin-top: 16px;
+  max-width: 580px;
+  font-size: 18px;
+  color: var(--color-ink-2);
+}
+
+.lead strong {
+  color: var(--color-ink);
+}
+
+/* Category tiles: three equal columns (two on phones). */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 640px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 8px 12px 8px 8px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tile:hover {
+  border-color: var(--color-primary);
+  color: var(--color-ink);
+  transform: translateY(-2px);
+}
+
+.tileActive,
+.tileActive:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: none;
+}
+
+/* Olive line icon on a soft square; inverts on the active tile. */
+.tileIcon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--color-tint);
+  color: var(--color-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tile:hover .tileIcon {
+  background: var(--color-sage);
+}
+
+.tileActive .tileIcon,
+.tileActive:hover .tileIcon {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-sage);
+}
+
+.tileText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tileName {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tileMeta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.tileActive .tileMeta {
+  color: var(--color-sage);
+}
+
+/* Three framed pieces fanned out; each lifts and straightens on hover. */
+.fan {
+  position: relative;
+  height: clamp(380px, 35vw, 500px);
+}
+
+.frame {
+  position: absolute;
+  display: block;
+  border: 9px solid #17190f;
+  box-shadow: 0 20px 34px rgba(28, 31, 23, 0.22);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.4s ease;
+}
+
+/* The artwork, in a tall 5:7 shape, inside the frame. */
+.frameImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  object-fit: cover;
+}
+
+.frame0 {
+  left: 0;
+  top: 22%;
+  width: 40%;
+  transform: rotate(-6deg);
+}
+
+.frame2 {
+  right: 0;
+  top: 24%;
+  width: 40%;
+  transform: rotate(5deg);
+}
+
+.frame1 {
+  left: 50%;
+  top: 9%;
+  z-index: 1;
+  width: 50%;
+  border-width: 11px;
+  box-shadow: 0 26px 44px rgba(28, 31, 23, 0.3);
+  transform: translateX(-50%);
+}
+
+.frame0:hover {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.frame2:hover {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.frame1:hover {
+  transform: translateX(-50%) translateY(-6px);
+}
+
+/* Heritage: three landscape drawings, the front one lower and larger. */
+.landscape .frameImage {
+  aspect-ratio: 4 / 3;
+}
+
+.landscape .frame0 {
+  top: 4%;
+  width: 54%;
+  transform: rotate(-4deg);
+}
+
+.landscape .frame2 {
+  top: 10%;
+  width: 54%;
+  transform: rotate(4deg);
+}
+
+.landscape .frame1 {
+  top: 34%;
+  width: 66%;
+}
+
+.offer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-ink-2);
+}
+
+.offer strong {
+  color: var(--color-ink);
+}
+
+@media (max-width: 960px) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fan {
+    width: min(100%, 460px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .lead {
+    font-size: 16px;
+  }
+
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .tile {
+    gap: 10px;
+    padding: 7px 10px 7px 7px;
+  }
+
+  .tileIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Narrow tiles: wrap a long name instead of cutting it off. */
+  .tileName {
+    font-size: 14px;
+    white-space: normal;
+  }
+
+  .frame {
+    border-width: 6px;
+  }
+
+  .frame1 {
+    border-width: 8px;
+  }
+
+  .offer {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .frame {
+    transition: none;
+  }
+}

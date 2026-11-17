@@ -25,18 +25,22 @@ export function CategoryGrid({ collectionsQuery }) {
       ) : (
         <div className={styles.grid} aria-busy={status === 'loading'}>
           {status === 'loading'
-            ? [0, 1, 2, 3].map((index) => <div key={index} className={styles.placeholder}></div>)
-            : collections.map((collection) => (
+            ? [0, 1, 2, 3, 4].map((index) => <div key={index} className={styles.placeholder}></div>)
+            : collections.map((collection, index) => (
                 <CategoryCard
                   key={collection.slug}
+                  data-reveal="fade-up"
+                  style={{ '--reveal-delay': `${index * 90}ms` }}
                   to={collectionPath(collection.slug)}
                   title={collection.name}
-                  meta={`${collection.productCount} pieces`}
+                  meta={collection.productCount > 0 ? `${collection.productCount} pieces` : 'Coming soon'}
                   image={collection.image}
                 />
               ))}
           {status === 'success' && (
             <CategoryCard
+              data-reveal="fade-up"
+              style={{ '--reveal-delay': `${collections.length * 90}ms` }}
               to={ROUTES.customFrames}
               title="Custom Frames"
               meta={startingPrice ? `Your photo, from ${startingPrice}` : 'Your photo, framed'}

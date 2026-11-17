@@ -1,13 +1,27 @@
+/* All five categories on one line on desktop; 3 then 2 per row on smaller screens. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .placeholder {
-  height: 300px;
+  aspect-ratio: 3 / 4;
   border-radius: var(--radius-xl);
   background: var(--color-surface);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 }
 
 .link {

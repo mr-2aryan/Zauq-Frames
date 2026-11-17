@@ -26,18 +26,21 @@ function measureOverflow(frame) {
 /**
  * Lets the customer drag (or arrow-key) the photo inside the frame.
  * The position is a CSS `object-position` in percent and resets whenever
- * `resetKey` (e.g. the photo URL) changes.
+ * `resetKey` (e.g. the photo URL) changes — to the centre, or to a position
+ * set beforehand with `presetNextPosition` (a photo placed on another page).
  */
 export function useCropPosition(resetKey) {
   const [position, setPosition] = useState(CENTER);
   const [trackedKey, setTrackedKey] = useState(resetKey);
+  const [preset, setPreset] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef(null);
 
   // Reset during render when the photo changes (avoids an extra effect pass).
   if (resetKey !== trackedKey) {
     setTrackedKey(resetKey);
-    setPosition(CENTER);
+    setPosition(preset ?? CENTER);
+    setPreset(null);
   }
 
   const onPointerDown = useCallback(
@@ -97,6 +100,8 @@ export function useCropPosition(resetKey) {
   return {
     position,
     isDragging,
+    /** The position the next photo should start at, instead of the centre. */
+    presetNextPosition: setPreset,
     handlers: {
       onPointerDown,
       onPointerMove,

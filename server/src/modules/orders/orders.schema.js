@@ -52,7 +52,16 @@ const orderItemSchema = z.preprocess(
   z.discriminatedUnion('type', [customFrameItemSchema, productItemSchema]),
 );
 
+/** Cash on delivery, or bank transfer / JazzCash / Easypaisa (details sent on WhatsApp). */
+export const PAYMENT_METHODS = Object.freeze(['cod', 'bank']);
+
 export const createOrderSchema = z.object({
   customer: customerSchema,
+  paymentMethod: z.enum(PAYMENT_METHODS, { message: 'Please choose how you’d like to pay.' }).optional().default('cod'),
   items: z.array(orderItemSchema).min(1, 'Your order is empty.').max(20),
+});
+
+/** GET /api/orders/:orderId/track?phone= — the phone the order was placed with. */
+export const trackOrderQuerySchema = z.object({
+  phone: z.string().trim().min(10, 'Please enter the phone number you ordered with.').max(20),
 });

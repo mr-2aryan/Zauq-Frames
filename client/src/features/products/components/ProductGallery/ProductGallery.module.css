@@ -23,8 +23,11 @@
   gap: 12px;
 }
 
+/* Up to six thumbnails share the row, never wider than 92px each. */
 .thumb {
-  width: 92px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 92px;
   aspect-ratio: 4 / 5;
   padding: 0;
   overflow: hidden;
@@ -36,4 +39,14 @@
 
 .thumbActive {
   border-color: var(--color-primary);
+}
+
+/* Landscape pieces (Heritage): a wider stage and thumbnails. */
+.landscape .main {
+  aspect-ratio: 4 / 3;
+}
+
+.landscape .thumb {
+  max-width: 112px;
+  aspect-ratio: 4 / 3;
 }

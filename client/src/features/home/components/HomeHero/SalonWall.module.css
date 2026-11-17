@@ -1,0 +1,169 @@
+/* Frame sizes scale with the viewport so all five hang on one line on desktop. */
+.wall {
+  --md: clamp(96px, 10.4vw, 150px);
+  --lg: clamp(124px, 13.6vw, 196px);
+  --moulding: clamp(7px, 0.75vw, 11px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(18px, 3vw, 44px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.piece {
+  margin-top: var(--drop);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+/* A black moulding straight around the art, no mat. */
+.frame {
+  display: block;
+  border: var(--moulding) solid #17190f;
+  background: #17190f;
+  box-shadow: 0 18px 30px rgba(28, 31, 23, 0.22);
+  transform: rotate(var(--tilt));
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.45s ease;
+}
+
+.lg .frame {
+  border-width: calc(var(--moulding) * 1.25);
+  box-shadow: 0 22px 36px rgba(28, 31, 23, 0.26);
+}
+
+.art {
+  display: block;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.md .art {
+  width: var(--md);
+}
+
+.lg .art {
+  width: var(--lg);
+}
+
+/* Custom frames: an empty print waiting for the visitor's photo. */
+.yourPhoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--color-surface-2);
+  color: var(--color-primary);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.yourPhotoHint {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.link:hover .frame,
+.link:focus-visible .frame {
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 0 26px 40px rgba(28, 31, 23, 0.26);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  white-space: nowrap;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.meta {
+  min-height: 1.4em;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.link:hover .name {
+  color: var(--color-primary);
+}
+
+/* Smaller screens: Custom frames large on top, Art & Culture and Islamic
+   Calligraphy side by side below it; the other two are left to the shop. */
+@media (max-width: 860px) {
+  .wall {
+    --md: clamp(112px, 34vw, 180px);
+    --lg: clamp(140px, 40vw, 220px);
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: center;
+    align-items: start;
+    gap: 30px clamp(28px, 9vw, 64px);
+  }
+
+  .piece {
+    margin-top: 0;
+  }
+
+  .phone-top {
+    grid-column: 1 / -1;
+    justify-self: center;
+    order: -1;
+  }
+
+  .phone-left {
+    order: 0;
+  }
+
+  .phone-right {
+    order: 1;
+    margin-top: 18px;
+  }
+
+  .phone-hidden {
+    display: none;
+  }
+
+  /* Captions may wrap so a frame's width sets its column. */
+  .link {
+    width: min-content;
+  }
+
+  .caption {
+    white-space: normal;
+    text-align: center;
+  }
+
+  .name {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .meta {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}

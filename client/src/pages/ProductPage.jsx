@@ -1,11 +1,11 @@
 import { useId } from 'react';
 import { useParams } from 'react-router';
-import { PageMessage, TrustStrip } from '@/components/common';
+import { PageMessage } from '@/components/common';
 import { Breadcrumbs, Button, Container, Section, SectionHeader, StatusMessage } from '@/components/ui';
 import { collectionPath, ROUTES } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
-import { ProductGallery, ProductGrid, ProductInfoTabs, ProductPurchasePanel, useProduct } from '@/features/products';
+import { ProductFaq, ProductGallery, ProductGrid, ProductInfoTabs, ProductPurchasePanel, useProduct } from '@/features/products';
 import styles from './ProductPage.module.css';
 
 /** /products/:slug — gallery, size selection, details and related pieces. */
@@ -47,10 +47,10 @@ export default function ProductPage() {
         />
 
         <div className={styles.layout}>
-          <div className={styles.gallery}>
-            <ProductGallery images={product.images} name={product.name} />
+          <div className={styles.gallery} data-reveal="fade-right">
+            <ProductGallery key={product.slug} images={product.images} name={product.name} orientation={product.orientation} />
           </div>
-          <div className={styles.info}>
+          <div className={styles.info} data-reveal="fade-left" style={{ '--reveal-delay': '100ms' }}>
             <span className={styles.collection}>{product.collectionName}</span>
             <h1 className={styles.title}>{product.name}</h1>
             <p className={styles.summary}>{product.summary}</p>
@@ -63,11 +63,13 @@ export default function ProductPage() {
         </div>
 
         {catalogState.status === 'success' && (
-          <div className={styles.tabs}>
+          <div className={styles.tabs} data-reveal="fade-up">
             <ProductInfoTabs product={product} catalog={catalogState.catalog} />
           </div>
         )}
       </Container>
+
+      {catalogState.status === 'success' && <ProductFaq product={product} catalog={catalogState.catalog} />}
 
       {product.related.length > 0 && (
         <Section aria-labelledby={relatedId}>
@@ -75,10 +77,6 @@ export default function ProductPage() {
           <ProductGrid status="success" products={product.related} />
         </Section>
       )}
-
-      <Section aria-label="Why shop with Zauq">
-        <TrustStrip />
-      </Section>
     </>
   );
 }

@@ -1,0 +1,454 @@
+/* Split hero: the gallery-wall photo fills the right half; the left half is
+   painted in the photo's own wall colour, so the two read as one wall. */
+.hero {
+  --wall: #c3c5c0;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: clamp(580px, 46vw, 720px);
+  background: linear-gradient(180deg, #c5c7c2 0%, #c2c4bf 60%, #bdbfba 100%);
+}
+
+/* The copy block sits in the middle of the left half. Muted text is a shade
+   darker here so it stays readable on the grey wall. */
+.copy {
+  --color-muted: #474b41;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(44px, 6vw, 88px) clamp(24px, 4vw, 64px);
+}
+
+.copyInner {
+  width: min(100%, 620px);
+}
+
+.kicker {
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.title {
+  margin-top: 14px;
+  font-size: clamp(40px, 4.6vw, 68px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.light {
+  display: block;
+  font-weight: 300;
+  color: var(--color-primary);
+}
+
+.lead {
+  max-width: 540px;
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.plus {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.channels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 620px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 18px;
+  background: #ffffff;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.channel:hover {
+  border-color: var(--color-primary);
+  color: var(--color-ink);
+  transform: translateY(-2px);
+}
+
+.channelIcon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.channelText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 15px;
+}
+
+.channelText span {
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--color-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The photo half: a square "stage" scaled to cover it, anchored to the top so
+   the whole gallery wall stays in view. Wall-grey until the photo loads. */
+.media {
+  container-type: size;
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  background: var(--wall);
+}
+
+/* A soft fade where the photo meets the painted half, so there's no seam. */
+.media::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: clamp(40px, 6vw, 110px);
+  background: linear-gradient(90deg, var(--wall), rgba(195, 197, 192, 0));
+  pointer-events: none;
+}
+
+.photo,
+.stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: max(100cqw, 100cqh);
+  height: max(100cqw, 100cqh);
+  transform: translateX(-50%);
+}
+
+.photo {
+  display: block;
+  object-fit: cover;
+  animation: settle 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* The photo eases in with a slow settle. */
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+.stage {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.stage > * {
+  pointer-events: auto;
+}
+
+
+/* Hotspots on the frames */
+.spot {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+}
+
+.spotOpen {
+  z-index: 2;
+}
+
+.pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(20, 24, 12, 0.3);
+  font: inherit;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pin span {
+  margin-top: -2px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* A soft ring breathes out of every pin. */
+.pin::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  animation: breathe 2.2s ease-out infinite;
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.9;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.pin:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.spotOpen .pin {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.spotOpen .pin::before {
+  animation: none;
+  opacity: 0;
+}
+
+/* The frame's size, shown beside its pin on hover, focus or tap. */
+.sizeTag {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-dark);
+  box-shadow: 0 10px 24px rgba(20, 24, 12, 0.25);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  color: #ffffff;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(6px, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.25s;
+}
+
+.spot:hover .sizeTag,
+.spot:has(.pin:focus-visible) .sizeTag,
+.spotOpen .sizeTag {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s;
+}
+
+.spot:hover .pin,
+.spotOpen .pin {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.spot:hover .pin::before,
+.spotOpen .pin::before {
+  animation: none;
+  opacity: 0;
+}
+
+/* Body: the form and a slim column of extras. */
+.body {
+  padding-top: clamp(48px, 6vw, 80px);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.75fr);
+  align-items: start;
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.layout form {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 8px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--color-ink-2);
+}
+
+.blockTitle {
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.quick {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quick a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 48px;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-ink);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.quick a:hover {
+  color: var(--color-primary);
+}
+
+.quick svg {
+  color: var(--color-muted);
+  transition: transform 0.2s ease;
+}
+
+.quick a:hover svg {
+  color: var(--color-primary);
+  transform: translateX(3px);
+}
+
+.social {
+  display: flex;
+  gap: 10px;
+}
+
+.social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.social a:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Tablets and phones: the photo (with its pins) on top, the copy below. */
+@media (max-width: 860px) {
+  .hero {
+    container-type: normal;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .media {
+    order: -1;
+    min-height: 0;
+    aspect-ratio: 1 / 0.9;
+  }
+
+  .media::after {
+    display: none;
+  }
+
+  .copy {
+    padding: 36px var(--gutter) 48px;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .channels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lead {
+    font-size: 16px;
+  }
+
+  .pin {
+    width: 30px;
+    height: 30px;
+    font-size: 19px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo,
+  .pin::before {
+    animation: none;
+  }
+
+  .sizeTag {
+    transition: none;
+  }
+}

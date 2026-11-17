@@ -1,74 +1,227 @@
-.aside {
+.filters {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
 }
 
 .group {
   margin: 0;
-  padding: 18px 20px;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-lg);
+  padding: 0;
+  border: 0;
 }
 
 .legend {
-  padding: 0 6px;
-  font-weight: 800;
-  font-size: 15px;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-.option {
+/* A plain list with hairline dividers; the chosen rows turn olive. */
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  font-size: 15px;
+  gap: 14px;
+  min-height: 52px;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 16px;
   font-weight: 500;
+  color: var(--color-ink-2);
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-.checkbox {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--color-primary);
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row:hover,
+.checked {
+  color: var(--color-primary);
+}
+
+.checked {
+  font-weight: 700;
+}
+
+.empty {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Custom tick box: a soft square that fills olive with a white tick. */
+.input {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: 7px;
+  background: #ffffff;
+  cursor: inherit;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.input::after {
+  content: '';
+  width: 6px;
+  height: 11px;
+  margin-top: -2px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.round {
+  border-radius: 50%;
+}
+
+.round::after {
+  width: 8px;
+  height: 8px;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: scale(0);
+}
+
+.row:hover .input:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.input:checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.input:checked::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.round:checked::after {
+  transform: scale(1);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.name {
+  flex: 1;
 }
 
 .count {
-  margin-left: auto;
   font-size: 13px;
-  color: var(--color-muted-2);
+  font-weight: 600;
+  color: var(--color-muted);
 }
 
-.note {
-  padding: 18px 20px;
-  border-radius: var(--radius-lg);
-  background: var(--color-tint);
-  font-size: 14px;
-}
-
-.note p {
-  margin-top: 4px;
-  color: var(--color-ink-2);
-}
-
-.promo {
+/* Sort: one segmented pill. */
+.segments {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 22px;
-  border-radius: var(--radius-lg);
-  background: var(--color-dark);
-  color: var(--color-on-dark);
+  margin-top: 8px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-tint);
 }
 
-.promoTitle {
-  font-size: 17px;
-  color: #ffffff;
-}
-
-.promoText {
-  margin-bottom: 8px;
+.segment {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: var(--radius-pill);
   font-size: 14px;
-  color: var(--color-on-dark-muted);
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.segment:hover {
+  color: var(--color-ink);
+}
+
+.segmentActive,
+.segmentActive:hover {
+  background: #ffffff;
+  color: var(--color-primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.segment:has(input:focus-visible) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* One slim line to custom frames. */
+.custom {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px 14px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.custom:hover {
+  border-color: var(--color-primary);
+  background: var(--color-tint);
+  color: var(--color-ink);
+}
+
+.customIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.customText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-size: 15px;
+}
+
+.customText span {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input::after {
+    transition: none;
+  }
 }

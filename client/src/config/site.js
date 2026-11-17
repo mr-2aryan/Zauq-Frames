@@ -5,7 +5,10 @@ export const SITE = Object.freeze({
   description: 'Framed wall art and custom photo frames, made to order in Rawalpindi.',
   address: 'Rawalpindi, Pakistan',
   hours: 'Mon–Sat · 9 am – 6 pm',
-  leadTime: '7–12 working days',
+  /** From order to delivery at the door, shipping included. */
+  leadTime: '7–10 days',
+  /** The courier's part of the lead time. */
+  shippingTime: '3–4 days',
   email: 'zauqframes.store@gmail.com',
   phone: { display: '0323 5992853', href: 'tel:+923235992853' },
   whatsappUrl: 'https://wa.me/923235992853',

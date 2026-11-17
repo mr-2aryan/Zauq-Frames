@@ -6,29 +6,29 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 16px;
-  margin-top: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--color-line);
 }
 
-.title {
+.lead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.listTitle {
+  font-size: clamp(24px, 2.4vw, 30px);
   font-weight: 800;
-  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.15;
   letter-spacing: -0.03em;
 }
 
-.count {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0;
+.showing {
+  font-size: 15px;
+  font-weight: 500;
   color: var(--color-muted);
-  white-space: nowrap;
-}
-
-.description {
-  margin-top: 8px;
-  max-width: 640px;
-  color: var(--color-ink-2);
 }
 
 .sort {
@@ -41,38 +41,60 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--color-muted);
+  white-space: nowrap;
 }
 
-.select {
-  min-height: 46px;
-  padding: 0 14px;
-  border: 1px solid var(--color-line-strong);
-  border-radius: var(--radius-md);
-  background: #ffffff;
+/* Segmented pill: a soft track with the chosen option raised in white. */
+.sortOptions {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+.sortOption {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
   font-size: 14px;
   font-weight: 600;
+  color: var(--color-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  margin-top: 28px;
+.sortOption:hover {
+  color: var(--color-ink);
 }
 
-.sidebar {
-  flex: 1 1 240px;
-  max-width: 300px;
+.sortActive,
+.sortActive:hover {
+  background: #ffffff;
+  color: var(--color-primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm), 0 0 0 1px var(--color-line);
+}
+
+.sortOption:has(input:focus-visible) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .results {
-  flex: 999 1 560px;
-  min-width: 0;
+  margin-top: 28px;
+  scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
-@media (max-width: 860px) {
-  .sidebar {
-    max-width: none;
+/* Phones: sorting lives in the filter drawer. */
+@media (max-width: 760px) {
+  .sort {
+    display: none;
   }
 }
 

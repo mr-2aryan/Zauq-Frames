@@ -10,7 +10,7 @@ export function PageMessage({ eyebrow, title, description, actions }) {
   const headingId = useId();
   return (
     <Section spacing="top" aria-labelledby={headingId}>
-      <Panel tone="tint" className={styles.panel}>
+      <Panel tone="tint" className={styles.panel} data-reveal="zoom-in">
         <Badge>{eyebrow}</Badge>
         <h1 id={headingId} className={styles.title}>
           {title}

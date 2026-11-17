@@ -1,0 +1,138 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background: #ffffff;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  color: var(--color-ink);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px rgba(28, 31, 23, 0.1);
+}
+
+.media {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .image {
+  transform: scale(1.04);
+}
+
+.category {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 22px 24px;
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.excerpt {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.more {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Featured: image and text side by side. */
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.featured .media {
+  aspect-ratio: auto;
+  min-height: 360px;
+}
+
+.featured .body {
+  justify-content: center;
+  gap: 14px;
+  padding: clamp(26px, 4vw, 48px);
+}
+
+.featured .title {
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.featured .excerpt {
+  flex: none;
+  font-size: 17px;
+}
+
+@media (max-width: 860px) {
+  .featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .featured .media {
+    min-height: 0;
+    aspect-ratio: 3 / 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .image {
+    transition: none;
+  }
+}

@@ -7,7 +7,7 @@ import styles from './SectionHeader.module.css';
  */
 export function SectionHeader({ id, title, description, action, as: Tag = 'h2', className }) {
   return (
-    <div className={cn(styles.header, className)}>
+    <div className={cn(styles.header, className)} data-reveal="fade-up">
       <div>
         <Tag id={id} className={styles.title}>
           {title}

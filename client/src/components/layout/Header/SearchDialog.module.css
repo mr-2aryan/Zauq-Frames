@@ -1,0 +1,386 @@
+/* The page behind can't scroll while the panel is open (the gutter avoids a layout jump). */
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* Panel drops in; the backdrop fades and blurs. Closing plays both in reverse. */
+.dialog {
+  width: min(780px, calc(100% - 32px));
+  max-width: none;
+  max-height: min(720px, calc(100dvh - 12vh - 24px));
+  margin: 12vh auto auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-2xl);
+  background: #ffffff;
+  color: var(--color-ink);
+  box-shadow: 0 30px 80px rgba(20, 24, 12, 0.35);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-24px) scale(0.97);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+
+.dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .dialog[open] {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.97);
+  }
+}
+
+.dialog::backdrop {
+  background: rgba(20, 24, 12, 0);
+  backdrop-filter: blur(0);
+  transition:
+    background-color 0.3s ease,
+    backdrop-filter 0.3s ease,
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+
+.dialog[open]::backdrop {
+  background: rgba(20, 24, 12, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+@starting-style {
+  .dialog[open]::backdrop {
+    background: rgba(20, 24, 12, 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.form {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 14px 14px 24px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.formIcon {
+  flex: none;
+  color: var(--color-primary);
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-muted-2);
+  font-weight: 500;
+}
+
+/* Hide the browser's own clear button; Esc / the close button do that job. */
+.input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink-2);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.close:hover {
+  background: var(--color-line-strong);
+}
+
+.kbd {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 24px 26px;
+}
+
+.label {
+  margin-bottom: 12px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Before typing */
+.suggestions {
+  display: grid;
+  gap: 26px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 16px 0 13px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.chip svg {
+  color: var(--color-muted-2);
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+  background: var(--color-tint);
+}
+
+.collections,
+.results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collections li,
+.results li {
+  animation: item-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.collection,
+.result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.collection:hover,
+.result:hover {
+  border-color: var(--color-sage);
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+}
+
+.collection strong,
+.resultName {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.collectionImage,
+.customIcon {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.customIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+/* Results */
+.thumb {
+  flex: none;
+  width: 52px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.resultText {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.resultName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resultName mark {
+  background: var(--color-sage);
+  color: inherit;
+  border-radius: 3px;
+}
+
+.resultPrice {
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.refreshing {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.skeleton {
+  height: 86px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.seeAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.seeAll:hover {
+  color: var(--color-primary-hover);
+}
+
+.empty {
+  padding: 8px 0;
+  color: var(--color-ink-2);
+}
+
+.empty p + p {
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .dialog {
+    width: calc(100% - 20px);
+    max-height: calc(100dvh - 20px);
+    margin-top: 10px;
+    border-radius: var(--radius-xl);
+  }
+
+  .form {
+    padding: 10px 10px 10px 16px;
+    gap: 10px;
+  }
+
+  .input {
+    font-size: 17px;
+  }
+
+  .kbd {
+    display: none;
+  }
+
+  .close {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .body {
+    padding: 18px 16px 20px;
+  }
+
+  .collections,
+  .results {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog::backdrop {
+    transition: none;
+  }
+
+  .collections li,
+  .results li {
+    animation: none;
+  }
+}

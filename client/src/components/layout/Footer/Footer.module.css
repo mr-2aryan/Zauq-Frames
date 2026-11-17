@@ -11,7 +11,7 @@
 
 .columns {
   display: grid;
-  grid-template-columns: minmax(260px, 1.3fr) repeat(3, minmax(140px, 0.8fr)) minmax(240px, 1.1fr);
+  grid-template-columns: minmax(260px, 1.3fr) repeat(2, minmax(160px, 0.8fr)) minmax(240px, 1.1fr);
   gap: 40px 32px;
   padding-top: 64px;
   padding-bottom: 40px;
@@ -76,7 +76,6 @@
 
 .link:hover {
   color: #ffffff;
-  text-decoration: underline;
 }
 
 .bottom {
@@ -99,6 +98,7 @@
 
 .legalLink {
   color: #a3aa8e;
+  text-decoration: none;
 }
 
 .legalLink:hover {

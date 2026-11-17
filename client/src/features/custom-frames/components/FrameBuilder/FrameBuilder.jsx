@@ -1,4 +1,5 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
+import { clearHandedOffPhoto, peekHandedOffPhoto } from '../../data/photoHandoff.js';
 import { useAddCustomFrame } from '../../hooks/useAddCustomFrame.js';
 import { useCropPosition } from '../../hooks/useCropPosition.js';
 import { usePhotoFile } from '../../hooks/usePhotoFile.js';
@@ -20,11 +21,28 @@ export function FrameBuilder({ catalog }) {
   const { sizes, currency, finish, orientations, promotion } = catalog;
   const inputId = useId();
 
-  const [sizeId, setSizeId] = useState(sizes[0]?.id);
-  const [orientation, setOrientation] = useState(orientations[0] ?? 'portrait');
+  // A photo previewed on the home page arrives with its size and orientation.
+  const [sizeId, setSizeId] = useState(() => {
+    const handoff = peekHandedOffPhoto();
+    return handoff && sizes.some((option) => option.id === handoff.sizeId) ? handoff.sizeId : sizes[0]?.id;
+  });
+  const [orientation, setOrientation] = useState(() => peekHandedOffPhoto()?.orientation ?? orientations[0] ?? 'portrait');
   const photo = usePhotoFile();
   const crop = useCropPosition(photo.previewUrl);
   const { addCustomFrame, isSubmitting, error: orderError, clearError } = useAddCustomFrame();
+
+  const { select: selectPhoto } = photo;
+  const { presetNextPosition } = crop;
+  useEffect(() => {
+    const handoff = peekHandedOffPhoto();
+    if (!handoff) return undefined;
+    // Keep the photo exactly where it was placed on the home page.
+    if (handoff.crop) presetNextPosition(handoff.crop);
+    selectPhoto(handoff.file);
+    // Cleared on the next tick, so React's development double-mount picks it up too.
+    const timer = window.setTimeout(clearHandedOffPhoto, 0);
+    return () => window.clearTimeout(timer);
+  }, [selectPhoto, presetNextPosition]);
 
   const size = sizes.find((option) => option.id === sizeId) ?? sizes[0];
 

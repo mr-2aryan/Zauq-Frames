@@ -32,8 +32,8 @@ export function DeliveryCheck({ deliveryFee, currency }) {
       </div>
       <p className={styles.result} aria-live="polite">
         {checkedCity
-          ? `Yes — we deliver to ${checkedCity} for a flat ${fee}. Made to order in ${SITE.leadTime}, then dispatched.`
-          : `Made to order in ${SITE.leadTime} · flat ${fee} delivery anywhere in Pakistan.`}
+          ? `Yes — we deliver to ${checkedCity} for a flat ${fee}. It reaches you in ${SITE.leadTime} (${SITE.shippingTime} of that is shipping).`
+          : `Delivered in ${SITE.leadTime} · flat ${fee} delivery anywhere in Pakistan.`}
       </p>
     </form>
   );

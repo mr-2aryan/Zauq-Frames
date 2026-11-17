@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { HashLink } from '@/components/common';
 import { FacebookIcon, InstagramIcon, MailIcon } from '@/components/icons';
 import { Container, Logo } from '@/components/ui';
 import { FOOTER_NAV, LEGAL_LINKS } from '@/config/navigation';
@@ -17,9 +18,9 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <Container className={styles.columns}>
-        <div className={styles.brand}>
+        <div className={styles.brand} data-reveal="fade-up">
           <Link to={ROUTES.home} aria-label={`${SITE.fullName} — home`} className={styles.logoLink}>
-            <Logo tone="light" size={24} />
+            <Logo tone="light" size={30} />
           </Link>
           <p className={styles.blurb}>{SITE.description}</p>
           <NewsletterForm />
@@ -38,18 +39,18 @@ export function Footer() {
           </div>
         </div>
 
-        {FOOTER_NAV.map((group) => (
-          <nav key={group.title} aria-label={group.title} className={styles.column}>
+        {FOOTER_NAV.map((group, index) => (
+          <nav key={group.title} aria-label={group.title} className={styles.column} data-reveal="fade-up" style={{ '--reveal-delay': `${(index + 1) * 80}ms` }}>
             <span className={styles.heading}>{group.title}</span>
             {group.links.map((link) => (
-              <Link key={link.label} to={link.to} className={styles.link}>
+              <HashLink key={link.label} to={link.to} className={styles.link}>
                 {link.label}
-              </Link>
+              </HashLink>
             ))}
           </nav>
         ))}
 
-        <div className={styles.column}>
+        <div className={styles.column} data-reveal="fade-up" style={{ '--reveal-delay': `${(FOOTER_NAV.length + 1) * 80}ms` }}>
           <span className={styles.heading}>Contact</span>
           <a href={`mailto:${SITE.email}`} className={styles.link}>
             {SITE.email}

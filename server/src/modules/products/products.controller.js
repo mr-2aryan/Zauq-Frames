@@ -12,7 +12,7 @@ export const getCollection = async (req, res) => {
   res.json({ data: await productsService.getCollection(req.params.slug) });
 };
 
-/** GET /api/products?collection=&q=&sort=&featured=&limit= */
+/** GET /api/products?collection=&q=&sort=&featured=&limit=&page= */
 export const listProducts = async (req, res) => {
   const { collection, ...options } = parseQuery(listProductsQuerySchema, req.query);
   res.json({ data: await productsService.list({ collections: collection, ...options }) });

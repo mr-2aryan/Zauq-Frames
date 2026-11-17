@@ -15,4 +15,5 @@ export const listProductsQuerySchema = z.object({
     .optional()
     .transform((value) => value === 'true'),
   limit: z.coerce.number().int().min(1).max(48).optional(),
+  page: z.coerce.number().int().min(1).max(1000).optional().default(1),
 });

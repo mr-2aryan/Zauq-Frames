@@ -1,70 +1,132 @@
+/* Segmented tabs: a soft track with an olive pill that slides to the active tab. */
+.tabsWrap {
+  max-width: 100%;
+}
+
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-line);
+  position: relative;
+  display: inline-flex;
+  padding: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-tint);
+}
+
+/* Positioned from the active tab's own box, so it also follows tabs onto a second row. */
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .tab {
+  position: relative;
   min-height: 46px;
-  padding: 0 20px;
-  border: 1px solid var(--color-line-strong);
+  padding: 0 22px;
+  border: 0;
   border-radius: var(--radius-pill);
-  background: #ffffff;
-  color: var(--color-ink);
-  font-size: 14px;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
+  transition: color 0.25s ease;
 }
 
-.tabActive {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
+.tab:hover {
+  color: var(--color-primary);
+}
+
+.tabActive,
+.tabActive:hover {
   color: #ffffff;
   font-weight: 700;
 }
 
+/* Each panel eases in when its tab opens. */
 .panel {
   margin-top: 28px;
+  animation: panel-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.columns {
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Description */
+.description {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
 }
 
-.text {
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+}
+
+.lead {
+  margin-top: 10px;
+  font-size: 18px;
+  line-height: 1.65;
   color: var(--color-ink-2);
 }
 
-.text + .text {
-  margin-top: 0;
-}
-
 .specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
   margin: 0;
 }
 
-.specs div {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--color-line);
+.spec {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-tint);
 }
 
-.specs dt {
+.specIcon {
+  grid-row: span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-sage);
+}
+
+.spec dt {
+  font-size: 13px;
   color: var(--color-muted);
 }
 
-.specs dd {
+.spec dd {
   margin: 0;
   font-weight: 700;
-  text-transform: capitalize;
+  color: var(--color-primary);
 }
 
+/* Size guide */
 .tableWrap {
   overflow-x: auto;
   border: 1px solid var(--color-line);
@@ -80,16 +142,24 @@
 
 .table th,
 .table td {
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--color-line);
   text-align: left;
 }
 
 .table thead th {
-  background: var(--color-surface);
+  background: var(--color-tint);
   font-size: 13px;
   font-weight: 700;
-  color: var(--color-muted);
+  color: var(--color-primary);
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: var(--color-surface-2);
 }
 
 .table tbody tr:last-child th,
@@ -97,7 +167,187 @@
   border-bottom: 0;
 }
 
-.sizeNote {
-  margin-bottom: 14px;
-  font-weight: 700;
+/* Sizes, centimetres and prices never break across lines. */
+.sizeCell,
+.cmCell,
+.priceCell {
+  white-space: nowrap;
+}
+
+.priceCell s {
+  margin-left: 8px;
+  color: var(--color-muted-2);
+  font-size: 13px;
+}
+
+/* Delivery & returns */
+.delivery {
+  display: grid;
+  gap: 20px;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.timeline li span:last-child {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.returns {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-tint);
+  color: var(--color-ink-2);
+}
+
+.returns svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+@media (max-width: 860px) {
+  .description {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones and small tablets: the size guide as one compact card per size
+   (size and price on top) instead of a wide table. */
+@media (max-width: 700px) {
+  .tableWrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .table {
+    display: block;
+    min-width: 0;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'size price'
+      'cm cm'
+      'use use';
+    row-gap: 2px;
+    padding: 14px 16px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+
+  .table tbody th,
+  .table tbody td,
+  .table tbody tr:last-child th,
+  .table tbody tr:last-child td {
+    padding: 0;
+    border: 0;
+  }
+
+  .sizeCell {
+    grid-area: size;
+    font-size: 16px;
+  }
+
+  .priceCell {
+    grid-area: price;
+    text-align: right;
+  }
+
+  .cmCell {
+    grid-area: cm;
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+
+  .useCell {
+    grid-area: use;
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--color-ink-2);
+  }
+}
+
+/* Phones: two rows of two tabs instead of a sideways scroll. */
+@media (max-width: 600px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    border-radius: 26px;
+  }
+
+  .tab {
+    padding: 0 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .specs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator,
+  .tab {
+    transition: none;
+  }
+
+  .panel {
+    animation: none;
+  }
 }

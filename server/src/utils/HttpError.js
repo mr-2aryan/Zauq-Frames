@@ -20,8 +20,20 @@ export class HttpError extends Error {
     return new HttpError(400, message, details);
   }
 
+  static unauthorized(message = 'Please sign in.') {
+    return new HttpError(401, message);
+  }
+
   static notFound(message = 'Not found.') {
     return new HttpError(404, message);
+  }
+
+  static conflict(message = 'That already exists.') {
+    return new HttpError(409, message);
+  }
+
+  static tooManyRequests(message = 'Too many attempts. Please try again later.') {
+    return new HttpError(429, message);
   }
 
   static unsupportedMediaType(message = 'Unsupported file type.') {

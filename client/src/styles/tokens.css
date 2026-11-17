@@ -32,7 +32,9 @@
   --color-success: #2f6b2a;
 
   /* Type */
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* The logo only — the same wordmark as the print catalogue. */
+  --font-logo: 'Bricolage Grotesque', var(--font-sans);
 
   /* Shape */
   --radius-sm: 10px;
@@ -50,9 +52,20 @@
   --gutter: clamp(16px, 4vw, 48px);
   --section-space: clamp(56px, 7vw, 88px);
 
+  /* Height of the sticky header, so in-page anchors are not hidden behind it. */
+  --header-height: 77px;
+
   /* Stacking */
+  --z-header: 44; /* above the floating WhatsApp button, so the mobile menu covers it */
   --z-floating: 40;
   --z-menu: 45;
   --z-toast: 50;
   --z-skip-link: 60;
+}
+
+@media (max-width: 1080px) {
+  :root {
+    /* The header is a single row on smaller screens. */
+    --header-height: 65px;
+  }
 }

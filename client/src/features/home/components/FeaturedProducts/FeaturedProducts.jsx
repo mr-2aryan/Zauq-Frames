@@ -1,36 +1,42 @@
-import { useId, useState } from 'react';
-import { Chip, Section, SectionHeader } from '@/components/ui';
-import { ProductGrid, useProducts } from '@/features/products';
-import styles from './FeaturedProducts.module.css';
+import { useId, useRef, useState } from 'react';
+import { FilterDrawer, FilterTab } from '@/components/common';
+import { Section, SectionHeader } from '@/components/ui';
+import { ProductGrid, ShopFilters, useProducts } from '@/features/products';
 
 /**
- * Featured pieces with collection filter chips.
+ * A fresh random pick of pieces on every visit. A Filters tab slides out from
+ * the left edge while the pieces are on screen and opens a drawer to narrow
+ * them to one collection.
  * @param {{ collections: import('@/services/productsApi').Collection[] | null }} props
  */
 export function FeaturedProducts({ collections }) {
   const headingId = useId();
+  const listRef = useRef(null);
   const [active, setActive] = useState('');
-  const { status, data, error, reload } = useProducts({ collection: active || undefined, sort: 'featured', limit: 8 });
-
-  const chips = [{ slug: '', label: 'All' }, ...(collections ?? []).map((collection) => ({ slug: collection.slug, label: collection.shortName }))];
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const { status, data, error, reload } = useProducts({ collection: active || undefined, sort: 'random', limit: 8 });
+  const activeName = collections?.find((collection) => collection.slug === active)?.name;
 
   return (
     <Section aria-labelledby={headingId}>
       <SectionHeader
         id={headingId}
-        title="Featured pieces"
-        description="Hand-picked from our collections"
-        action={
-          <div role="group" aria-label="Filter featured pieces" className={styles.chips}>
-            {chips.map((chip) => (
-              <Chip key={chip.slug || 'all'} selected={active === chip.slug} onClick={() => setActive(chip.slug)}>
-                {chip.label}
-              </Chip>
-            ))}
-          </div>
-        }
+        title={activeName ? `Featured · ${activeName}` : 'Featured pieces'}
+        description="A fresh pick from our collections on every visit"
       />
-      <ProductGrid status={status} products={data?.items} error={error} onRetry={reload} placeholderCount={8} />
+      <div ref={listRef}>
+        <ProductGrid status={status} products={data?.items} error={error} onRetry={reload} placeholderCount={8} />
+      </div>
+
+      <FilterTab target={listRef} onClick={() => setFiltersOpen(true)} expanded={filtersOpen} count={active ? 1 : 0} />
+      <FilterDrawer
+        open={filtersOpen}
+        onClose={() => setFiltersOpen(false)}
+        applyLabel={activeName ? `Show ${activeName}` : 'Show all pieces'}
+        onClear={active ? () => setActive('') : undefined}
+      >
+        {collections && <ShopFilters collections={collections} selected={active ? [active] : []} onToggle={setActive} single />}
+      </FilterDrawer>
     </Section>
   );
 }

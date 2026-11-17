@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 
 /**
- * Scrolls to `#id` after client-side navigation (e.g. a link to `/#business`),
+ * Scrolls to `#id` after client-side navigation (e.g. a link to `/custom-frames#builder`),
  * which the browser does not do by itself in a single-page app.
  */
 export function useScrollToHash() {

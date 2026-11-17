@@ -3,8 +3,8 @@ import { CartContext } from './CartContext.js';
 import { CART_ACTIONS, cartReducer, initialCartState } from './cartReducer.js';
 
 // v2: items carry `type`, `name`, `image`, `sizeLabel` and sale prices.
-// v3: collection pieces have one price for every size.
-const STORAGE_KEY = 'zauq:cart:v3';
+// v4: every frame is priced by size (collection pieces and custom frames).
+const STORAGE_KEY = 'zauq:cart:v4';
 
 /** Restores the cart from localStorage; falls back to empty on any problem. */
 function loadCart() {

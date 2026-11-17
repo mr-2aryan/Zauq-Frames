@@ -24,11 +24,11 @@ In development, Vite proxies `/api` and `/uploads` to the Express server, so the
 
 ## Pages
 
-The site uses the **Olive Market** design (concept D): olive `#3E4A1F`, Plus Jakarta Sans, rounded panels.
+The site uses the **Olive Market** design (concept D): olive `#3E4A1F`, Urbanist, rounded panels.
 
 | Path | Page |
 | --- | --- |
-| `/` | Home: hero, categories, featured pieces, custom-frame teaser, business section |
+| `/` | Home: hero with the five categories, category cards, featured pieces (shuffled each visit), custom-frame preview, frame sizes and prices |
 | `/shop`, `/collections/:collection` | Product listing with category filters, header search (`?q=`) and sort |
 | `/products/:slug` | Product: gallery, size picker (one price for every size), add to cart / buy now, details tabs, related pieces |
 | `/custom-frames` | Photo upload, live framed preview with drag-to-crop, size and orientation |
@@ -38,10 +38,8 @@ The site uses the **Olive Market** design (concept D): olive `#3E4A1F`, Plus Jak
 ## Products, prices and the promotion
 
 - **Products and collections:** edit `server/src/modules/products/products.catalog.js`. Each piece has a name, description, collection and images (stored in `client/public/images/products/`). Set `featured: true` to show it on the home page, and `badge` (e.g. `'New'`) to label its card.
-- **Prices:** edit `server/src/modules/frames/frames.catalog.js`.
-  - `PRODUCT_PRICE` (currently Rs 2,500) is what customers pay for every shop product in any size, after the promotion. The struck-through price (Rs 2,941) is worked out from it.
-  - `FRAME_SIZES[].price` is the price of a custom frame (your photo) in each size.
-- **Promotion:** `PROMOTION.percentOff` in the same file (currently 15). It is applied everywhere: product cards, the announcement bar, the cart and the server's order totals. Set it to `0` to switch it off.
+- **Prices:** edit `FRAME_SIZES` in `server/src/modules/frames/frames.catalog.js`. Every shop piece and every custom frame comes in all five sizes; `salePrice` is what customers pay for that size (Rs 1,500 / 2,000 / 2,200 / 2,500 / 4,000) and the struck-through list price is worked out from it.
+- **Promotion:** `PROMOTION.percentOff` in the same file (currently 15). It is applied everywhere: product cards, the top bar, the cart and the server's order totals. Set it to `0` to switch it off.
 
 ## Scripts (run from the project root)
 
@@ -69,7 +67,7 @@ client/src/
   styles/             Design tokens (colours, fonts, spacing) and global CSS
   components/
     ui/               Design-system primitives: Button, Panel, Section, Price, Chip, Badge, Logo, …
-    layout/           Header (with mobile menu and search), Footer, WhatsAppButton
+    layout/           Header (top bar, sticky search bar, category row, mobile menu), Footer, WhatsAppButton
     common/           Reusable blocks: FaqList, PageMessage, TrustStrip
     icons/            SVG icon components
   context/            Frame catalogue (loaded once), cart (persisted to localStorage), toasts
@@ -106,7 +104,7 @@ All responses are `{ "data": … }` on success or `{ "error": { "message", "deta
 | Method | Path | Purpose |
 | --- | --- | --- |
 | GET | `/api/health` | Liveness check |
-| GET | `/api/frames/catalog` | Sizes with custom-frame prices, the product price, promotion, orientations, delivery fee |
+| GET | `/api/frames/catalog` | Sizes with list and sale prices, promotion, orientations, delivery fee |
 | GET | `/api/collections` | Collections with product counts (`/api/collections/:slug` for one) |
 | GET | `/api/products` | Products. Query: `collection` (comma-separated), `q`, `sort` (`featured`, `name-asc`, `name-desc`), `featured=true`, `limit` |
 | GET | `/api/products/:slug` | One product with images and related pieces |

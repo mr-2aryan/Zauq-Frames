@@ -1,8 +1,9 @@
+/* The same wordmark as the print catalogue: ZAUQ over PREMIUM FRAMES, one colour. */
 .logo {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  font-family: var(--font-sans);
+  font-family: var(--font-logo);
   line-height: 1;
   white-space: nowrap;
 }
@@ -10,30 +11,23 @@
 .wordmark {
   font-size: var(--logo-size);
   font-weight: 800;
-  letter-spacing: 0.18em;
-  margin-right: -0.18em;
+  line-height: 0.9;
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;
 }
 
 .tagline {
-  font-size: calc(var(--logo-size) * 0.29);
-  font-weight: 700;
-  letter-spacing: 0.46em;
-  margin-right: -0.46em;
-  margin-top: calc(var(--logo-size) * 0.2);
+  font-size: calc(var(--logo-size) * 0.205);
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  margin-right: -0.42em;
+  margin-top: calc(var(--logo-size) * 0.14);
 }
 
-.dark .wordmark {
+.dark {
   color: var(--color-ink);
 }
 
-.dark .tagline {
-  color: var(--color-primary);
-}
-
-.light .wordmark {
+.light {
   color: #ffffff;
-}
-
-.light .tagline {
-  color: var(--color-sage);
 }

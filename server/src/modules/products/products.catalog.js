@@ -1,15 +1,23 @@
 /**
  * Collections and products shown in the shop. Every piece is available in
- * every frame size at one price (PRODUCT_PRICE in frames.catalog.js). This moves into the database once one is chosen; only
- * `products.service.js` reads it directly.
+ * every frame size, priced by size (FRAME_SIZES in frames.catalog.js). This
+ * moves into the database once one is chosen; only `products.service.js`
+ * reads it directly.
  *
- * Images live in client/public/images. `badge` is an optional short label
- * shown on product cards (e.g. 'New' or 'Bestseller'); leave it null if unsure.
+ * Images live in client/public/images/products as `<slug>-<shot>.jpg`:
+ * `front` (straight on — the first image, also the product card), `scene1` and
+ * `scene2` (styled rooms), `side` (an angle), `size` (with dimensions) and
+ * `flat` (the artwork alone). `room` shots are used for collection images.
+ * Landscape pieces set `orientation: 'landscape'`; their gallery is 4:3, so
+ * they also give a 4:5 `cardImage` for product cards. `badge` is an optional
+ * short label on cards (e.g. 'New' or 'Bestseller'); leave it null if unsure.
  */
 
-const room = (slug) => `/images/products/${slug}-room.jpg`;
-const flat = (slug) => `/images/products/${slug}-flat.jpg`;
-const FRAME_CORNER = '/images/site/frame-corner.jpg';
+const shot = (slug, kind) => `/images/products/${slug}-${kind}.jpg`;
+const room = (slug) => shot(slug, 'room');
+
+/** Gallery for a piece, in the order the shots should appear. */
+const gallery = (slug, kinds) => kinds.map((kind) => shot(slug, kind));
 
 export const COLLECTIONS = Object.freeze([
   {
@@ -33,6 +41,13 @@ export const COLLECTIONS = Object.freeze([
     description: 'Bold, expressive pieces inspired by street art, music, sport and film.',
     image: room('dream-big'),
   },
+  {
+    slug: 'heritage-pakistan',
+    name: 'Heritage Pakistan',
+    shortName: 'Heritage',
+    description: 'Pakistan’s landmarks, crafts and patterns — heritage pieces made for the walls of home.',
+    image: room('badshahi-mosque'),
+  },
 ]);
 
 export const PRODUCTS = Object.freeze([
@@ -43,7 +58,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: 'Trust in Allah, Patience and Gratitude in white calligraphy on deep red.',
     description: 'Three virtues — Tawakkul, Sabr and Shukr — written in flowing white script with their English meanings, set against deep red beside a traditional geometric border. A calm, meaningful piece for receptions, offices and homes.',
-    images: [room('tawakkul-sabr-shukr'), flat('tawakkul-sabr-shukr'), FRAME_CORNER],
+    images: gallery('tawakkul-sabr-shukr', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: true,
     badge: null,
   },
@@ -53,7 +68,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: 'A calligraphy panel framed by ornate gold illumination on black.',
     description: 'A calligraphy panel within ornate gold illumination on black, inspired by manuscript borders. Formal and rich — made for boardrooms, executive offices and feature walls.',
-    images: [room('black-and-gold'), flat('black-and-gold'), FRAME_CORNER],
+    images: gallery('black-and-gold', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: true,
     badge: null,
   },
@@ -63,7 +78,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: 'Bismillah in flowing script beside a woven red border and dried florals.',
     description: 'Bismillah ir-Rahman ir-Rahim in flowing black script on warm cream, beside a woven red border and delicate dried florals. A gentle, welcoming piece for entrances and living spaces.',
-    images: [room('bismillah'), flat('bismillah'), FRAME_CORNER],
+    images: gallery('bismillah', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: false,
     badge: null,
   },
@@ -73,7 +88,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: '“Call upon Me; I will respond to you” in circular script on layered blue.',
     description: '“Call upon Me; I will respond to you.” A circular composition in white script within layered tones of blue — calm, reflective and striking on any wall.',
-    images: [room('uduni-astajib-lakum'), flat('uduni-astajib-lakum'), FRAME_CORNER],
+    images: gallery('uduni-astajib-lakum', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: false,
     badge: null,
   },
@@ -83,7 +98,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: '“My success is only by Allah” between fields of teal and soft florals.',
     description: '“My success is only by Allah.” Calligraphy on a cream panel between fields of teal and soft florals — a fitting piece for offices, new ventures and thoughtful gifts.',
-    images: [room('ma-tawfiqi-illa-billah'), flat('ma-tawfiqi-illa-billah'), FRAME_CORNER],
+    images: gallery('ma-tawfiqi-illa-billah', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: false,
     badge: null,
   },
@@ -93,7 +108,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'islamic-calligraphy',
     summary: 'Geometric Kufic script in warm copper tones on black.',
     description: 'Geometric Kufic script in warm copper tones on black. Architectural and modern, it suits contemporary interiors, minimal walls and executive spaces.',
-    images: [room('square-kufic'), flat('square-kufic'), FRAME_CORNER],
+    images: gallery('square-kufic', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: true,
     badge: null,
   },
@@ -105,7 +120,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'Layered mountains and a low orange sun in soft, earthy tones.',
     description: 'Layered mountains, a low orange sun and a line of birds in soft, earthy tones. Calming and easy to place — in a lounge, meeting room or bedroom.',
-    images: [room('sunset-peaks'), '/images/site/hero-sunset.jpg', FRAME_CORNER],
+    images: gallery('sunset-peaks', ['front', 'scene1', 'side']),
     featured: true,
     badge: null,
   },
@@ -115,7 +130,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'Sun-washed houses stacked in vivid reds, ochres and blues.',
     description: 'Sun-washed houses stacked in vivid reds, ochres and blues. Bright and optimistic — a focal point for open, light-filled spaces.',
-    images: [room('colour-town'), FRAME_CORNER],
+    images: gallery('colour-town', ['front', 'scene1', 'scene2', 'side', 'size']),
     featured: true,
     badge: null,
   },
@@ -125,7 +140,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'Organic shapes and a single leaf in terracotta, sand and black.',
     description: 'Organic shapes and a single leaf in terracotta, sand and black. Warm, understated and quietly elegant.',
-    images: [room('botanical-abstract'), FRAME_CORNER],
+    images: gallery('botanical-abstract', ['front', 'scene1', 'side']),
     featured: false,
     badge: null,
   },
@@ -135,7 +150,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'Bold curves in navy, rust and ochre, traced with a fine line.',
     description: 'Bold curves in navy, rust and ochre, traced with a single fine line. Contemporary and confident.',
-    images: [room('flowing-curves'), FRAME_CORNER],
+    images: gallery('flowing-curves', ['front', 'scene1', 'scene2', 'side', 'size']),
     featured: true,
     badge: null,
   },
@@ -145,7 +160,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'A graphic deer emblem in deep navy on warm cream.',
     description: 'A graphic deer emblem in deep navy on warm cream — striking, symmetrical and modern.',
-    images: [room('deer-motif'), FRAME_CORNER],
+    images: gallery('deer-motif', ['front', 'scene1', 'scene2', 'side', 'size']),
     featured: false,
     badge: null,
   },
@@ -155,7 +170,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'modern-minimal',
     summary: 'A pair dancing on a spinning record — playful and retro.',
     description: 'A pair dancing on a spinning record — playful, retro and full of warmth. Ideal for social spaces and creative studios.',
-    images: [room('vinyl-dance'), '/images/site/hero-vinyl-dark.jpg', FRAME_CORNER],
+    images: gallery('vinyl-dance', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
     featured: false,
     badge: null,
   },
@@ -167,7 +182,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'art-culture',
     summary: 'A street-art astronaut in neon tones, layered with graffiti.',
     description: 'A street-art astronaut in neon pinks and blues, layered with graffiti and texture. Energy and personality for studios, gyms and breakout spaces.',
-    images: [room('dream-big'), FRAME_CORNER],
+    images: gallery('dream-big', ['front', 'scene1', 'side']),
     featured: true,
     badge: null,
   },
@@ -177,7 +192,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'art-culture',
     summary: 'An ink-wash warrior beneath a red sun, in striking monochrome.',
     description: 'An ink-wash warrior beneath a red sun, rendered in striking monochrome.',
-    images: [room('the-samurai'), FRAME_CORNER],
+    images: gallery('the-samurai', ['front', 'scene1', 'side']),
     featured: false,
     badge: null,
   },
@@ -187,7 +202,7 @@ export const PRODUCTS = Object.freeze([
     collection: 'art-culture',
     summary: 'A collage tribute to mixtapes and late-night playlists.',
     description: 'A collage tribute to mixtapes, playlists and late-night music.',
-    images: [room('cassette-culture'), FRAME_CORNER],
+    images: gallery('cassette-culture', ['front', 'scene1', 'side']),
     featured: false,
     badge: null,
   },
@@ -197,8 +212,179 @@ export const PRODUCTS = Object.freeze([
     collection: 'art-culture',
     summary: 'A basketball silhouette against a burning city sunset.',
     description: 'A basketball silhouette against a burning orange city sunset.',
-    images: [room('sunset-dunk'), FRAME_CORNER],
+    images: gallery('sunset-dunk', ['front', 'scene1', 'side']),
     featured: false,
     badge: null,
+  },
+  // Art & Culture: added from the product photo library.
+  {
+    slug: 'weeknd-type',
+    name: 'Weeknd Type',
+    collection: 'art-culture',
+    summary: 'The Weeknd behind a wall of repeated WEEKND type, in red, black and grey.',
+    description: 'A typographic music poster: WEEKND set over and over in heavy white-to-grey type, with the singer in his red jacket rising through it. Made for music lovers, studios and bedroom walls.',
+    images: gallery('weeknd-type', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: true,
+    badge: 'New',
+  },
+  {
+    slug: 'midnight-rider',
+    name: 'Midnight Rider',
+    collection: 'art-culture',
+    summary: 'A superbike wheelie in the headlights, on teal with a bold red stripe.',
+    description: 'A rider lifts a superbike into a wheelie, headlights burning, against misty teal and a tall red stripe. Built for garages, games rooms and anyone who loves two wheels.',
+    images: gallery('midnight-rider', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'porsche-911-gt3-rs',
+    name: '911 GT3 RS',
+    collection: 'art-culture',
+    summary: 'A silver 911 GT3 RS on a red racing stripe, in clean motorsport style.',
+    description: 'A silver 911 GT3 RS sits on a red and white racing stripe that runs the full height of the print, with the model name in bold below. A sharp, minimal piece for car enthusiasts.',
+    images: gallery('porsche-911-gt3-rs', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: true,
+    badge: 'New',
+  },
+  {
+    slug: 'paparazzi',
+    name: 'Paparazzi',
+    collection: 'art-culture',
+    summary: 'A crowd of photographers in sunglasses, every camera pointed at you.',
+    description: 'A packed crowd of photographers in dark glasses, lenses raised, with one face looking straight back. A playful, cinematic piece that turns any wall into the red carpet.',
+    images: gallery('paparazzi', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'al-pacino-the-godfather',
+    name: 'Al Pacino · The Godfather',
+    collection: 'art-culture',
+    summary: 'A newspaper-collage portrait of Al Pacino with an orange redaction strip.',
+    description: 'Al Pacino in black and white over a collage of newsprint, eyes struck through with a bright orange strip and "The Godfather" set beneath his name. A bold film piece for studies, lounges and studios.',
+    images: gallery('al-pacino-the-godfather', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: true,
+    badge: 'New',
+  },
+  {
+    slug: 'i-can-and-i-will',
+    name: 'I Can and I Will',
+    collection: 'art-culture',
+    summary: 'A racing helmet in deep shadow under the words "i can and i will."',
+    description: 'A detailed racing helmet emerging from black, under the line "i can and i will." A motivating motorsport piece for offices, gyms and workspaces.',
+    images: gallery('i-can-and-i-will', ['front', 'scene1', 'side', 'size', 'flat']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'messi-barcelona',
+    name: 'Messi · Barcelona',
+    collection: 'art-culture',
+    summary: 'Messi in the Barcelona stripes, magazine-cover style with his number 10.',
+    description: 'Lionel Messi celebrating in Barcelona’s blue and red stripes, laid out like a sports magazine cover with his number 10 and a bold MESSI title. For football fans of every age.',
+    images: gallery('messi-barcelona', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: true,
+    badge: 'New',
+  },
+  {
+    slug: 'marlboro-seventy-twos',
+    name: 'Marlboro Seventy-Twos',
+    collection: 'art-culture',
+    summary: 'The classic red chevron pack design, enlarged into a vintage print.',
+    description: 'The famous red chevron and serif wordmark of a vintage pack, blown up into a clean graphic print on textured cream. A retro design piece for lounges and bars.',
+    images: gallery('marlboro-seventy-twos', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'street-muse',
+    name: 'Street Muse',
+    collection: 'art-culture',
+    summary: 'A woman in dark sunglasses in a layered street-art collage of orange, teal and ink.',
+    description: 'A street-art portrait of a woman in dark sunglasses, built from layers of paint, pattern and torn paper in orange, teal and black. Expressive and fashion-forward.',
+    images: gallery('street-muse', ['front', 'side', 'size']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'san-francisco',
+    name: 'San Francisco',
+    collection: 'art-culture',
+    summary: 'SAN FRANCISCO in giant letters, filled with the city skyline.',
+    description: 'The city’s name stacked in tall letters, each one cut through with the skyline and the Golden Gate in cool teal on black. A travel piece for anyone who has left their heart there.',
+    images: gallery('san-francisco', ['front', 'scene1', 'scene2', 'side', 'size']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'eminem',
+    name: 'Eminem',
+    collection: 'art-culture',
+    summary: 'Eminem on a red-and-black hip-hop magazine collage.',
+    description: 'A hip-hop magazine-style collage of Eminem, with red headline type, stickers and cut-outs on black. Loud, layered and made for music walls.',
+    images: gallery('eminem', ['front', 'scene1', 'scene2', 'side', 'size', 'flat']),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'neymar-jr',
+    name: 'Neymar Jr',
+    collection: 'art-culture',
+    summary: 'Neymar in Brazil yellow, in a bold football-poster layout.',
+    description: 'Neymar Jr celebrating in Brazil’s yellow and green, with a big vertical NEYMAR title, his number and stats in a clean football-poster layout.',
+    images: gallery('neymar-jr', ['front', 'scene1', 'scene2', 'side', 'size']),
+    featured: false,
+    badge: 'New',
+  },
+
+  // Heritage Pakistan (landscape: 24 × 18 in at the premium size)
+  {
+    slug: 'badshahi-mosque',
+    name: 'Badshahi Mosque',
+    collection: 'heritage-pakistan',
+    orientation: 'landscape',
+    summary: 'Lahore’s great Mughal mosque in a detailed sepia ink drawing.',
+    description: 'The Badshahi Mosque of Lahore — its three domes, slender minarets and vast courtyard — drawn in fine sepia line work like an old engraving. A landscape piece with quiet grandeur for living rooms, studies and offices.',
+    images: gallery('badshahi-mosque', ['front', 'scene1', 'side', 'size', 'flat']),
+    cardImage: shot('badshahi-mosque', 'card'),
+    featured: true,
+    badge: 'New',
+  },
+  {
+    slug: 'hilltop-fort',
+    name: 'Hilltop Fort',
+    collection: 'heritage-pakistan',
+    orientation: 'landscape',
+    summary: 'A fort of round bastions and a flag-topped gate, in sepia ink.',
+    description: 'Massive round bastions, a gateway reached up a winding ramp and a flag flying above — an old hilltop fort drawn in fine sepia line work. A landscape piece with a sense of history for hallways, studies and offices.',
+    images: gallery('hilltop-fort', ['front', 'scene1', 'side', 'size', 'flat']),
+    cardImage: shot('hilltop-fort', 'card'),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'clock-tower',
+    name: 'Clock Tower',
+    collection: 'heritage-pakistan',
+    orientation: 'landscape',
+    summary: 'A domed hall and clock tower among trees, in sepia ink.',
+    description: 'An ornate building of domes, arches and a tall central clock tower, set among trees and drawn in detailed sepia line work — a nod to the grand old civic buildings of Pakistan’s cities. A landscape piece for living rooms, offices and reception areas.',
+    images: gallery('clock-tower', ['front', 'scene1', 'side', 'size', 'flat']),
+    cardImage: shot('clock-tower', 'card'),
+    featured: false,
+    badge: 'New',
+  },
+  {
+    slug: 'mountain-fort',
+    name: 'Mountain Fort',
+    collection: 'heritage-pakistan',
+    orientation: 'landscape',
+    summary: 'A stone fort beneath snow-capped peaks, in sepia ink.',
+    description: 'A stone fort on a rocky outcrop, with poplars below and snow-capped peaks rising behind — the northern mountains drawn in fine sepia line work. A calm landscape piece for living rooms and studies.',
+    images: gallery('mountain-fort', ['front', 'scene1', 'side', 'size', 'flat']),
+    cardImage: shot('mountain-fort', 'card'),
+    featured: false,
+    badge: 'New',
   },
 ]);

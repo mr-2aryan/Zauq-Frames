@@ -1,0 +1,9 @@
+export { CalendarIllustration } from './CalendarIllustration.jsx';
+export { CareCloth } from './CareCloth.jsx';
+export { DeliveryTruck } from './DeliveryTruck.jsx';
+export { DocumentIllustration } from './DocumentIllustration.jsx';
+export { FramedWall } from './FramedWall.jsx';
+export { PackageBox } from './PackageBox.jsx';
+export { PrivacyLock } from './PrivacyLock.jsx';
+export { ShieldCheck } from './ShieldCheck.jsx';
+export { Workbench } from './Workbench.jsx';

@@ -1,12 +1,10 @@
-import { CURRENCY, DEFAULT_FINISH, DELIVERY_FEE, FRAME_SIZES, ORIENTATIONS, PRODUCT_PRICE, PROMOTION } from './frames.catalog.js';
+import { CURRENCY, DEFAULT_FINISH, DELIVERY_FEE, FRAME_SIZES, ORIENTATIONS, PROMOTION } from './frames.catalog.js';
 
-/** Price after the site-wide promotion, rounded to whole rupees. */
-export const applyPromotion = (price) => Math.round((price * (100 - PROMOTION.percentOff)) / 100);
-
-/** List price that the promotion brings down to `salePrice`. */
+/** List price that the promotion brings down to `salePrice`, in whole rupees. */
 const listPriceFor = (salePrice) => Math.round((salePrice * 100) / (100 - PROMOTION.percentOff));
 
-const withSalePrice = (size) => ({ ...size, salePrice: applyPromotion(size.price) });
+/** A size with its list `price` (struck through) and `salePrice` (what customers pay). */
+const withPrices = (size) => ({ ...size, price: listPriceFor(size.salePrice) });
 
 /**
  * Catalogue access. Methods are async so the static catalogue can be
@@ -20,14 +18,12 @@ export const framesService = {
       finish: DEFAULT_FINISH,
       orientations: ORIENTATIONS,
       promotion: PROMOTION,
-      // Collection pieces: one price for every size, set as the price after the promotion.
-      productPrice: { price: listPriceFor(PRODUCT_PRICE), salePrice: PRODUCT_PRICE },
-      sizes: FRAME_SIZES.map(withSalePrice),
+      sizes: FRAME_SIZES.map(withPrices),
     };
   },
 
   async findSizeById(id) {
     const size = FRAME_SIZES.find((option) => option.id === id);
-    return size ? withSalePrice(size) : null;
+    return size ? withPrices(size) : null;
   },
 };

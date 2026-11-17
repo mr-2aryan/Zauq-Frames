@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useCart } from '@/context/cart/useCart';
 import { createOrder } from '@/services/ordersApi';
+import { saveLastOrder } from '../lastOrder.js';
 
 /** API order item for a cart line. Prices are not sent — the server calculates them. */
 const toOrderItem = (item) =>
@@ -12,40 +13,44 @@ const toOrderItem = (item) =>
 function splitErrors(details = []) {
   const fieldErrors = {};
   const other = [];
-  details.forEach(({ field, message }) => {
+  (Array.isArray(details) ? details : []).forEach(({ field, message }) => {
     if (field?.startsWith('customer.')) fieldErrors[field.slice('customer.'.length)] = message;
     else other.push(message);
   });
   return { fieldErrors, other };
 }
 
-/** Places the cart as an order and clears the cart on success. */
+/**
+ * Places the cart as an order. On success the cart is cleared, the order is
+ * remembered for the confirmation page, and the placed order is returned.
+ */
 export function useCheckout() {
   const { items, clearCart } = useCart();
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
-  const [order, setOrder] = useState(null);
 
   const placeOrder = useCallback(
-    async (customer) => {
+    async ({ customer, paymentMethod }) => {
       setStatus('submitting');
       setError('');
       setFieldErrors({});
       try {
-        const placed = await createOrder({ customer, items: items.map(toOrderItem) });
-        setOrder(placed);
+        const placed = await createOrder({ customer, paymentMethod, items: items.map(toOrderItem) });
+        saveLastOrder(placed, customer);
         setStatus('success');
         clearCart();
+        return placed;
       } catch (err) {
         const { fieldErrors: byField, other } = splitErrors(err.details);
         setFieldErrors(byField);
         setError(other[0] ?? (Object.keys(byField).length ? 'Please check the highlighted fields.' : err.message));
         setStatus('error');
+        return null;
       }
     },
     [items, clearCart],
   );
 
-  return { placeOrder, status, error, fieldErrors, order };
+  return { placeOrder, status, error, fieldErrors };
 }

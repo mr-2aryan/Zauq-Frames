@@ -1,4 +1,6 @@
+import { ViewTransition } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router';
+import { TrustStrip } from '@/components/common';
 import { Footer, Header, WhatsAppButton } from '@/components/layout';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 import styles from './MainLayout.module.css';
@@ -13,9 +15,14 @@ export function MainLayout() {
         Skip to content
       </a>
       <Header />
-      <main id="main-content" tabIndex={-1} className={styles.main}>
-        <Outlet />
-      </main>
+      {/* React Router navigates inside a React Transition, so page changes animate (styles in global.css). */}
+      <ViewTransition update="page">
+        <main id="main-content" tabIndex={-1} className={styles.main}>
+          <Outlet />
+        </main>
+      </ViewTransition>
+      {/* Like the footer, the four reasons to buy close every page. */}
+      <TrustStrip />
       <Footer />
       <WhatsAppButton />
       <ScrollRestoration />

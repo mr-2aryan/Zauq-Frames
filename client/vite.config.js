@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 5173,
+      // Lets a VS Code forwarded port (https://….devtunnels.ms) reach the dev server.
+      allowedHosts: ['.devtunnels.ms'],
       proxy: {
         '/api': apiTarget,
         '/uploads': apiTarget,

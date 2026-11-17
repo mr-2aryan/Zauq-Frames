@@ -1,0 +1,207 @@
+/* Full-width dark band; the content keeps to the page container. */
+/* Sits straight under the custom-frames band, with no gap. */
+.band {
+  padding-block: clamp(64px, 8vw, 104px);
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+}
+
+.header {
+  max-width: 720px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+
+.kicker {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+}
+
+.title {
+  margin-top: 14px;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+}
+
+.description {
+  margin-top: 14px;
+  font-size: 18px;
+  color: var(--color-on-dark-muted);
+}
+
+.cards {
+  /* Pixels per inch for the frames: 24 × 36 in fills the stage height. */
+  --ppi: clamp(3.4px, 0.42vw, 5.4px);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px 22px;
+  border: 1px solid #3a4422;
+  border-radius: var(--radius-xl);
+  background: var(--color-dark-2);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-on-dark-muted);
+}
+
+.premium,
+.premium:hover {
+  border: 2px solid var(--color-sage);
+}
+
+.badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Same height on every card; frames stand on its bottom edge, so they compare to scale. */
+.stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: calc(36 * var(--ppi) + 20px);
+  margin-bottom: 18px;
+}
+
+.frame {
+  display: block;
+  box-sizing: content-box;
+  width: calc(var(--w) * var(--ppi));
+  height: calc(var(--h) * var(--ppi));
+  border: 4px solid #0b0c07;
+  background: #0b0c07;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.45);
+}
+
+.art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.size {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.cm {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--color-on-dark-muted);
+}
+
+.use {
+  flex: 1 0 auto;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-on-dark-muted);
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #3a4422;
+}
+
+.price strong {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--color-sage);
+}
+
+.price s {
+  font-size: 13px;
+  color: #a3a98f;
+}
+
+/* Smaller screens: no sideways scrolling. Each card puts its frame (larger,
+   still to scale) beside the details; two cards a row on tablets, one on phones. */
+@media (max-width: 1080px) {
+  .cards {
+    --ppi: clamp(5px, 1.55vw, 6.4px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: calc(24 * var(--ppi) + 8px) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      'stage size'
+      'stage cm'
+      'stage use'
+      'stage price';
+    column-gap: 20px;
+    padding: 22px 20px;
+  }
+
+  .stage {
+    grid-area: stage;
+    align-items: center;
+    height: auto;
+    min-height: calc(36 * var(--ppi) + 8px);
+    margin: 0;
+  }
+
+  .size {
+    grid-area: size;
+  }
+
+  .cm {
+    grid-area: cm;
+  }
+
+  .use {
+    grid-area: use;
+  }
+
+  .price {
+    grid-area: price;
+  }
+
+  .badge {
+    left: 20px;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

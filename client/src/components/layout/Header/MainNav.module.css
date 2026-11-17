@@ -1,43 +1,247 @@
-.nav {
+.list {
   display: flex;
-}
-
-.row {
-  gap: 26px;
-}
-
-.column {
-  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--color-ink);
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
 .link:hover {
   color: var(--color-primary);
 }
 
-.row .link {
-  padding: 6px 0;
-  border-bottom: 2px solid transparent;
-}
-
-.row .active {
-  border-bottom-color: var(--color-primary);
+.link svg {
+  flex: none;
   color: var(--color-primary);
 }
 
+/* Desktop category row: links fill the row height and are underlined when active. */
+.row .list {
+  align-items: stretch;
+  gap: 28px;
+}
+
+.row li {
+  display: flex;
+  align-items: center;
+}
+
+.row .link {
+  align-self: stretch;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+
+.row .active {
+  box-shadow: inset 0 -2px 0 var(--color-primary);
+  color: var(--color-primary);
+}
+
+.row .groupStart {
+  position: relative;
+  padding-left: 28px;
+}
+
+.row .groupStart::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 20px;
+  background: var(--color-line-strong);
+  transform: translateY(-50%);
+}
+
+.row .highlight {
+  align-self: center;
+  min-height: 36px;
+  padding: 0 16px 0 13px;
+  border-radius: var(--radius-pill);
+  background: var(--color-tint);
+  color: var(--color-primary);
+  box-shadow: none;
+}
+
+.row .highlight:hover {
+  background: var(--color-sage);
+}
+
+.row .highlight.active {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.row .highlight.active svg {
+  color: currentColor;
+}
+
+/* Support dropdown: the trigger looks like the other links, with a chevron. */
+.dropdown {
+  position: relative;
+  display: flex;
+  align-self: stretch;
+}
+
+.trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.row .trigger {
+  align-self: stretch;
+}
+
+.trigger.open {
+  color: var(--color-primary);
+}
+
+.chevron {
+  transition: transform 0.25s ease;
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+}
+
+/* A slim floating list just below the header. */
+.panel {
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  z-index: 5;
+  min-width: 184px;
+  padding: 6px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px var(--color-line),
+    0 16px 40px rgba(28, 31, 23, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.22s ease,
+    visibility 0s linear 0.22s;
+}
+
+.panelOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.18s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The desktop row's flex list items would shrink these to their text. */
+.row .menu li {
+  display: block;
+}
+
+.menuItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 11px;
+  min-height: 40px;
+  padding: 0 14px 0 12px;
+  border-radius: 10px;
+  color: var(--color-ink-2);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.menuItem svg {
+  flex: none;
+  color: var(--color-muted);
+  transition: color 0.15s ease;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.menuItem:hover svg,
+.menuItem:focus-visible svg {
+  color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panelOpen,
+  .chevron {
+    transition: none;
+  }
+}
+
+/* Mobile menu */
+.column .list {
+  flex-direction: column;
+}
+
 .column .link {
-  padding: 14px 0;
+  display: flex;
+  min-height: 52px;
   border-bottom: 1px solid var(--color-line);
   font-size: 17px;
 }
 
 .column .active {
   color: var(--color-primary);
+}
+
+/* Tighter on smaller desktops so everything stays on one line. */
+@media (max-width: 1280px) {
+  .row .list {
+    gap: 20px;
+  }
+
+  .row .groupStart {
+    padding-left: 20px;
+  }
+
+  .row .link:not(.highlight, .trigger) svg {
+    display: none;
+  }
+
+  .row .highlight {
+    padding: 0 14px;
+  }
 }

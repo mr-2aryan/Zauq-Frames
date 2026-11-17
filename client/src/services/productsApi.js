@@ -4,7 +4,7 @@ import { apiRequest } from './apiClient.js';
  * @typedef {{
  *   slug: string, name: string, collection: string, collectionName: string, summary: string,
  *   image: string, featured: boolean, badge: string | null,
- *   currency: string, price: number, salePrice: number,
+ *   currency: string, price: number, salePrice: number, (the smallest size's list and sale price: "from")
  * }} ProductSummary
  *
  * @typedef {ProductSummary & { description: string, images: string[], related: ProductSummary[] }} Product
@@ -21,7 +21,7 @@ const toQuery = (params) => {
 };
 
 /**
- * @param {{ collection?: string, q?: string, sort?: string, featured?: boolean, limit?: number }} params
+ * @param {{ collection?: string, q?: string, sort?: string, featured?: boolean, limit?: number, page?: number }} params
  * @returns {Promise<{ items: ProductSummary[], total: number }>}
  */
 export const listProducts = (params = {}, { signal } = {}) => apiRequest(`/products${toQuery(params)}`, { signal });

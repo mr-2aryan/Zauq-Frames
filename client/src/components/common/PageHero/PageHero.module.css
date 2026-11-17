@@ -1,0 +1,159 @@
+/* Full-width band; the content keeps to the page container. */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.tint {
+  background: var(--color-tint);
+  color: var(--color-ink);
+}
+
+.dark {
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+}
+
+/* A faint oversized frame outline in the corner, for depth. */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -140px;
+  width: 460px;
+  height: 560px;
+  border: 28px solid currentColor;
+  border-radius: 8px;
+  opacity: 0.035;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+  padding-block: clamp(44px, 6.5vw, 88px);
+}
+
+.sm .inner {
+  padding-block: clamp(36px, 5vw, 60px);
+}
+
+.withMedia {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.copy {
+  max-width: 760px;
+}
+
+.kicker {
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.dark .kicker {
+  color: var(--color-sage);
+}
+
+.title {
+  margin-top: 14px;
+  font-size: clamp(40px, 5.4vw, 72px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.sm .title {
+  font-size: clamp(36px, 4.6vw, 58px);
+}
+
+.dark .title {
+  color: #ffffff;
+}
+
+.light {
+  font-weight: 300;
+  color: var(--color-primary);
+}
+
+.dark .light {
+  color: var(--color-sage);
+}
+
+.lead {
+  max-width: 600px;
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.dark .lead {
+  color: var(--color-on-dark-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.extra {
+  margin-top: 30px;
+}
+
+.media {
+  display: flex;
+  justify-content: center;
+}
+
+/* Photos and illustrations in the media slot. */
+.media > img {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 4 / 4.4;
+  border-radius: 32px;
+  object-fit: cover;
+  box-shadow: 0 30px 60px rgba(28, 31, 23, 0.18);
+}
+
+.media > svg {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+
+@media (max-width: 960px) {
+  .withMedia {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .media {
+    justify-content: flex-start;
+  }
+
+  .media > img,
+  .media > svg {
+    max-width: 440px;
+  }
+}
+
+@media (max-width: 600px) {
+  .lead {
+    font-size: 16px;
+  }
+
+  .hero::before {
+    display: none;
+  }
+}

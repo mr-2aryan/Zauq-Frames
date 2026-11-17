@@ -1,0 +1,127 @@
+/* Collections: five link cards. */
+.collections {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 24px 22px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background: #ffffff;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.collection:hover {
+  border-color: var(--color-primary);
+  color: var(--color-ink);
+  transform: translateY(-4px);
+}
+
+.collection strong {
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.collection > span:not(.collectionIcon, .collectionLink) {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-ink-2);
+}
+
+.collectionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 6px;
+  border-radius: 15px;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.collectionLink {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Steps beside a promise card. */
+.twoCol {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  align-items: start;
+  gap: clamp(28px, 5vw, 72px);
+}
+
+.callout {
+  position: sticky;
+  top: calc(var(--header-height) + 28px);
+  padding: 30px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-tint);
+}
+
+.calloutKicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.calloutText {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.calloutLink {
+  display: inline-block;
+  margin-top: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.faq {
+  max-width: 860px;
+}
+
+@media (max-width: 1080px) {
+  .collections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .twoCol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .callout {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .collections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

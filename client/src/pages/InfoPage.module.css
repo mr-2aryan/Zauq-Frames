@@ -1,0 +1,85 @@
+/* Shared by the long information pages (Shipping, Returns, Care). */
+.faq {
+  max-width: 860px;
+}
+
+.inlineLink {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  padding: 26px 24px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background: #ffffff;
+}
+
+.card > svg {
+  margin-bottom: 12px;
+  color: var(--color-primary);
+}
+
+.card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+/* Two columns of cards: covered / not covered. */
+.compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.compareCard {
+  padding: clamp(24px, 3vw, 34px);
+  border-radius: var(--radius-2xl);
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+}
+
+.compareCard h3 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tip {
+  display: flex;
+  gap: 16px;
+  max-width: 860px;
+  padding: 22px 24px;
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: var(--color-tint);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.tip strong {
+  color: var(--color-ink);
+}
+
+@media (max-width: 860px) {
+  .cards,
+  .compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

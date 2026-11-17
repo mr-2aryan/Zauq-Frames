@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BoxIcon, CheckCircleIcon, HangIcon } from '@/components/icons';
-import { Badge, Button, Chip, Price, QuantityStepper } from '@/components/ui';
+import { Badge, Button, Price, QuantityStepper } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { useCart } from '@/context/cart/useCart';
 import { useToast } from '@/context/toast/useToast';
-import { formatSizeLabel } from '@/utils/frames';
+import { cn } from '@/utils/cn';
+import { formatSizeLabel, orientSize } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import { DeliveryCheck } from '../DeliveryCheck/DeliveryCheck.jsx';
 import styles from './ProductPurchasePanel.module.css';
@@ -19,14 +20,16 @@ const DEFAULT_SIZE_ID = '18x24';
  */
 export function ProductPurchasePanel({ product, catalog }) {
   const { sizes, currency, finish, promotion } = catalog;
+  const sizeName = useId();
   const [sizeId, setSizeId] = useState(sizes.some((size) => size.id === DEFAULT_SIZE_ID) ? DEFAULT_SIZE_ID : sizes[0].id);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
+  const orientation = product.orientation ?? 'portrait';
   const size = sizes.find((option) => option.id === sizeId) ?? sizes[0];
-  const sizeLabel = formatSizeLabel(size, { unit: true });
+  const sizeLabel = formatSizeLabel(orientSize(size, orientation), { unit: true });
 
   const add = () =>
     addItem({
@@ -36,10 +39,10 @@ export function ProductPurchasePanel({ product, catalog }) {
       image: product.image,
       sizeId: size.id,
       sizeLabel,
-      // Collection artworks are composed in portrait.
-      orientation: 'portrait',
-      unitPrice: product.salePrice,
-      listPrice: product.price,
+      // Each artwork is composed one way (most portrait; Heritage pieces landscape).
+      orientation,
+      unitPrice: size.salePrice,
+      listPrice: size.price,
       currency,
       quantity,
     });
@@ -57,24 +60,28 @@ export function ProductPurchasePanel({ product, catalog }) {
   return (
     <div className={styles.panel}>
       <div className={styles.priceBox}>
-        <Price amount={product.salePrice * quantity} listAmount={product.price * quantity} currency={currency} size="lg" />
+        <Price amount={size.salePrice * quantity} listAmount={size.price * quantity} currency={currency} size="lg" />
         {promotion.percentOff > 0 && <Badge tone="sale">Save {promotion.percentOff}%</Badge>}
         <span className={styles.priceMeta}>
           {sizeLabel} · {finish} frame included · ready to hang
-          {quantity > 1 && ` · ${quantity} × ${formatPrice(product.salePrice, currency)}`}
+          {quantity > 1 && ` · ${quantity} × ${formatPrice(size.salePrice, currency)}`}
         </span>
       </div>
 
       <fieldset className={styles.fieldset}>
-        <legend className={styles.legend}>
-          Size <span className={styles.legendNote}>· same price in every size</span>
-        </legend>
+        <legend className={styles.legend}>Size</legend>
+        {/* Real radio buttons styled as tiles. */}
         <div className={styles.sizes}>
-          {sizes.map((option) => (
-            <Chip key={option.id} shape="tile" selected={option.id === size.id} onClick={() => setSizeId(option.id)}>
-              <span className={styles.sizeLabel}>{formatSizeLabel(option)}</span>
-            </Chip>
-          ))}
+          {sizes.map((option) => {
+            const checked = option.id === size.id;
+            return (
+              <label key={option.id} className={cn(styles.sizeOption, checked && styles.sizeChecked)}>
+                <input type="radio" name={sizeName} value={option.id} checked={checked} onChange={() => setSizeId(option.id)} className="sr-only" />
+                <span className={styles.sizeLabel}>{formatSizeLabel(orientSize(option, orientation))}</span>
+                <span className={styles.sizePrice}>{formatPrice(option.salePrice, currency)}</span>
+              </label>
+            );
+          })}
         </div>
         <p className={styles.sizeHint}>{size.description}</p>
       </fieldset>
@@ -102,7 +109,7 @@ export function ProductPurchasePanel({ product, catalog }) {
         </li>
         <li>
           <CheckCircleIcon size={22} />
-          Damage? We fix it
+          Damage covered
         </li>
       </ul>
     </div>

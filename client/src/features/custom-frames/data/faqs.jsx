@@ -30,7 +30,7 @@ export function getCustomFrameFaqs(catalog) {
       answer: `A clear JPG or PNG up to ${PHOTO_RULES.maxMb} MB. The higher the resolution, the sharper the print. We check every file and contact you before printing if anything needs attention.`,
     },
     { question: 'How much does a custom photo frame cost?', answer: getPricingAnswer(catalog) },
-    { question: 'How long does a custom frame take?', answer: `Custom and made-to-order frames take roughly ${SITE.leadTime}, depending on the order.` },
+    { question: 'How long does a custom frame take?', answer: `About ${SITE.leadTime} from order to delivery: we make your frame first, then shipping takes ${SITE.shippingTime}.` },
     {
       question: 'Can I return a custom frame?',
       answer: (

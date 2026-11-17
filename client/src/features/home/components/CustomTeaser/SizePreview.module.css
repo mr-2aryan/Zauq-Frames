@@ -1,0 +1,199 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  /* Shrinks the whole preview on smaller screens. */
+  --k: 1;
+}
+
+/* Tall enough for the largest frame (320px long side) in either orientation. */
+.wall {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: calc(320px * var(--k) + 48px);
+}
+
+.frame {
+  display: block;
+  box-sizing: content-box;
+  width: calc(var(--w) * var(--ppi) * var(--k));
+  height: calc(var(--h) * var(--ppi) * var(--k));
+  border: clamp(4px, 0.5vw, 7px) solid #17190f;
+  background: #17190f;
+  box-shadow: 0 16px 28px rgba(28, 31, 23, 0.24);
+  transition:
+    width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.frame {
+  cursor: grab;
+  touch-action: none;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.hint {
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.dimension {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink-2);
+}
+
+.group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+/* Size radios as chips. */
+.sizes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-height: 52px;
+  justify-content: center;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+}
+
+.chipSize {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.chipPrice {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.chip.checked {
+  border: 2px solid var(--color-primary);
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.chip.checked .chipPrice {
+  color: var(--color-primary);
+}
+
+/* Orientation radios as a segmented toggle. */
+.toggle {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+.toggleOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.toggleOption.checked {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.shape {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+}
+
+.portrait {
+  width: 10px;
+  height: 14px;
+}
+
+.landscape {
+  width: 14px;
+  height: 10px;
+}
+
+/* Keyboard focus lands on the hidden radio; show it on its label. */
+.chip:has(input:focus-visible),
+.toggleOption:has(input:focus-visible) {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1200px) {
+  .preview {
+    --k: 0.85;
+  }
+}
+
+@media (max-width: 520px) {
+  .preview {
+    --k: 0.68;
+  }
+
+  .sizes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}

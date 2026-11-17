@@ -17,8 +17,8 @@ export function SizesToScale() {
       <SectionHeader id={headingId} title="Five sizes, to scale" description="Every frame is cut to order. Here they are side by side, drawn to the same scale." />
       <Panel tone="surface" className={styles.panel}>
         <ul className={styles.sizes}>
-          {catalog.sizes.map((size) => (
-            <li key={size.id} className={styles.size}>
+          {catalog.sizes.map((size, index) => (
+            <li key={size.id} className={styles.size} data-reveal="fade-up" style={{ '--reveal-delay': `${index * 80}ms` }}>
               <div aria-hidden="true" className={styles.swatch} style={{ width: size.width * SCALE_PX_PER_INCH, height: size.height * SCALE_PX_PER_INCH }}></div>
               <span className={styles.label}>{formatSizeLabel(size, { unit: true })}</span>
               <span className={styles.price}>

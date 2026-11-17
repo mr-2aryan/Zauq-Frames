@@ -16,7 +16,7 @@ export function CustomHero() {
     <section aria-labelledby={headingId} className={styles.section}>
       <Container>
         <Panel tone="tint" className={styles.panel}>
-          <div className={styles.copy}>
+          <div className={styles.copy} data-reveal="fade-up">
             <Badge>Custom photo frames · Made in Pakistan</Badge>
             <h1 id={headingId} className={styles.title}>
               Your memory. Your art. <span className={styles.accent}>Your frame.</span>
@@ -44,7 +44,7 @@ export function CustomHero() {
               ))}
             </ul>
           </div>
-          <div className={styles.media}>
+          <div className={styles.media} data-reveal="fade" style={{ '--reveal-delay': '150ms' }}>
             <img src="/images/site/hero-vinyl-dark.jpg" alt="A custom print framed on a softly lit wall" className={styles.image} />
           </div>
         </Panel>

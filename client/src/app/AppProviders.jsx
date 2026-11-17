@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/context/auth/AuthProvider';
 import { CartProvider } from '@/context/cart/CartProvider';
 import { CatalogProvider } from '@/context/catalog/CatalogProvider';
 import { ToastProvider } from '@/context/toast/ToastProvider';
@@ -6,9 +7,11 @@ import { ToastProvider } from '@/context/toast/ToastProvider';
 export function AppProviders({ children }) {
   return (
     <ToastProvider>
-      <CatalogProvider>
-        <CartProvider>{children}</CartProvider>
-      </CatalogProvider>
+      <AuthProvider>
+        <CatalogProvider>
+          <CartProvider>{children}</CartProvider>
+        </CatalogProvider>
+      </AuthProvider>
     </ToastProvider>
   );
 }
