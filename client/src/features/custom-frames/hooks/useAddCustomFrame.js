@@ -17,7 +17,7 @@ export function useAddCustomFrame() {
   const [error, setError] = useState('');
 
   const addCustomFrame = useCallback(
-    async ({ file, size, orientation, crop, currency }) => {
+    async ({ file, size, orientation, mat = 'none', crop, currency }) => {
       if (!file) {
         setError('Please upload a photo first.');
         return false;
@@ -40,6 +40,7 @@ export function useAddCustomFrame() {
           sizeId: size.id,
           sizeLabel,
           orientation,
+          mat,
           crop: { x: Math.round(crop.x), y: Math.round(crop.y) },
           unitPrice: size.salePrice,
           listPrice: size.price,

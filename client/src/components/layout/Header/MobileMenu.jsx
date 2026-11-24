@@ -80,7 +80,7 @@ export function MobileMenu({ open, onClose }) {
           <img src="/images/hero/vinyl-dance.jpg" alt="" className={styles.featureImage} />
           <span>
             <strong>Frame your own photo</strong>
-            <span>Upload it, try all five sizes, then order.</span>
+            <span>Upload it, try all six sizes, then order.</span>
           </span>
         </Link>
 

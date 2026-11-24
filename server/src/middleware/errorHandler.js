@@ -23,6 +23,9 @@ const normalizeError = (err) => {
   if (err?.type === 'entity.parse.failed') return HttpError.badRequest('Request body is not valid JSON.');
   if (err?.type === 'entity.too.large') return new HttpError(413, 'Request body is too large.');
 
+  // PostgreSQL: a unique field already taken (two sign-ups with one email at the same moment, say).
+  if (err?.code === '23505') return HttpError.conflict('That already exists.');
+
   return null;
 };
 

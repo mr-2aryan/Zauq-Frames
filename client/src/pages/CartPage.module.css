@@ -211,6 +211,21 @@
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Landscape pieces (Heritage) lie on their side. */
+.miniLandscape {
+  width: 108px;
+  aspect-ratio: 4 / 3;
+}
+
+/* A product photo that already shows the frame: no second frame around it. */
+.miniPhoto {
+  aspect-ratio: 4 / 5;
+  border: 0;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
 .mini:nth-child(2) {
   z-index: 1;
 }

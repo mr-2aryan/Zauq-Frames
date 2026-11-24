@@ -59,7 +59,7 @@ export default function ShopPage() {
 
   const title = q ? `Results for “${q}”` : single ? single.name : 'Shop all frames';
   // The hero writes its own line for the whole shop; collections and searches get theirs.
-  const description = q ? 'Pieces matching your search. Every one comes framed, in five sizes.' : single?.description;
+  const description = q ? 'Pieces matching your search. Every one comes framed, in six sizes.' : single?.description;
   const { total, pages = 1, page: shownPage = page, items } = productsQuery.data ?? {};
   const first = (shownPage - 1) * PAGE_SIZE + 1;
   const last = Math.min(shownPage * PAGE_SIZE, total ?? 0);

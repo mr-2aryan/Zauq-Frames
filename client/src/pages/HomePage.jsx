@@ -1,9 +1,9 @@
-import { CategoryGrid, CustomTeaser, FeaturedProducts, FrameSizes, HomeHero, Testimonials } from '@/features/home';
+import { CategoryGrid, CustomTeaser, Experience, FeaturedProducts, FrameSizes, Testimonials } from '@/features/home';
 import { useCollections } from '@/features/products';
 
-/** / — hero, categories, featured pieces, custom frames, frame sizes and reviews. */
+/** / — the 3D opening and its "how it's made" story, then categories, featured pieces, custom frames, sizes and reviews. */
 export default function HomePage() {
-  // Shared by the hero wall, the category tiles and the featured-piece filters.
+  // Shared by the opening, the category tiles and the featured-piece filters.
   const collectionsQuery = useCollections();
 
   return (
@@ -13,7 +13,7 @@ export default function HomePage() {
         name="description"
         content="Islamic calligraphy, modern prints and custom photo frames — printed in high quality, framed by hand in Rawalpindi and delivered across Pakistan."
       />
-      <HomeHero collections={collectionsQuery.data} />
+      <Experience collections={collectionsQuery.data} />
       <CategoryGrid collectionsQuery={collectionsQuery} />
       <FeaturedProducts collections={collectionsQuery.data} />
       <CustomTeaser />

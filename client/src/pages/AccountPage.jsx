@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { PageHero } from '@/components/common';
+import { AccountPeek } from '@/components/illustrations';
 import { BagIcon, ChevronDownIcon, ClockIcon, TruckIcon } from '@/components/icons';
 import { Button, Container } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
@@ -12,7 +13,7 @@ import { resolveAssetUrl } from '@/services/apiClient';
 import { changePassword, getMyOrders, updateProfile } from '@/services/authApi';
 import forms from '@/styles/forms.module.css';
 import { cn } from '@/utils/cn';
-import { formatOrientation } from '@/utils/frames';
+import { formatOrientation, matSuffix } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './AccountPage.module.css';
 
@@ -160,7 +161,7 @@ function SignIn() {
         title={mode === 'signin' ? 'Welcome' : 'Create your'}
         titleLight={mode === 'signin' ? 'back.' : 'account.'}
         lead="Sign in to see every order and where it is, and to check out faster with your details saved."
-        media={card}
+        media={<AccountPeek>{card}</AccountPeek>}
       >
         <ul className={styles.benefits}>
           <li>
@@ -321,7 +322,8 @@ function Orders({ state }) {
                         <img src={item.image ?? resolveAssetUrl(item.photoUrl)} alt="" />
                         <span>
                           <strong>{item.name}</strong>
-                          {item.label} · {formatOrientation(item.orientation)} · × {item.quantity}
+                          {item.label} · {formatOrientation(item.orientation)}
+                          {matSuffix(item.mat)} · × {item.quantity}
                         </span>
                         <span>{formatPrice(item.lineTotal, order.currency)}</span>
                       </li>

@@ -1,0 +1,268 @@
+/* A printer with a receipt coming out of it, on one 12s turn (CYCLE_MS in TermsReceipt.jsx). */
+.scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 460px);
+  height: 560px;
+  container-type: inline-size;
+}
+
+.paused * {
+  animation-play-state: paused !important;
+}
+
+/* ---------- The printer ---------- */
+
+.printer {
+  position: relative;
+  z-index: 2;
+  width: 82%;
+  height: 92px;
+  border-radius: 22px 22px 14px 14px;
+  background: linear-gradient(180deg, #4a5728, #2c3417);
+  box-shadow:
+    0 18px 30px rgba(31, 37, 16, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12);
+}
+
+.brand {
+  position: absolute;
+  left: 26px;
+  top: 22px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.light {
+  position: absolute;
+  right: 26px;
+  top: 28px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #9fe07a;
+  box-shadow: 0 0 10px #9fe07a;
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.slot {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 14px;
+  height: 8px;
+  border-radius: 4px;
+  background: #11150a;
+}
+
+/* ---------- The paper ---------- */
+
+/* The paper shows only below the slot, as if it's being fed out. */
+.window {
+  position: relative;
+  width: 70%;
+  height: 470px;
+  margin-top: -20px;
+  overflow: hidden;
+}
+
+.paper {
+  position: relative;
+  padding: 26px 22px 34px;
+  background: #fffdf8;
+  box-shadow: 0 16px 30px rgba(31, 37, 16, 0.16);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  color: #24261e;
+  transform: translateY(-100%);
+  animation: feed 12s steps(26, end) both;
+}
+
+/* A torn, zigzag bottom edge. */
+.paper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  height: 10px;
+  background:
+    linear-gradient(135deg, #fffdf8 50%, transparent 50%) 0 0 / 14px 10px,
+    linear-gradient(225deg, #fffdf8 50%, transparent 50%) 0 0 / 14px 10px;
+}
+
+/* Fed out line by line, held while the stamp lands, then torn off and away. */
+@keyframes feed {
+  0% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+
+  62%,
+  86% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  96%,
+  100% {
+    transform: translateY(40px) rotate(4deg);
+    opacity: 0;
+  }
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-logo);
+  line-height: 1;
+}
+
+.logo strong {
+  font-size: 22px;
+  letter-spacing: 0.2em;
+}
+
+.logo span {
+  margin-top: 4px;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+}
+
+.heading {
+  margin-top: 12px;
+  font-size: 11px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.paper hr {
+  margin: 12px 0;
+  border: 0;
+  border-top: 1.5px dashed #bdb8a8;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(10.5px, 2.6cqi, 12.5px);
+  line-height: 1.35;
+}
+
+.lines li {
+  display: flex;
+  gap: 10px;
+}
+
+.lines b {
+  color: var(--color-primary);
+}
+
+.thanks {
+  font-size: 11px;
+  text-align: center;
+}
+
+.barcode {
+  display: block;
+  height: 34px;
+  margin: 12px auto 0;
+  width: 70%;
+  background: repeating-linear-gradient(90deg, #24261e 0 2px, transparent 2px 4px, #24261e 4px 5px, transparent 5px 8px, #24261e 8px 11px, transparent 11px 13px);
+}
+
+/* The stamp lands once everything is printed. */
+.stamp {
+  position: absolute;
+  right: 14px;
+  bottom: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border: 3px solid rgba(62, 74, 31, 0.85);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 4px #fffdf8, inset 0 0 0 5.5px rgba(62, 74, 31, 0.6);
+  color: rgba(62, 74, 31, 0.9);
+  font-family: var(--font-logo);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: rotate(-14deg) scale(1.8);
+  animation: stamp 12s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes stamp {
+  0%,
+  64% {
+    opacity: 0;
+    transform: rotate(-14deg) scale(1.8);
+  }
+
+  68% {
+    opacity: 1;
+    transform: rotate(-14deg) scale(0.92);
+  }
+
+  71%,
+  100% {
+    opacity: 1;
+    transform: rotate(-14deg) scale(1);
+  }
+}
+
+/* Reduced motion: the receipt, printed and stamped. */
+.still * {
+  animation: none !important;
+}
+
+.still .paper {
+  transform: none;
+}
+
+.still .stamp {
+  opacity: 1;
+  transform: rotate(-14deg);
+}
+
+@media (max-width: 600px) {
+  .scene {
+    height: 520px;
+  }
+
+  .window {
+    width: 84%;
+    height: 440px;
+  }
+
+  .paper {
+    padding: 20px 16px 28px;
+  }
+
+  .stamp {
+    width: 76px;
+    height: 76px;
+    font-size: 12px;
+  }
+}

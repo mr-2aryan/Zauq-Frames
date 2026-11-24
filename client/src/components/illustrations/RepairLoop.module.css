@@ -1,0 +1,806 @@
+/* A square scene; parts are placed in % of it. One 10s turn (CYCLE_MS in RepairLoop.jsx):
+   damaged (0–70%) → put right (70–78%) → as new (to 100%).
+   The marker rests at "Tell us" (22–30%), "Send photos" (48–56%) and
+   "We put it right" (76–100%), going round clockwise from the bottom left. */
+.scene {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+
+.loop {
+  position: absolute;
+  inset: 0;
+}
+
+.loop *,
+.loop *::before,
+.loop *::after {
+  animation-duration: 10s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.paused *,
+.paused *::before {
+  animation-play-state: paused !important;
+}
+
+/* ---------- The track, and how far round it is ---------- */
+
+.track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.track circle {
+  fill: none;
+}
+
+.rail {
+  stroke: rgba(62, 74, 31, 0.3);
+  stroke-width: 0.6;
+  stroke-dasharray: 1.4 2;
+}
+
+.progress {
+  stroke: var(--color-primary);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-dasharray: 0 100;
+  animation: progress 10s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+    opacity: 1;
+  }
+
+  22%,
+  30% {
+    stroke-dasharray: 33.3 100;
+  }
+
+  48%,
+  56% {
+    stroke-dasharray: 66.7 100;
+  }
+
+  76%,
+  90% {
+    stroke-dasharray: 100 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dasharray: 100 0;
+    opacity: 0;
+  }
+}
+
+/* The marker: a white-ringed olive dot with a soft pulse, above everything. */
+.marker {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  z-index: 6;
+  width: 0;
+  height: 0;
+  animation-name: orbit;
+}
+
+.marker::before,
+.marker::after {
+  content: '';
+  position: absolute;
+  left: 38cqi;
+  top: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.marker::before {
+  width: 36px;
+  height: 36px;
+  background: rgba(62, 74, 31, 0.25);
+  animation: pulse 1.4s ease-out infinite;
+}
+
+.marker::after {
+  width: 24px;
+  height: 24px;
+  border: 4px solid #ffffff;
+  background: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(31, 37, 16, 0.35);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(150deg);
+  }
+
+  22%,
+  30% {
+    transform: rotate(270deg);
+  }
+
+  48%,
+  56% {
+    transform: rotate(390deg);
+  }
+
+  76%,
+  100% {
+    transform: rotate(510deg);
+  }
+}
+
+/* ---------- The frame ---------- */
+
+.frame {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  z-index: 2;
+  width: 44%;
+  height: 55%;
+  transform: translate(-50%, -50%) rotate(-5deg);
+  animation-name: straighten;
+  filter: drop-shadow(0 24px 30px rgba(31, 37, 16, 0.25));
+}
+
+@keyframes straighten {
+  0%,
+  70% {
+    transform: translate(-50%, -50%) rotate(-5deg);
+  }
+
+  78%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+/* Kraft backing board, seen where the print's corner has folded over. */
+.backing,
+.art,
+.flapShadow {
+  position: absolute;
+  inset: 6.4% 8%;
+  width: 84%;
+  height: 87.2%;
+}
+
+.backing {
+  background: linear-gradient(135deg, #a07d55, #7f6142);
+}
+
+.art {
+  object-fit: cover;
+  clip-path: polygon(0 0, 78% 0, 100% 17%, 100% 100%, 0 100%);
+  animation-name: uncrease;
+}
+
+@keyframes uncrease {
+  0%,
+  70% {
+    clip-path: polygon(0 0, 78% 0, 100% 17%, 100% 100%, 0 100%);
+  }
+
+  78%,
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* The folded-over corner: the back of the paper, casting a little shadow. */
+.flapShadow {
+  filter: drop-shadow(-3px 4px 4px rgba(20, 16, 10, 0.4));
+}
+
+.flap {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(225deg, #fbf6ea 60%, #ddd3bd 90%);
+  clip-path: polygon(78% 0, 100% 17%, 78% 17%);
+  animation-name: unfold;
+}
+
+@keyframes unfold {
+  0%,
+  70% {
+    clip-path: polygon(78% 0, 100% 17%, 78% 17%);
+  }
+
+  78%,
+  100% {
+    clip-path: polygon(100% 0, 100% 0, 100% 0);
+  }
+}
+
+.moulding {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: #17190f;
+}
+
+/* The split corner (top right): the top rail lifts and the right rail leans out,
+   showing their bare broken ends, until they're closed up. */
+.barTop,
+.barRight {
+  transform-box: fill-box;
+}
+
+.barTop {
+  transform-origin: 0% 50%;
+  animation-name: bar-top;
+}
+
+.barRight {
+  transform-origin: 50% 100%;
+  animation-name: bar-right;
+}
+
+@keyframes bar-top {
+  0%,
+  70% {
+    transform: rotate(-5deg);
+  }
+
+  78%,
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes bar-right {
+  0%,
+  70% {
+    transform: rotate(4.5deg);
+  }
+
+  78%,
+  100% {
+    transform: none;
+  }
+}
+
+.raw {
+  fill: none;
+  stroke: #d8b47c;
+  stroke-width: 3;
+  stroke-linecap: round;
+  animation-name: raw;
+}
+
+@keyframes raw {
+  0%,
+  72% {
+    opacity: 1;
+  }
+
+  76%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The camera flash when photos are taken. */
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  animation-name: flash;
+}
+
+@keyframes flash {
+  0%,
+  32% {
+    opacity: 0;
+  }
+
+  33% {
+    opacity: 0.95;
+  }
+
+  36%,
+  39% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.95;
+  }
+
+  44%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A dashed ring round the damaged corner, pulsing until it's put right. */
+.ring {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 36%;
+  aspect-ratio: 1;
+  border: 3px dashed #c8643b;
+  border-radius: 50%;
+  background: rgba(200, 100, 59, 0.08);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation-name: ring;
+}
+
+@keyframes ring {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08) rotate(20deg);
+  }
+
+  16%,
+  26%,
+  36%,
+  46%,
+  56%,
+  66% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(60deg);
+  }
+
+  21%,
+  31%,
+  41%,
+  51%,
+  61% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(80deg);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(100deg);
+  }
+
+  76%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.4) rotate(120deg);
+  }
+}
+
+/* The warning (on the ring's edge) that turns to a tick. */
+.badge {
+  position: absolute;
+  left: calc(100% + 5.6cqi);
+  top: -5.6cqi;
+  z-index: 1;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 6px 14px rgba(31, 37, 16, 0.25);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  transform: translate(-50%, -50%);
+  animation-name: badge;
+}
+
+.badgeWarn,
+.badgeOk {
+  grid-area: 1 / 1;
+  place-self: center;
+}
+
+.badgeWarn {
+  animation-name: warn;
+}
+
+.badgeOk {
+  opacity: 0;
+  animation-name: ok;
+}
+
+@keyframes badge {
+  0%,
+  4% {
+    background: #c8643b;
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  10%,
+  74% {
+    background: #c8643b;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  78% {
+    background: var(--color-primary);
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+
+  84%,
+  100% {
+    background: var(--color-primary);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes warn {
+  0%,
+  74% {
+    opacity: 1;
+  }
+
+  76%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ok {
+  0%,
+  75% {
+    opacity: 0;
+  }
+
+  78%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Sparkles once it's put right. */
+.sparkle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #e8b33a;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  animation-name: sparkle;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+
+.sparkle:nth-of-type(1) {
+  left: -12%;
+  top: 12%;
+}
+
+.sparkle:nth-of-type(2) {
+  right: -12%;
+  top: 40%;
+}
+
+.sparkle:nth-of-type(3) {
+  left: 10%;
+  bottom: -8%;
+}
+
+.sparkle:nth-of-type(4) {
+  right: 8%;
+  top: -10%;
+}
+
+@keyframes sparkle {
+  0%,
+  77% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+
+  82% {
+    opacity: 1;
+    transform: scale(1.2) rotate(45deg);
+  }
+
+  94%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6) rotate(90deg);
+  }
+}
+
+/* ---------- The customer's message and the photos ---------- */
+
+.bubble {
+  position: absolute;
+  left: 3%;
+  top: 34%;
+  z-index: 4;
+  max-width: 30%;
+  padding: 9px 12px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--color-primary);
+  box-shadow: 0 10px 22px rgba(31, 37, 16, 0.22);
+  color: #ffffff;
+  font-size: clamp(11px, 2.6cqi, 13px);
+  font-weight: 700;
+  line-height: 1.3;
+  opacity: 0;
+  animation-name: bubble;
+}
+
+@keyframes bubble {
+  0%,
+  18% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+
+  23%,
+  44% {
+    opacity: 1;
+    transform: none;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Two photos of the damage fly off to "Send photos". */
+.snap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 12%;
+  height: 15%;
+  padding: 4px 4px 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 16px rgba(31, 37, 16, 0.25);
+  opacity: 0;
+  animation-name: snap;
+  animation-delay: calc(var(--i) * 0.5s);
+}
+
+.snap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes snap {
+  0%,
+  33% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+
+  36% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(-6deg);
+  }
+
+  44% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(250%, 200%) scale(0.6) rotate(8deg);
+  }
+
+  48%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(270%, 215%) scale(0.45) rotate(8deg);
+  }
+}
+
+/* ---------- The three steps ---------- */
+
+.station {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(31, 37, 16, 0.12);
+  font-size: clamp(11px, 2.8cqi, 14px);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.station b {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* Each just outside the track, by where the marker stops for it. */
+.tell {
+  left: 50%;
+  top: 5%;
+  transform: translate(-50%, -50%);
+}
+
+.photos {
+  right: 1%;
+  top: 85%;
+  transform: translateY(-50%);
+}
+
+.fix {
+  left: 1%;
+  top: 85%;
+  transform: translateY(-50%);
+}
+
+/* Each step lights up as the marker reaches it, and stays done. */
+.tell b {
+  animation-name: lit-1;
+}
+
+.photos b {
+  animation-name: lit-2;
+}
+
+.fix b {
+  animation-name: lit-3;
+}
+
+@keyframes lit-1 {
+  0%,
+  20% {
+    background: var(--color-tint);
+    color: var(--color-primary);
+  }
+
+  23%,
+  100% {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+}
+
+@keyframes lit-2 {
+  0%,
+  46% {
+    background: var(--color-tint);
+    color: var(--color-primary);
+  }
+
+  49%,
+  100% {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+}
+
+@keyframes lit-3 {
+  0%,
+  74% {
+    background: var(--color-tint);
+    color: var(--color-primary);
+  }
+
+  77%,
+  100% {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+}
+
+/* Reduced motion: the frame put right, every step done, the track full. */
+.still *,
+.still *::before {
+  animation: none !important;
+}
+
+.still .marker::before {
+  opacity: 0;
+}
+
+.still .progress {
+  stroke-dasharray: 100 0;
+}
+
+.still .marker {
+  transform: rotate(150deg);
+}
+
+.still .frame {
+  transform: translate(-50%, -50%);
+}
+
+.still .barTop,
+.still .barRight {
+  transform: none;
+}
+
+.still .art {
+  clip-path: none;
+}
+
+.still .badge {
+  background: var(--color-primary);
+}
+
+.still .flap,
+.still .raw,
+.still .ring,
+.still .badgeWarn,
+.still .bubble,
+.still .snap,
+.still .sparkle,
+.still .flash {
+  opacity: 0;
+}
+
+.still .badgeOk {
+  opacity: 1;
+}
+
+.still .station b {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .station {
+    gap: 6px;
+    padding: 4px 10px 4px 4px;
+  }
+
+  .station b {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .badge {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .marker::before {
+    width: 28px;
+    height: 28px;
+  }
+
+  .marker::after {
+    width: 18px;
+    height: 18px;
+    border-width: 3px;
+  }
+}

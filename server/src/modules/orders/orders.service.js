@@ -1,4 +1,5 @@
 import { HttpError } from '../../utils/HttpError.js';
+import { emailService } from '../email/email.service.js';
 import { framesService } from '../frames/frames.service.js';
 import { productsService } from '../products/products.service.js';
 import { uploadsService } from '../uploads/uploads.service.js';
@@ -39,7 +40,8 @@ const ITEM_DETAILS = {
   async product(item, index) {
     const product = await productsService.findBySlug(item.productId);
     if (!product) throw itemError(index, 'productId', 'That piece is no longer available.');
-    return { name: product.name, productId: product.slug, image: product.cardImage ?? product.images[0], orientation: product.orientation ?? 'portrait' };
+    // `art`: the flat artwork (small copy), for showing the piece in its frame — in emails, say.
+    return { name: product.name, productId: product.slug, image: product.cardImage ?? product.images[0], art: product.art, orientation: product.orientation ?? 'portrait' };
   },
 };
 
@@ -60,6 +62,8 @@ async function buildOrderLine(item, index, catalog) {
     label: `${width} × ${height} in`,
     orientation,
     finish: catalog.finish,
+    // The mat is free: it never changes the price.
+    mat: item.mat,
     quantity: item.quantity,
     listPrice: size.price,
     unitPrice: size.salePrice,
@@ -95,7 +99,23 @@ export const ordersService = {
       total: subtotal + catalog.deliveryFee,
     });
 
+    // The "thank you" email — sent in the background, so it never holds up (or fails) the order.
+    void emailService.sendOrderUpdate(order);
     return toPublicOrder(order);
+  },
+
+  /**
+   * Moves an order to a new status (recorded in its history) and emails the
+   * customer about it. For the studio's order management.
+   */
+  async updateStatus(id, status) {
+    if (!Object.values(ORDER_STATUS).includes(status)) throw HttpError.badRequest('Unknown order status.');
+    const order = await ordersRepository.findById(id);
+    if (!order) throw HttpError.notFound('We could not find an order with that number.');
+    if (order.status === status) return toPublicOrder(order);
+    const updated = await ordersRepository.update(id, { status, history: [...(order.history ?? []), { status, at: new Date().toISOString() }] });
+    void emailService.sendOrderUpdate(updated);
+    return toPublicOrder(updated);
   },
 
   /**
@@ -135,9 +155,8 @@ export const ordersService = {
 
   /** A signed-in customer's orders, newest first, with what the account page needs. */
   async listForCustomer(customerId) {
-    const orders = await ordersRepository.findAll();
+    const orders = await ordersRepository.findAllBy('customerId', customerId);
     return orders
-      .filter((order) => order.customerId === customerId)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .map(({ customer, customerId: _owner, ...order }) => ({
         ...order,

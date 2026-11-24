@@ -4,15 +4,14 @@ import { formatSizeLabel } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './SizePreview.module.css';
 
-/** On-screen height of the frame's long side: 10 in shows at MIN_PX, 36 in at MAX_PX (scaled on phones). */
+/** On-screen length of the frame's long side: 10 in shows at MIN_PX, the largest size at MAX_PX (scaled on phones). */
 const MIN_PX = 140;
 const MAX_PX = 320;
 const MIN_IN = 10;
-const MAX_IN = 36;
 
 /** Pixels per inch for a frame, so small sizes stay easy to see while bigger ones visibly grow. */
-function pixelsPerInch(longSide) {
-  const px = MIN_PX + ((longSide - MIN_IN) * (MAX_PX - MIN_PX)) / (MAX_IN - MIN_IN);
+function pixelsPerInch(longSide, maxIn) {
+  const px = MIN_PX + ((longSide - MIN_IN) * (MAX_PX - MIN_PX)) / Math.max(1, maxIn - MIN_IN);
   return px / longSide;
 }
 
@@ -41,6 +40,7 @@ export function SizePreview({ photoUrl, sizes, currency, sizeId, orientation, cr
   const hintId = useId();
   const size = sizes.find((option) => option.id === sizeId) ?? sizes[0];
   const [w, h] = orientation === 'landscape' ? [size.height, size.width] : [size.width, size.height];
+  const maxIn = Math.max(...sizes.map((option) => option.height));
 
   return (
     <div className={styles.preview}>
@@ -53,7 +53,7 @@ export function SizePreview({ photoUrl, sizes, currency, sizeId, orientation, cr
           aria-describedby={hintId}
           tabIndex={0}
           className={cn(styles.frame, crop.isDragging && styles.dragging)}
-          style={{ '--w': w, '--h': h, '--ppi': `${pixelsPerInch(Math.max(w, h))}px` }}
+          style={{ '--w': w, '--h': h, '--ppi': `${pixelsPerInch(Math.max(w, h), maxIn)}px` }}
           {...crop.handlers}
         >
           <img

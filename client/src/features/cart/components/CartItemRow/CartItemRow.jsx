@@ -3,7 +3,7 @@ import { TrashIcon } from '@/components/icons';
 import { Price, QuantityStepper } from '@/components/ui';
 import { productPath } from '@/config/routes';
 import { resolveAssetUrl } from '@/services/apiClient';
-import { formatOrientation } from '@/utils/frames';
+import { formatOrientation, matSuffix } from '@/utils/frames';
 import styles from './CartItemRow.module.css';
 
 /**
@@ -33,7 +33,7 @@ export function CartItemRow({ item, onQuantityChange, onRemove }) {
           <span className={styles.name}>{item.name}</span>
         )}
         <span className={styles.meta}>
-          {item.sizeLabel} · {formatOrientation(item.orientation)} · black frame
+          {item.sizeLabel} · {formatOrientation(item.orientation)} · black frame{matSuffix(item.mat)}
         </span>
         {!isProduct && item.photo?.name && <span className={styles.meta}>Your photo: {item.photo.name}</span>}
         <Price amount={item.unitPrice} listAmount={item.listPrice} currency={item.currency} size="sm" className={styles.unit} />

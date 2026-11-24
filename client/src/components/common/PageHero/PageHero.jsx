@@ -8,6 +8,11 @@ import styles from './PageHero.module.css';
  * (with an optional light second line), a lead paragraph, optional actions or
  * extra content, and an optional visual on the right — a photo, an
  * illustration or any node. The title is the page's <h1>.
+ *
+ * `room` turns the whole band into a room: a wall behind the text and a wooden
+ * floor across the bottom, on which the visual stands. The visual is then an
+ * SVG 520 wide whose floor line is 128 units above its bottom edge (see
+ * SizesWall and FaqWall).
  * @param {{
  *   breadcrumbs?: Array<{ label: string, to?: string }>,
  *   kicker?: string,
@@ -21,14 +26,15 @@ import styles from './PageHero.module.css';
  *   children?: import('react').ReactNode,
  *   id?: string,
  *   className?: string,
+ *   room?: boolean,
  * }} props
  */
-export function PageHero({ breadcrumbs, kicker, title, titleLight, lead, actions, media, tone = 'tint', size = 'md', children, id, className }) {
+export function PageHero({ breadcrumbs, kicker, title, titleLight, lead, actions, media, tone = 'tint', size = 'md', children, id, className, room = false }) {
   const fallbackId = useId();
   const headingId = id ?? fallbackId;
 
   return (
-    <section className={cn(styles.hero, styles[tone], styles[size], className)} aria-labelledby={headingId}>
+    <section className={cn(styles.hero, styles[tone], styles[size], room && styles.room, className)} aria-labelledby={headingId}>
       <Container className={cn(styles.inner, media && styles.withMedia)}>
         <div className={styles.copy}>
           {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}

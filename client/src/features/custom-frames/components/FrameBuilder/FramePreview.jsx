@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { ImageIcon } from '@/components/icons';
 import { Badge } from '@/components/ui';
 import { cn } from '@/utils/cn';
-import { formatOrientation, formatSizeLabel } from '@/utils/frames';
+import { formatOrientation, formatSizeLabel, matSuffix } from '@/utils/frames';
 import { getPreviewGeometry } from '../../utils/frameGeometry.js';
 import styles from './FramePreview.module.css';
 
@@ -13,12 +13,13 @@ import styles from './FramePreview.module.css';
  * @param {{
  *   size: { width: number, height: number },
  *   orientation: 'portrait' | 'landscape',
+ *   mat?: 'none' | 'white',
  *   photoUrl: string | null,
  *   crop: ReturnType<typeof import('../../hooks/useCropPosition.js').useCropPosition>,
  *   inputId: string,
  * }} props
  */
-export function FramePreview({ size, orientation, photoUrl, crop, inputId }) {
+export function FramePreview({ size, orientation, mat = 'none', photoUrl, crop, inputId }) {
   const hintId = useId();
   const { width, aspectRatio } = getPreviewGeometry(size, orientation);
   const frameStyle = { width: `${width}px`, aspectRatio };
@@ -27,6 +28,7 @@ export function FramePreview({ size, orientation, photoUrl, crop, inputId }) {
     <div className={styles.stage}>
       <Badge className={styles.caption}>
         Live preview · {formatSizeLabel(size, { unit: true })} · {formatOrientation(orientation)}
+        {matSuffix(mat)}
       </Badge>
 
       {photoUrl ? (
@@ -37,7 +39,7 @@ export function FramePreview({ size, orientation, photoUrl, crop, inputId }) {
             aria-label="Photo position in frame"
             aria-describedby={hintId}
             tabIndex={0}
-            className={cn(styles.frame, styles.filled, crop.isDragging && styles.dragging)}
+            className={cn(styles.frame, styles.filled, mat === 'white' && styles.matted, crop.isDragging && styles.dragging)}
             style={frameStyle}
             {...crop.handlers}
           >
@@ -54,7 +56,7 @@ export function FramePreview({ size, orientation, photoUrl, crop, inputId }) {
           </p>
         </>
       ) : (
-        <label htmlFor={inputId} className={cn(styles.frame, styles.empty)} style={frameStyle}>
+        <label htmlFor={inputId} className={cn(styles.frame, styles.empty, mat === 'white' && styles.matted)} style={frameStyle}>
           <ImageIcon size={38} />
           <span className={styles.emptyTitle}>Your photo goes here</span>
           <span className={styles.emptyText}>Upload to see it framed</span>

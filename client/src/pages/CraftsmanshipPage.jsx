@@ -1,7 +1,7 @@
 import { FaqList, PageHero } from '@/components/common';
 import { BoxIcon, BrushIcon, CheckCircleIcon, HangIcon, ImageIcon, RulerIcon, WhatsAppIcon } from '@/components/icons';
 import { CheckList, CtaBand, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
-import { PackageBox, Workbench } from '@/components/illustrations';
+import { FrameLayers, PackageBox } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -10,7 +10,7 @@ import { formatSizeCm, formatSizeLabel } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './CraftsmanshipPage.module.css';
 
-/** /craftsmanship — how a Zauq frame is made, step by step, and the five sizes. */
+/** /craftsmanship — how a Zauq frame is made, step by step, and the six sizes. */
 export default function CraftsmanshipPage() {
   const { catalog } = useCatalog();
 
@@ -40,7 +40,7 @@ export default function CraftsmanshipPage() {
             See the collection
           </Button>
         }
-        media={<Workbench />}
+        media={<FrameLayers />}
       />
 
       <InfoSection kicker="The process" title="Six steps from order to your door" lead={`About ${SITE.leadTime} in all. Here’s what happens in that time.`}>
@@ -62,7 +62,7 @@ export default function CraftsmanshipPage() {
           items={[
             { Icon: ImageIcon, title: 'High-quality print', text: 'Rich colour and crisp detail, whether it’s fine calligraphy, a sepia landmark or your own photograph.' },
             { Icon: BrushIcon, title: 'Framed by hand', text: 'Each frame is assembled by hand in our studio rather than on a production line.' },
-            { Icon: RulerIcon, title: 'Five true sizes', text: 'The same five sizes for every piece, from a desk-sized 8 × 10 to a statement 24 × 36 in.' },
+            { Icon: RulerIcon, title: 'Six true sizes', text: 'The same six sizes for every piece, from a desk-sized 8 × 10 to a statement 36 × 48 in.' },
             { Icon: HangIcon, title: 'Ready to hang', text: 'Hardware fitted before dispatch — no trip to the hardware shop.' },
             { Icon: CheckCircleIcon, title: 'Checked before it leaves', text: 'Every finished frame is looked over before it’s packed.' },
             { Icon: BoxIcon, title: 'Packed to travel', text: 'Wrapped and boxed so it survives the journey to any city in Pakistan.' },
@@ -70,7 +70,7 @@ export default function CraftsmanshipPage() {
         />
       </InfoSection>
 
-      <InfoSection kicker="Sizes" title="One price list for every piece" lead="Every artwork and every custom photo comes in all five sizes. Heritage pieces are drawn in landscape, so their sizes read the other way round — 24 × 18 instead of 18 × 24.">
+      <InfoSection kicker="Sizes" title="One price list for every piece" lead="Every artwork and every custom photo comes in all six sizes. Heritage pieces are drawn in landscape, so their sizes read the other way round — 24 × 18 instead of 18 × 24.">
         {catalog ? (
           <div className={styles.tableWrap} data-reveal="fade-up">
             <table className={styles.table}>
@@ -105,7 +105,7 @@ export default function CraftsmanshipPage() {
       <InfoSection tone="surface">
         <SplitBlock kicker="Custom frames" title="Your photo, treated like art" media={<PackageBox />} reverse>
           <p>
-            Upload a photo on our custom frames page, preview it in all five sizes and drag it to choose the crop. When your order comes in, we check the file before
+            Upload a photo on our custom frames page, preview it in all six sizes and drag it to choose the crop. When your order comes in, we check the file before
             anything is printed.
           </p>
           <CheckList

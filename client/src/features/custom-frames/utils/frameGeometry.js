@@ -1,9 +1,9 @@
 /** Pixels per inch for the "Sizes, to scale" drawing. */
-export const SCALE_PX_PER_INCH = 9;
+export const SCALE_PX_PER_INCH = 6;
 
 /** Live preview sizing: the long side is `BASE + inches × PER_INCH` pixels. */
 const PREVIEW_BASE_PX = 240;
-const PREVIEW_PX_PER_INCH = 7;
+const PREVIEW_PX_PER_INCH = 5.5;
 
 /**
  * Width (px) and CSS aspect-ratio of the live preview frame.

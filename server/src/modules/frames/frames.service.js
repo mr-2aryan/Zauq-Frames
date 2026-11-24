@@ -1,4 +1,4 @@
-import { CURRENCY, DEFAULT_FINISH, DELIVERY_FEE, FRAME_SIZES, ORIENTATIONS, PROMOTION } from './frames.catalog.js';
+import { CURRENCY, DEFAULT_FINISH, DELIVERY_FEE, FRAME_SIZES, MATS, ORIENTATIONS, PROMOTION } from './frames.catalog.js';
 
 /** List price that the promotion brings down to `salePrice`, in whole rupees. */
 const listPriceFor = (salePrice) => Math.round((salePrice * 100) / (100 - PROMOTION.percentOff));
@@ -17,6 +17,7 @@ export const framesService = {
       deliveryFee: DELIVERY_FEE,
       finish: DEFAULT_FINISH,
       orientations: ORIENTATIONS,
+      mats: MATS,
       promotion: PROMOTION,
       sizes: FRAME_SIZES.map(withPrices),
     };

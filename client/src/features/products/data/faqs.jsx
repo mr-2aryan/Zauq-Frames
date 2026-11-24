@@ -33,6 +33,10 @@ function commonFaqs({ finish, deliveryFee, currency }) {
       question: 'How long does delivery take?',
       answer: `About ${SITE.leadTime} from the day you order to your door: we make your frame first, then shipping takes ${SITE.shippingTime}. Delivery is a flat ${formatPrice(deliveryFee, currency)} to any city in Pakistan.`,
     },
+    mat: {
+      question: 'Can I add a mat?',
+      answer: 'Yes. Every frame comes edge to edge, or with a white mat (a white border between the frame and the picture) if you prefer. Choose it when you pick your size; the mat is free.',
+    },
     readyToHang: {
       question: 'Does it come ready to hang?',
       answer: `Yes. Every piece is printed in high quality, set in a ${finish} frame and arrives with the hanging hardware already fitted.`,
@@ -76,6 +80,7 @@ export function getProductFaqs(product, catalog) {
       answer: `${product.name} comes in ${sizes.length} sizes, ${sizeRange(sizes)} The Size guide tab above lists every size in centimetres with what it suits.`,
     },
     { question: `How much does ${product.name} cost?`, answer: pricesAnswer({ ...catalog, sizes }) },
+    common.mat,
     common.delivery,
     common.readyToHang,
     common.damaged,
@@ -97,6 +102,7 @@ export function getShopFaqs(catalog) {
       answer: `Every piece comes in all ${catalog.sizes.length} sizes, ${sizeRange(catalog.sizes)} Each product page has a size guide in centimetres.`,
     },
     { question: 'How much does a frame cost?', answer: pricesAnswer(catalog) },
+    common.mat,
     common.delivery,
     {
       question: 'Do I pay delivery on every frame?',

@@ -1,7 +1,9 @@
 import { Router } from 'express';
+import { env } from '../config/env.js';
 import { loadUser } from '../modules/auth/auth.middleware.js';
 import { accountRouter, authRouter } from '../modules/auth/auth.routes.js';
 import contactRoutes from '../modules/contact/contact.routes.js';
+import { emailPreviewRouter } from '../modules/email/email.preview.js';
 import framesRoutes from '../modules/frames/frames.routes.js';
 import healthRoutes from '../modules/health/health.routes.js';
 import newsletterRoutes from '../modules/newsletter/newsletter.routes.js';
@@ -25,5 +27,8 @@ apiRouter.use('/newsletter', newsletterRoutes);
 apiRouter.use('/contact', contactRoutes);
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/account', accountRouter);
+
+// Development only: the order emails, in the browser.
+if (!env.isProduction) apiRouter.use('/dev/emails', emailPreviewRouter);
 
 export default apiRouter;

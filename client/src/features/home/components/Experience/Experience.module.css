@@ -1,0 +1,959 @@
+/* The home page's opening: one light olive band, whichever piece is in front. */
+.experience {
+  --x-bg: #dde6c6;
+  --x-accent: var(--color-primary);
+  /* One "screen" of the experience: the viewport below the sticky header, less
+     the announcement bar, so the whole stage is in view when the page opens. */
+  --stage-h: max(540px, calc(100svh - var(--header-height) - var(--x-topbar)));
+  --x-topbar: 38px;
+  /* Centre of the frames in the hero, and of the single frame in the story. */
+  --cx: 71%;
+  --cy: calc(var(--stage-h) * 0.52);
+  --sx: 70%;
+  --sy: calc(var(--stage-h) * 0.5);
+  /* Centre line of the giant word: peeking over the top of the front frame. */
+  --wy: calc(var(--stage-h) * 0.19);
+  /* Size of the flat stand-in frame relative to the 3D one. */
+  --k: 1;
+  /* The story with the header away (see "bleed" below): how far the 3D canvas reaches
+     above and below the stage, how far the stage moves, and the extra length of the section. */
+  --x-bleed-top: 0px;
+  --x-bleed-bottom: 0px;
+  --x-shift: calc((var(--x-topbar) - var(--header-height)) / 2);
+  --x-tail: 0px;
+  position: relative;
+  background-color: var(--x-bg);
+  color: var(--color-ink);
+}
+
+/* Immersive: five screens tall; the stage sticks while the story plays out. */
+.immersive {
+  height: calc(var(--stage-h) * var(--screens, 7));
+}
+
+/* Bleed: once the header has slid away the story has the whole screen, so the 3D
+   canvas reaches past the stage. Here the stage sits in the middle of the screen and
+   the canvas reaches half the header and top bar above and below it. The section clips
+   whatever reaches past its own edges, and is a little longer (the tail) so the last
+   chapter has that room too. */
+@supports (overflow: clip) {
+  .immersive {
+    --x-bleed-top: calc((var(--header-height) + var(--x-topbar)) / 2);
+    --x-bleed-bottom: var(--x-bleed-top);
+    --x-tail: var(--x-bleed-bottom);
+    height: calc(var(--stage-h) * var(--screens, 7) + var(--x-tail));
+    overflow: clip;
+  }
+
+  .immersive .stage {
+    overflow: clip visible;
+  }
+}
+
+.stage {
+  position: sticky;
+  top: var(--header-height);
+  height: var(--stage-h);
+  overflow: hidden;
+  transition:
+    translate 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.35s ease;
+}
+
+/* The stage fades in once it has been laid out for where the page is (Experience.jsx
+   marks the section live), so a reload never flashes the wrong moment of the story. */
+.immersive .stage {
+  opacity: 0;
+}
+
+.immersive[data-live] .stage {
+  opacity: 1;
+}
+
+/* With the header away (the story), the stage sits in the middle of the screen:
+   it normally starts a header below the top and stops a top bar short of the bottom. */
+:global(html[data-immersed]) .stage {
+  translate: 0 var(--x-shift);
+}
+
+/* ---------- Behind the frames ---------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rings {
+  position: absolute;
+  left: var(--cx);
+  top: var(--cy);
+  width: min(130vh, 110vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, transparent 0 44px, rgba(255, 255, 255, 0.26) 44px 46px);
+  mask-image: radial-gradient(circle, #000 18%, transparent 68%);
+  transform: translate(-50%, -50%);
+  animation: breathe 9s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.word {
+  position: absolute;
+  left: var(--cx);
+  top: var(--wy);
+  font-size: clamp(72px, calc(66vw / var(--len)), 210px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.62);
+  transform: translate(-50%, -50%);
+  animation: word-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -35%) scale(0.94);
+  }
+}
+
+/* Giant outlined chapter numbers behind the frame. */
+.numbers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.number {
+  position: absolute;
+  left: var(--sx);
+  top: var(--sy);
+  font-size: clamp(200px, 34vw, 480px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(28, 31, 23, 0.16);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------- The frames ---------- */
+
+.canvas {
+  position: absolute;
+  top: calc(var(--x-bleed-top) * -1);
+  left: 0;
+  width: 100%;
+  height: calc(100% + var(--x-bleed-top) + var(--x-bleed-bottom));
+  opacity: 0;
+  touch-action: pan-y;
+  transition: opacity 0.45s ease;
+}
+
+.canvasReady {
+  opacity: 1;
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.posterHidden {
+  opacity: 0;
+}
+
+.posterFrame {
+  position: absolute;
+  left: var(--cx);
+  top: var(--cy);
+  display: block;
+  height: calc(var(--stage-h) * var(--h) * var(--k));
+  border: clamp(3px, 0.45vw, 6px) solid #17190f;
+  background: #17190f;
+  box-shadow: 0 30px 50px rgba(28, 31, 23, 0.25);
+  transform: translate(-50%, -50%);
+  animation: poster-in 0.6s ease both;
+}
+
+@keyframes poster-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.posterFrame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.posterCustom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  background: var(--color-tint);
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+/* ---------- Text layers ---------- */
+
+/* The hero copy and the chapters share one cell; only links and buttons take clicks. */
+.overlay {
+  position: relative;
+  display: grid;
+  align-items: center;
+  height: 100%;
+  pointer-events: none;
+}
+
+.overlay a,
+.overlay button {
+  pointer-events: auto;
+}
+
+.hero,
+.chapters {
+  grid-area: 1 / 1;
+}
+
+.hero {
+  max-width: min(600px, 44%);
+}
+
+/* The copy arrives line by line, quickly. */
+.hero > * {
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hero > :nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.hero > :nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.hero > :nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.hero > :nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--x-accent);
+}
+
+.display {
+  margin-top: 16px;
+  font-size: clamp(44px, 5.2vw, 80px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.light {
+  font-weight: 300;
+  color: var(--x-accent);
+}
+
+.lead {
+  max-width: 470px;
+  margin-top: 18px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+/* A few figures at a glance, on one frosted strip. */
+.stats {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
+  max-width: 100%;
+  margin: 22px 0 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 104px;
+  padding: 14px clamp(14px, 1.7vw, 26px);
+}
+
+.stat + .stat {
+  border-left: 1px solid rgba(28, 31, 23, 0.1);
+}
+
+/* The figure first, its label under it. */
+.stat dd {
+  order: -1;
+  margin: 0;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+
+.stat dt {
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 16px;
+  margin-top: 24px;
+}
+
+/* The main button, in olive. */
+.actions .cta {
+  background: var(--x-accent);
+  color: #ffffff;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.actions .cta:hover {
+  background: var(--x-accent);
+  filter: brightness(0.88);
+}
+
+/* Which piece is in front: a small card that opens it. */
+.now {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 7px 16px 7px 8px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* On hover it keeps its colour and gains an outline in the accent of the piece. */
+.now:hover {
+  box-shadow: inset 0 0 0 1.5px var(--x-accent);
+  color: var(--color-ink);
+}
+
+.nowThumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  height: 46px;
+  overflow: hidden;
+  border: 2px solid #17190f;
+  background: var(--color-tint);
+  color: var(--color-primary);
+  animation: now-in 0.5s ease both;
+}
+
+@keyframes now-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.nowThumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nowText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.nowLabel {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--x-accent);
+}
+
+.nowPiece {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.nowMeta {
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--color-ink-2);
+}
+
+.nowGo {
+  flex: none;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.now:hover .nowGo {
+  transform: translateX(3px);
+}
+
+.textLink {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--x-accent);
+}
+
+.textLink:hover {
+  color: var(--x-accent);
+}
+
+/* The story: one chapter at a time, in the same place. */
+.chapters {
+  position: relative;
+  display: grid;
+  max-width: min(580px, 44%);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every chapter is centred on the same line, beside the frame. */
+.chapter {
+  grid-area: 1 / 1;
+  align-self: center;
+  opacity: 0;
+}
+
+.chapterNo {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--x-accent);
+}
+
+.chapterNo span {
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.chapterTitle {
+  margin-top: 14px;
+  font-size: clamp(38px, 4.8vw, 76px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.chapterText {
+  margin-top: 18px;
+  font-size: clamp(18px, 1.5vw, 22px);
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+/* Quick facts under each chapter, with a tick in the piece's accent colour. */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.points li::before {
+  content: '';
+  flex: none;
+  width: 13px;
+  height: 7px;
+  margin: 0.36em 0 0 2px;
+  border: solid var(--x-accent);
+  border-width: 0 0 2.5px 2.5px;
+  transform: rotate(-45deg);
+}
+
+.chapterLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 700;
+  color: var(--x-accent);
+  text-decoration: none;
+}
+
+.chapterLink svg {
+  transition: transform 0.2s ease;
+}
+
+.chapterLink:hover {
+  color: var(--color-ink);
+}
+
+.chapterLink:hover svg {
+  transform: translateX(4px);
+}
+
+.chapter .actions {
+  margin-top: 20px;
+}
+
+/* ---------- Controls ---------- */
+
+.controls {
+  position: absolute;
+  left: var(--cx);
+  bottom: 26px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  translate: -50% 0;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.arrow:hover {
+  background: #ffffff;
+  transform: scale(1.06);
+}
+
+.flip {
+  rotate: 180deg;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: rgba(28, 31, 23, 0.22);
+  cursor: pointer;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.dotOn {
+  width: 30px;
+  background: var(--x-accent);
+}
+
+.hint {
+  position: absolute;
+  left: max(var(--gutter), calc((100% - var(--container-max)) / 2 + var(--gutter)));
+  bottom: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-2);
+  pointer-events: none;
+}
+
+.mouse {
+  position: relative;
+  width: 20px;
+  height: 30px;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+}
+
+.mouse::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 3px;
+  height: 6px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  animation: wheel 1.6s ease-in-out infinite;
+}
+
+@keyframes wheel {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+}
+
+/* ---------- Plain version: no 3D, nothing pinned ---------- */
+
+.static .stage {
+  position: relative;
+  top: auto;
+  height: auto;
+}
+
+.static .overlay {
+  display: block;
+  height: auto;
+}
+
+.static .hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--stage-h);
+}
+
+.static .hero > * {
+  flex: none;
+}
+
+.static .stats {
+  align-self: flex-start;
+}
+
+.static .chapters {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  max-width: none;
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+
+.static .chapter {
+  grid-area: auto;
+  opacity: 1;
+}
+
+.static .chapterTitle {
+  font-size: 26px;
+}
+
+.static .chapterText {
+  font-size: 15px;
+}
+
+.static .points {
+  font-size: 14px;
+}
+
+.static .numbers,
+.static .hint {
+  display: none;
+}
+
+.static .controls {
+  top: calc(var(--stage-h) - 70px);
+  bottom: auto;
+}
+
+/* ---------- Tablets and phones: copy on top, frames below ---------- */
+
+@media (max-width: 860px) {
+  .experience {
+    --cx: 50%;
+    --cy: calc(var(--stage-h) * 0.63);
+    --sx: 50%;
+    --sy: calc(var(--stage-h) * 0.33);
+    --wy: calc(var(--stage-h) * 0.875);
+    --k: 0.6;
+  }
+
+  /* The story here: the stage drops to the bottom of the screen, so its bottom edge is
+     the bottom of the screen and nothing below can cover the text; all the room it
+     gains is above it, for the frame. */
+  @supports (overflow: clip) {
+    .immersive {
+      --x-bleed-top: calc(var(--header-height) + var(--x-topbar));
+      --x-bleed-bottom: 0px;
+      --x-shift: var(--x-topbar);
+      --x-tail: var(--x-topbar);
+    }
+  }
+
+  .overlay {
+    align-items: start;
+  }
+
+  /* The copy stays short here, so the frames get the rest of the screen
+     (their place and size are measured from it — see Experience.jsx). */
+  .hero {
+    max-width: none;
+    padding-top: 18px;
+    text-align: center;
+  }
+
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+
+  .display {
+    margin-top: 8px;
+    font-size: clamp(36px, 10.5vw, 60px);
+  }
+
+  /* The three facts say it all here; tapping the front frame opens the piece. */
+  .lead,
+  .now {
+    display: none;
+  }
+
+  .stats {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    max-width: 440px;
+    margin: 12px auto 0;
+    border-radius: 14px;
+  }
+
+  .stat {
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 9px 6px;
+    text-align: center;
+  }
+
+  .stat dd {
+    font-size: 20px;
+  }
+
+  .stat dt {
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+  }
+
+  .actions {
+    justify-content: center;
+    margin-top: 14px;
+  }
+
+  .word {
+    font-size: calc(150vw / var(--len));
+  }
+
+  .chapters {
+    max-width: none;
+  }
+
+  /* The story here is a centred pair per chapter: the frame, then its text straight
+     under it. Where each text starts (--top) is measured: see Experience.jsx. */
+  .immersive .chapters {
+    align-self: stretch;
+  }
+
+  .immersive .chapter {
+    align-self: start;
+    text-align: center;
+    translate: 0 var(--top, 0px);
+  }
+
+  /* The facts stay a tidy column of ticks, centred as one block. */
+  .immersive .points {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  /* The last chapter keeps to its heading, a line of text and the two buttons here, so
+     the carton gets as much room as the frame had in the chapters before it. */
+  .immersive .chapter:last-child .points {
+    display: none;
+  }
+
+  .immersive .chapter .actions {
+    justify-content: center;
+  }
+
+  .static .chapters {
+    padding-bottom: 28px;
+  }
+
+  .static .chapter .actions {
+    justify-content: flex-start;
+  }
+
+  .chapterTitle {
+    margin-top: 8px;
+    font-size: clamp(27px, 7.6vw, 42px);
+  }
+
+  .chapterText {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .points {
+    margin-top: 14px;
+  }
+
+  .chapterLink {
+    margin-top: 14px;
+  }
+
+  /* The last chapter ends on its two buttons here; the extra link would crowd them. */
+  .chapter:last-child .chapterLink {
+    display: none;
+  }
+
+  .chapter .actions {
+    margin-top: 16px;
+  }
+
+  .number {
+    font-size: 62vw;
+  }
+
+  .controls {
+    bottom: 14px;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .static .hero {
+    justify-content: flex-start;
+  }
+
+  .static .chapters {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 0;
+  }
+}
+
+/* Short phones: the facts make way, so the frame keeps its room. */
+@media (max-width: 860px) and (max-height: 720px) {
+  .points {
+    display: none;
+  }
+
+  /* With the facts gone everywhere, the last chapter gives up its line of text to keep pace. */
+  .immersive .chapter:last-child .chapterText {
+    display: none;
+  }
+
+  .chapterLink {
+    margin-top: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rings,
+  .word,
+  .hero > *,
+  .nowThumb,
+  .posterFrame,
+  .mouse::after {
+    animation: none;
+  }
+
+  .stage,
+  .actions .cta {
+    transition: none;
+  }
+}

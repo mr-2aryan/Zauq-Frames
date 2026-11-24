@@ -62,7 +62,7 @@ export default function BlogPage() {
 
       <CtaBand
         title="Found your idea?"
-        text="Every piece comes in five sizes, framed and ready to hang."
+        text="Every piece comes in six sizes, framed and ready to hang."
         actions={
           <>
             <Button to={ROUTES.shop} variant="light" size="lg">

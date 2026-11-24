@@ -10,7 +10,7 @@ const WRONG_LOGIN = 'Incorrect email or password.';
 
 export const authService = {
   async register({ name, email, password, phone }) {
-    if (await usersRepository.findOne((user) => user.email === email)) {
+    if (await usersRepository.findOneBy('email', email)) {
       throw HttpError.conflict('An account with this email already exists. Sign in instead.');
     }
     const user = await usersRepository.create({ name, email, phone, address: '', city: '', passwordHash: await hashPassword(password) });
@@ -19,7 +19,7 @@ export const authService = {
 
   async login({ email, password }, ip) {
     if (isLockedOut(email, ip)) throw HttpError.tooManyRequests(LOCKED_MESSAGE);
-    const user = await usersRepository.findOne((entry) => entry.email === email);
+    const user = await usersRepository.findOneBy('email', email);
     // Hash even when there's no such user, so timing doesn't reveal which emails have accounts.
     const ok = user ? await verifyPassword(password, user.passwordHash) : (await hashPassword(password), false);
     if (!ok) {

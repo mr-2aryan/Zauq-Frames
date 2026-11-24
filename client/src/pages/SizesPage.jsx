@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { FaqList, PageHero } from '@/components/common';
 import { BagIcon, HangIcon, ImageIcon, OfficeIcon, RulerIcon, UserIcon } from '@/components/icons';
 import { CtaBand, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
+import { SizesWall } from '@/components/illustrations';
 import { Button, StatusMessage } from '@/components/ui';
 import { collectionPath, ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -12,61 +13,14 @@ import styles from './SizesPage.module.css';
 
 const PREMIUM_SIZE_ID = '18x24';
 
-/** The five frames drawn to scale (bottoms level) above a three-seater sofa. */
-function SizesToScaleArt({ sizes }) {
-  const scale = 4; // px per inch
-  const gap = 16;
-  const baseline = 200;
-  const widths = sizes.map((size) => size.width * scale);
-  const total = widths.reduce((sum, width) => sum + width, 0) + gap * (sizes.length - 1);
-  // Left edge of each frame, side by side with a gap, centred as a group.
-  const lefts = widths.reduce((acc, width, index) => [...acc, index === 0 ? (420 - total) / 2 : acc[index - 1] + widths[index - 1] + gap], []);
-  const sofaWidth = 84 * scale;
-  const sofaX = (420 - sofaWidth) / 2;
-
-  return (
-    <svg viewBox="0 0 420 390" role="img" aria-label="The five frame sizes drawn to scale above a three-seater sofa" className={styles.art}>
-      {sizes.map((size, index) => {
-        const w = widths[index];
-        const h = size.height * scale;
-        const frameX = lefts[index];
-        const premium = size.id === PREMIUM_SIZE_ID;
-        return (
-          <g key={size.id}>
-            <rect x={frameX + 2} y={baseline - h + 4} width={w} height={h} fill="rgba(28,31,23,0.12)" rx="1" />
-            <rect x={frameX} y={baseline - h} width={w} height={h} fill="#17190f" rx="1" />
-            <rect x={frameX + 3} y={baseline - h + 3} width={w - 6} height={h - 6} fill="#ffffff" />
-            <rect x={frameX + 7} y={baseline - h + 7} width={w - 14} height={h - 14} fill={premium ? '#3E4A1F' : '#DCE3C3'} />
-            <text x={frameX + w / 2} y={baseline + 16} textAnchor="middle" fontSize="10" fontWeight="800" fill={premium ? '#3E4A1F' : '#1C1F17'}>
-              {size.width}×{size.height}
-            </text>
-          </g>
-        );
-      })}
-      {/* An 84 in (213 cm) three-seater, for scale. */}
-      <g fill="#c9cfb3">
-        <rect x={sofaX} y="250" width={sofaWidth} height="62" rx="12" />
-        <rect x={sofaX - 6} y="276" width="34" height="82" rx="10" fill="#b9c0a1" />
-        <rect x={sofaX + sofaWidth - 28} y="276" width="34" height="82" rx="10" fill="#b9c0a1" />
-        <rect x={sofaX + 24} y="300" width={sofaWidth - 48} height="44" rx="8" fill="#d6dbc2" />
-        <rect x={sofaX + 8} y="352" width="8" height="16" rx="2" fill="#7c6a4f" />
-        <rect x={sofaX + sofaWidth - 16} y="352" width="8" height="16" rx="2" fill="#7c6a4f" />
-      </g>
-      <text x="210" y="386" textAnchor="middle" fontSize="10" fill="#5B5F51">
-        To scale above an 84 in (213 cm) three-seater sofa
-      </text>
-    </svg>
-  );
-}
-
-/** /sizes — the five frame sizes compared, with how to choose one. */
+/** /sizes — the frame sizes compared, with how to choose one. */
 export default function SizesPage() {
   const { status, catalog, error, reload } = useCatalog();
   const sizes = catalog?.sizes ?? [];
   const price = (size) => formatPrice(size.salePrice, catalog.currency);
 
   const faqs = [
-    { question: 'Does every piece come in every size?', answer: `Yes. Every artwork in the shop — and every custom photo frame — comes in all ${sizes.length || 'five'} sizes.` },
+    { question: 'Does every piece come in every size?', answer: `Yes. Every artwork in the shop — and every custom photo frame — comes in all ${sizes.length || 'six'} sizes.` },
     {
       question: 'Is the price the same for every design?',
       answer: 'Yes. The price depends only on the size you choose, so a calligraphy piece, a modern print and your own photo cost the same in the same size.',
@@ -89,7 +43,7 @@ export default function SizesPage() {
       <title>{`Frame sizes & prices | ${SITE.name}`}</title>
       <meta
         name="description"
-        content="Compare Zauq Frames' five sizes — 8 × 10 to 24 × 36 in — with centimetres, prices and how to choose the right size for your wall, room and furniture."
+        content="Compare Zauq Frames' six sizes — 8 × 10 to 36 × 48 in — with centimetres, prices and how to choose the right size for your wall, room and furniture."
       />
 
       <PageHero
@@ -97,12 +51,12 @@ export default function SizesPage() {
         kicker="Frame sizes"
         title={
           <>
-            Five sizes,
+            Six sizes,
             <br />
           </>
         }
         titleLight="one for every wall."
-        lead="Every piece in the shop — and every custom photo frame — comes in all five sizes, from a desk-sized 8 × 10 in to a 24 × 36 in statement piece. Here’s how they compare, and how to choose."
+        lead="Every piece in the shop — and every custom photo frame — comes in all six sizes, from a desk-sized 8 × 10 in to a 36 × 48 in centrepiece. Here’s how they compare, and how to choose."
         actions={
           <>
             <Button to={ROUTES.shop}>Shop all frames</Button>
@@ -111,7 +65,8 @@ export default function SizesPage() {
             </Button>
           </>
         }
-        media={sizes.length ? <SizesToScaleArt sizes={sizes} /> : null}
+        media={sizes.length ? <SizesWall bare sizes={sizes} premiumId={PREMIUM_SIZE_ID} /> : null}
+        room
       />
 
       {status !== 'success' ? (
@@ -120,7 +75,7 @@ export default function SizesPage() {
         </InfoSection>
       ) : (
         <>
-          <InfoSection kicker="At a glance" title="All five sizes and prices" lead={`One price list for every design. ${catalog.promotion.percentOff > 0 ? `Prices include ${catalog.promotion.label.toLowerCase()}.` : ''}`}>
+          <InfoSection kicker="At a glance" title="All six sizes and prices" lead={`One price list for every design. ${catalog.promotion.percentOff > 0 ? `Prices include ${catalog.promotion.label.toLowerCase()}.` : ''}`}>
             <div className={styles.tableWrap} data-reveal="fade-up">
               <table className={styles.table}>
                 <thead>
@@ -178,9 +133,9 @@ export default function SizesPage() {
             <FeatureGrid
               columns={3}
               items={[
-                { Icon: HangIcon, title: 'Living room', text: 'Above a sofa: one 24 × 36 in statement piece, or a row of two or three 18 × 24 in frames.' },
+                { Icon: HangIcon, title: 'Living room', text: 'Above a sofa: one 24 × 36 in statement piece, or a row of two or three 18 × 24 in frames. On a large, open wall, a single 36 × 48 in piece can anchor the whole room.' },
                 { Icon: UserIcon, title: 'Bedroom', text: 'Above the bed, a pair of 16 × 20 or 18 × 24 in frames; beside it, a 12 × 16 in on the bedside wall.' },
-                { Icon: OfficeIcon, title: 'Office & reception', text: 'An 18 × 24 or 24 × 36 in piece holds its own on a large wall — and reads from across the room.' },
+                { Icon: OfficeIcon, title: 'Office & reception', text: 'An 18 × 24, 24 × 36 or 36 × 48 in piece holds its own on a large wall — and reads from across the room.' },
                 { Icon: RulerIcon, title: 'Hallway & stairs', text: 'Narrow walls suit 12 × 16 in frames, or a run of 8 × 10 in pieces climbing with the stairs.' },
                 { Icon: BagIcon, title: 'Desks & shelves', text: 'The 8 × 10 in size leans on a shelf or sits on a desk without taking over.' },
                 { Icon: ImageIcon, title: 'Gallery walls', text: 'Mix sizes around one larger anchor — say a 24 × 36 in in the middle with 8 × 10 to 18 × 24 in pieces around it.' },
@@ -223,7 +178,7 @@ export default function SizesPage() {
 
       <CtaBand
         title="Found your size?"
-        text="Every piece comes in all five — choose one in the shop, or frame your own photo."
+        text="Every piece comes in all six — choose one in the shop, or frame your own photo."
         actions={
           <>
             <Button to={ROUTES.shop} variant="light">

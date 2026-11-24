@@ -5,17 +5,19 @@ import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
-import { cn } from '@/utils/cn';
 import { formatPrice } from '@/utils/formatPrice';
 import { HERO_HIGHLIGHTS, PHOTO_RULES } from '../../data/content.js';
 import { handOffPhoto } from '../../data/photoHandoff.js';
 import { usePhotoFile } from '../../hooks/usePhotoFile.js';
+import { PhotoToFrame } from './PhotoToFrame.jsx';
 import styles from './CustomHero.module.css';
 
 /**
  * The custom frames hero (the shared PageHero): the pitch on the left and, on
- * the right, an empty frame that takes the visitor's photo — drop or pick one
- * and it appears framed; "Choose a size" hands it to the builder below.
+ * the right, "from your phone to your wall" — a photo picked on a phone flies
+ * into a frame, which grows, gets a mat and goes in the cart. The frame takes
+ * the visitor's own photo too (drop or pick one); "Choose a size" then hands
+ * it to the builder below.
  */
 export function CustomHero() {
   const inputId = useId();
@@ -31,35 +33,31 @@ export function CustomHero() {
     document.getElementById('builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const frame = (
-    <div
-      className={styles.upload}
-      onDragOver={(event) => {
-        event.preventDefault();
-        setDragging(true);
-      }}
-      onDragLeave={() => setDragging(false)}
-      onDrop={(event) => {
-        event.preventDefault();
-        setDragging(false);
-        photo.select(event.dataTransfer.files?.[0]);
-      }}
-    >
-      <div className={cn(styles.frame, photo.previewUrl && styles.frameFilled)}>
-        <label htmlFor={inputId} className={cn(styles.slot, dragging && styles.slotDragging)}>
-          {photo.previewUrl ? (
-            <img key={photo.previewUrl} src={photo.previewUrl} alt="Your photo, framed" className={styles.yourPhoto} />
-          ) : (
-            <span className={styles.placeholder}>
-              <span className={styles.placeholderIcon} aria-hidden="true">
-                <UploadIcon size={26} />
-              </span>
-              <strong>Your photo here</strong>
-              <span>Drop it in, or tap to upload</span>
-            </span>
-          )}
-        </label>
-      </div>
+  const dropHandlers = {
+    onDragOver: (event) => {
+      event.preventDefault();
+      setDragging(true);
+    },
+    onDragLeave: () => setDragging(false),
+    onDrop: (event) => {
+      event.preventDefault();
+      setDragging(false);
+      photo.select(event.dataTransfer.files?.[0]);
+    },
+  };
+
+  // The demo: a photo goes from a phone into a frame on the wall. The frame also
+  // takes the visitor's own photo, which then hands on to the builder below.
+  const scene = (
+    <div className={styles.upload}>
+      <PhotoToFrame
+        inputId={inputId}
+        previewUrl={photo.previewUrl}
+        dragging={dragging}
+        dropHandlers={dropHandlers}
+        sizes={catalog?.sizes}
+        currency={catalog?.currency}
+      />
       <input
         ref={inputRef}
         id={inputId}
@@ -114,7 +112,7 @@ export function CustomHero() {
           </Button>
         </>
       }
-      media={frame}
+      media={scene}
     >
       <ul className={styles.highlights}>
         {HERO_HIGHLIGHTS.map((item) => (

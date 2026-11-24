@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { FaqList, PageHero } from '@/components/common';
 import { ArchIcon, BrushIcon, CheckCircleIcon, HangIcon, ImageIcon, PaletteIcon, PenNibIcon, ShapesIcon, WhatsAppIcon } from '@/components/icons';
 import { CtaBand, FactCards, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
-import { FramedWall, Workbench } from '@/components/illustrations';
+import { FramingBench, Workbench } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { collectionPath, ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -38,7 +38,7 @@ export default function AboutPage() {
       question: 'Can I frame my own photo?',
       answer: (
         <>
-          Yes. Upload it on <Link to={ROUTES.customFrames}>Custom frames</Link>, see it framed in all five sizes and order it like any other piece.
+          Yes. Upload it on <Link to={ROUTES.customFrames}>Custom frames</Link>, see it framed in all six sizes and order it like any other piece.
         </>
       ),
     },
@@ -57,7 +57,7 @@ export default function AboutPage() {
         lead={`Zauq means taste. We started Zauq Frames in ${SITE.address} in ${SITE.foundedYear} to make beautiful, ready-to-hang framed art simple to order from anywhere in the country.`}
         actions={
           <>
-            <Button to={ROUTES.shop} size="lg">
+            <Button to={ROUTES.shop} variant="light" size="lg">
               Shop the collection
             </Button>
             <Button to={ROUTES.customFrames} variant="secondary" size="lg">
@@ -65,14 +65,16 @@ export default function AboutPage() {
             </Button>
           </>
         }
-        media={<FramedWall />}
+        media={<FramingBench bare />}
+        tone="dark"
+        className={styles.bench}
       />
 
       <InfoSection kicker="At a glance" title="A small studio with a simple promise">
         <FactCards
           items={[
             { value: SITE.foundedYear, label: 'Founded', note: `In ${SITE.address}` },
-            { value: '5 sizes', label: 'For every piece', note: '8 × 10 up to 24 × 36 in' },
+            { value: '6 sizes', label: 'For every piece', note: '8 × 10 up to 36 × 48 in' },
             { value: deliveryFee ?? 'Flat fee', label: 'Delivery per order', note: 'To any city in Pakistan' },
             { value: SITE.leadTime, label: 'Order to door', note: `${SITE.shippingTime} of it with the courier` },
           ]}
@@ -86,7 +88,7 @@ export default function AboutPage() {
             want every frame to bring into a home.
           </p>
           <p>
-            We keep things deliberately simple. Every artwork is offered in the same five sizes, from a small 8 × 10 for a desk or shelf to a statement 24 × 36 for a large
+            We keep things deliberately simple. Every artwork is offered in the same six sizes, from a small 8 × 10 for a desk or shelf to a statement 36 × 48 for a large
             wall, each in a black frame and{fromPrice ? ` starting from ${fromPrice}` : ''}. One clear price list, no add-ons and no guesswork.
           </p>
           <p>

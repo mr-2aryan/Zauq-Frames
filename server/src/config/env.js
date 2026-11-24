@@ -29,4 +29,26 @@ export const env = Object.freeze({
   uploadDir: path.resolve(SERVER_ROOT, process.env.UPLOAD_DIR ?? 'uploads'),
   maxUploadBytes: toInt(process.env.MAX_UPLOAD_MB, 20) * 1024 * 1024,
   clientDistDir: path.resolve(SERVER_ROOT, '..', 'client', 'dist'),
+  /** PostgreSQL connection string; empty = keep data in memory (development only). Never log it. */
+  databaseUrl: process.env.DATABASE_URL?.trim() ?? '',
+  /** Use TLS to the database (for a hosted one, such as Amazon RDS). */
+  databaseSsl: process.env.DATABASE_SSL === 'true',
+  /** The shop's address on the web, for links and images in emails (e.g. https://zauqframes.com). */
+  publicUrl: (process.env.PUBLIC_URL?.trim() || toList(process.env.CLIENT_ORIGIN, 'http://localhost:5173')[0]).replace(/\/+$/, ''),
+  /**
+   * Sending email (order emails). Without SMTP_HOST, emails are saved as HTML
+   * files in server/outbox/ instead (development). Never log SMTP_PASS.
+   */
+  mail: Object.freeze({
+    host: process.env.SMTP_HOST?.trim() ?? '',
+    port: toInt(process.env.SMTP_PORT, 587),
+    secure: process.env.SMTP_SECURE === 'true',
+    user: process.env.SMTP_USER?.trim() ?? '',
+    pass: process.env.SMTP_PASS ?? '',
+    from: process.env.MAIL_FROM?.trim() || 'Zauq Frames <zauqframes.store@gmail.com>',
+    replyTo: process.env.MAIL_REPLY_TO?.trim() || 'zauqframes.store@gmail.com',
+    /** Optional: the studio's own address, to get a copy of every order email. */
+    bcc: process.env.MAIL_BCC?.trim() ?? '',
+  }),
+  outboxDir: path.resolve(SERVER_ROOT, 'outbox'),
 });

@@ -9,13 +9,16 @@ import styles from './SizePicker.module.css';
  */
 export function SizePicker({ sizes, selectedId, currency, onSelect }) {
   return (
-    <div className={styles.grid}>
-      {sizes.map((size) => (
-        <Chip key={size.id} shape="tile" selected={size.id === selectedId} onClick={() => onSelect(size.id)}>
-          <span className={styles.label}>{formatSizeLabel(size)}</span>
-          <span className={styles.price}>{formatPrice(size.salePrice, currency)}</span>
-        </Chip>
-      ))}
-    </div>
+    <>
+      <span className={styles.name}>Size</span>
+      <div className={styles.grid}>
+        {sizes.map((size) => (
+          <Chip key={size.id} shape="tile" selected={size.id === selectedId} onClick={() => onSelect(size.id)}>
+            <span className={styles.label}>{formatSizeLabel(size)}</span>
+            <span className={styles.price}>{formatPrice(size.salePrice, currency)}</span>
+          </Chip>
+        ))}
+      </div>
+    </>
   );
 }

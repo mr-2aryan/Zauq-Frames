@@ -174,11 +174,25 @@
   accent-color: var(--color-primary);
 }
 
-/* Shipping and payment: one bordered group of rows, the chosen one tinted. */
+/* Shipping and payment: one outlined group of rows, the chosen one tinted. The
+   outline is a ring rather than a border, so the chosen row's own olive ring can
+   sit exactly on top of it (Shopify-style) instead of showing as a second line. */
 .group {
-  overflow: hidden;
-  border: 1px solid #d6d6d0;
   border-radius: 10px;
+  box-shadow: 0 0 0 1px #d6d6d0;
+}
+
+/* Rows at the corners take the group's rounded corners. */
+.group > :first-child,
+.group > :first-child > .choice {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.group > :last-child,
+.group > :last-child > :last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .payment + .payment {
@@ -196,8 +210,10 @@
 }
 
 .choiceOn {
+  position: relative;
+  z-index: 1;
   background: var(--color-tint);
-  box-shadow: inset 0 0 0 1px var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
   cursor: default;
 }
 

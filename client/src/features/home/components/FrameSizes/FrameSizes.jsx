@@ -2,6 +2,7 @@ import { useId } from 'react';
 import { Badge, Container, StatusMessage } from '@/components/ui';
 import { useCatalog } from '@/context/catalog/useCatalog';
 import { cn } from '@/utils/cn';
+import { countWord } from '@/utils/countWord';
 import { formatSizeCm, formatSizeLabel } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './FrameSizes.module.css';
@@ -11,7 +12,7 @@ const PREMIUM_SIZE_ID = '18x24';
 /** One artwork in every frame, so only the size changes from card to card. */
 const SAMPLE_ART = '/images/hero/vinyl-dance.jpg';
 
-/** "Five frame sizes": a full-width dark band with a card per size — the same piece framed to scale, then its price. */
+/** "Frame sizes": a full-width dark band with a card per size — the same piece framed to scale, then its price. */
 export function FrameSizes() {
   const headingId = useId();
   const { status, catalog, error, reload } = useCatalog();
@@ -24,13 +25,20 @@ export function FrameSizes() {
           <h2 id={headingId} className={styles.title}>
             {catalog ? `${catalog.sizes.length} frame sizes, one price list` : 'Frame sizes'}
           </h2>
-          <p className={styles.description}>Every piece and every custom frame comes in all five. The frames below are drawn to scale against one another.</p>
+          <p className={styles.description}>
+            Every piece and every custom frame comes in all {catalog ? countWord(catalog.sizes.length) : 'of them'}. The frames below are drawn to scale against one
+            another.
+          </p>
         </header>
 
         {status !== 'success' ? (
           <StatusMessage status={status} message={status === 'loading' ? 'Loading sizes…' : error?.message} onRetry={reload} />
         ) : (
-          <ul className={styles.cards}>
+          <ul
+            className={styles.cards}
+            // The largest frame sets the scale, so every card fits it.
+            style={{ '--maxw': Math.max(...catalog.sizes.map((size) => size.width)), '--maxh': Math.max(...catalog.sizes.map((size) => size.height)) }}
+          >
             {catalog.sizes.map((size, index) => {
               const premium = size.id === PREMIUM_SIZE_ID;
               return (

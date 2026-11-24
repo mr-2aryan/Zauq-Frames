@@ -37,6 +37,8 @@ const toSummary = (product, price) => ({
   summary: product.summary,
   orientation: product.orientation ?? 'portrait',
   image: product.cardImage ?? product.images[0],
+  // A small picture of the artwork on its own, for thumbnails (null if there's none).
+  art: product.art ?? null,
   featured: product.featured,
   badge: product.badge,
   ...price,

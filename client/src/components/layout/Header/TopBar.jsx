@@ -4,6 +4,7 @@ import { Container } from '@/components/ui';
 import { UTILITY_NAV } from '@/config/navigation';
 import { SITE } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
+import { cn } from '@/utils/cn';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './TopBar.module.css';
 
@@ -26,9 +27,19 @@ export function TopBar() {
           {SITE.phone.display}
         </a>
 
-        <p className={styles.message}>
-          <SparkleIcon size={11} className={styles.sparkle} />
-          {messages.join('  ·  ')}
+        {/* Side by side where there is room; on a phone the two take turns on one line. */}
+        <p className={cn(styles.message, messages.length === 2 && styles.rotating)}>
+          {messages.map((message, index) => (
+            <span key={message} className={styles.item} style={{ '--i': index }}>
+              <SparkleIcon size={11} className={styles.sparkle} />
+              {index > 0 && (
+                <span className={styles.dot} aria-hidden="true">
+                  ·
+                </span>
+              )}
+              {message}
+            </span>
+          ))}
         </p>
 
         <ul className={styles.links}>

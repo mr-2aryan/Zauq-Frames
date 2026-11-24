@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { PageHero } from '@/components/common';
 import { WhatsAppIcon } from '@/components/icons';
 import { CtaBand, LegalDocument } from '@/components/info';
-import { DocumentIllustration } from '@/components/illustrations';
+import { TermsReceipt } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -187,7 +187,7 @@ export default function TermsPage() {
         titleLight="& conditions."
         lead="The plain-language terms for ordering from Zauq Frames — how orders, payment, delivery and custom frames work."
         size="sm"
-        media={<DocumentIllustration />}
+        media={<TermsReceipt leadTime={SITE.leadTime} deliveryFee={catalog ? fee : null} />}
       />
 
       <LegalDocument

@@ -1,4 +1,4 @@
-import { createMemoryRepository } from '../../lib/createMemoryRepository.js';
+import { createRepository } from '../../lib/createRepository.js';
 
-/** Product reviews. In memory until a database is chosen (see lib/createMemoryRepository.js). */
-export const reviewsRepository = createMemoryRepository();
+/** Product reviews. */
+export const reviewsRepository = createRepository('reviews');

@@ -1,0 +1,323 @@
+/* The refund policy as a metro map, drawn straight onto the hero (no card).
+   Two layers: the map (lines draw in once), and the journey on top (made
+   afresh for each 8s run — CYCLE_MS in RefundMap.jsx). */
+.scene {
+  position: relative;
+  width: min(100%, 600px);
+}
+
+.map,
+.journey {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: inherit;
+  overflow: visible;
+}
+
+.journey {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.paused * {
+  animation-play-state: paused !important;
+}
+
+/* ---------- The faint street map behind ---------- */
+
+.streets {
+  fill: none;
+}
+
+.river {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 30;
+  stroke-linecap: round;
+}
+
+.park {
+  fill: rgba(143, 163, 92, 0.14);
+}
+
+.grid {
+  stroke: rgba(62, 74, 31, 0.07);
+  stroke-width: 6;
+}
+
+/* ---------- The lines ---------- */
+
+.lineMain,
+.linePay,
+.spur,
+.legendMain,
+.legendPay,
+.legendSpur,
+.trail {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lineMain,
+.legendMain {
+  stroke: var(--color-primary);
+  stroke-width: 10;
+}
+
+.linePay,
+.legendPay {
+  stroke: #c8643b;
+  stroke-width: 10;
+}
+
+.spur,
+.legendSpur {
+  stroke: #b2b5a6;
+  stroke-width: 6;
+  stroke-dasharray: 2 10;
+}
+
+/* Drawn in once, when the map first shows (pathLength = 1). */
+.draw {
+  stroke-dasharray: 1 1;
+  animation: draw 1.1s cubic-bezier(0.45, 0, 0.25, 1) 0.15s backwards;
+}
+
+.drawLate {
+  animation-delay: 0.9s;
+  animation-duration: 0.7s;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fadeIn {
+  animation: fade-in 0.6s ease 1.2s backwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- Stations ---------- */
+
+.station,
+.end {
+  fill: #ffffff;
+  stroke: #17190f;
+  stroke-width: 4;
+}
+
+/* "We agree the fix": where the line divides. */
+.interchange {
+  stroke-width: 5;
+  fill: #eef1e2;
+}
+
+.end {
+  stroke: var(--color-primary);
+  stroke-width: 5;
+}
+
+.endPay {
+  stroke: #c8643b;
+}
+
+/* Each station pops in after its line has drawn. */
+.pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) calc(0.5s + var(--i) * 0.12s) backwards;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+.terminus circle {
+  fill: #ffffff;
+  stroke: #b2b5a6;
+  stroke-width: 4;
+}
+
+.terminus path {
+  stroke: #9a9d8f;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.label {
+  fill: var(--color-ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sub {
+  fill: var(--color-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* ---------- The journey ---------- */
+
+/* The lit track: a light core along the line, behind the train. */
+.trail {
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 3.5;
+  stroke-dasharray: 1 1;
+}
+
+/* A station lit: an olive dot that pops in as the train arrives. */
+.lit {
+  fill: var(--color-primary);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lit 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) var(--at) both;
+}
+
+@keyframes lit {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The end of the line: a ripple, then the stop fills with a tick or "Rs". */
+.ripple {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: ripple 1s ease-out var(--at) both;
+}
+
+.ripplePay {
+  stroke: #c8643b;
+}
+
+@keyframes ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+.arrived {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: arrived 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) var(--at) both;
+}
+
+.arrived circle {
+  fill: var(--color-primary);
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+
+.arrived .arrivedPay {
+  fill: #c8643b;
+}
+
+.arrived path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.arrived text {
+  fill: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+@keyframes arrived {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The train: once it reaches its stop it fades away, so the stop's tick shows. */
+.train {
+  animation: train 8s linear both;
+}
+
+@keyframes train {
+  0%,
+  88% {
+    opacity: 1;
+  }
+
+  93%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.carriage {
+  fill: #2c3417;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.window {
+  fill: #cfe0e8;
+}
+
+.cargo {
+  fill: #e8b33a;
+}
+
+.cargoArt {
+  fill: #c8643b;
+}
+
+.beam {
+  fill: rgba(255, 244, 201, 0.55);
+  animation: lamp 0.8s ease-in-out infinite;
+}
+
+.lamp {
+  fill: #fff4c9;
+  animation: lamp 0.8s ease-in-out infinite;
+}
+
+@keyframes lamp {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Reduced motion: the map as it is, no journey. */
+.still * {
+  animation: none !important;
+}

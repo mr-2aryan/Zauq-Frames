@@ -8,7 +8,7 @@ import { cn } from '@/utils/cn';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './ShopHero.module.css';
 
-const art = (slug, name, image = `/images/products/${slug}-flat.jpg`) => ({ slug, name, image });
+const art = (slug, name, image = `/images/art/${slug}.jpg`) => ({ slug, name, image });
 
 /**
  * The three pieces fanned out on the right, left to right (the middle one is
@@ -88,7 +88,7 @@ export function ShopHero({ headingId, title, total, description, breadcrumbs, co
           <p className={styles.lead} data-reveal="fade-up" style={{ '--reveal-delay': '80ms' }}>
             {description ?? (
               <>
-                Calligraphy, modern prints and pop culture — every piece printed, framed by hand and offered in five sizes
+                Calligraphy, modern prints and pop culture — every piece printed, framed by hand and offered in six sizes
                 {fromPrice && (
                   <>
                     , from <strong>{fromPrice}</strong>

@@ -31,17 +31,34 @@
 
 .message {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 2px 12px;
   margin: 0;
   font-weight: 600;
   text-align: center;
-  white-space: pre-wrap;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sparkle {
   flex: none;
   color: var(--color-sage);
+}
+
+/* Side by side, only the first carries the sparkle; the rest follow a dot. */
+.item + .item .sparkle {
+  display: none;
+}
+
+.dot {
+  margin-right: 4px;
+  opacity: 0.6;
 }
 
 .links {
@@ -64,5 +81,67 @@
   .contact,
   .links {
     display: none;
+  }
+}
+
+/* Phones: the bar stays one line. Two messages share it and take turns. */
+@media (max-width: 640px) {
+  .rotating {
+    display: grid;
+    justify-items: center;
+  }
+
+  .rotating .item {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+    animation: turn 9s infinite both;
+    animation-delay: calc(var(--i) * 4.5s);
+  }
+
+  .rotating .item + .item .sparkle {
+    display: block;
+  }
+
+  .rotating .dot {
+    display: none;
+  }
+}
+
+/* Each message holds the line for half the cycle: up into place, then up and away. */
+@keyframes turn {
+  0% {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+
+  6%,
+  44% {
+    opacity: 1;
+    transform: none;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes turn-fade {
+  0%,
+  50%,
+  100% {
+    opacity: 0;
+  }
+
+  6%,
+  44% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotating .item {
+    animation-name: turn-fade;
   }
 }

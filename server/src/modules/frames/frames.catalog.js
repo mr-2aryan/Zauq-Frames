@@ -8,6 +8,8 @@ export const CURRENCY = 'PKR';
 export const DELIVERY_FEE = 200;
 export const DEFAULT_FINISH = 'black';
 export const ORIENTATIONS = Object.freeze(['portrait', 'landscape']);
+/** A white mat (border between the frame and the picture) on request, at no extra cost. 'none' = edge to edge. */
+export const MATS = Object.freeze(['none', 'white']);
 
 /**
  * Site-wide promotion, applied to every frame (collection pieces and custom
@@ -28,5 +30,6 @@ export const FRAME_SIZES = Object.freeze(
     { id: '16x20', width: 16, height: 20, salePrice: 2200, description: 'Balanced and versatile for modern interiors.' },
     { id: '18x24', width: 18, height: 24, salePrice: 2500, description: 'The premium statement size for feature walls.' },
     { id: '24x36', width: 24, height: 36, salePrice: 4000, description: 'Bold artwork and spacious walls.' },
+    { id: '36x48', width: 36, height: 48, salePrice: 8500, description: 'Our largest: a true centrepiece for big walls and open living spaces.' },
   ].map((size) => Object.freeze(size)),
 );

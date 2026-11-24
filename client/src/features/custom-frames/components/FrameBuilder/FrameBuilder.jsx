@@ -6,6 +6,7 @@ import { usePhotoFile } from '../../hooks/usePhotoFile.js';
 import { BuilderStep } from './BuilderStep.jsx';
 import { FramePreview } from './FramePreview.jsx';
 import { OrderSummary } from './OrderSummary.jsx';
+import { MatToggle } from './MatToggle.jsx';
 import { OrientationToggle } from './OrientationToggle.jsx';
 import { PhotoDropzone } from './PhotoDropzone.jsx';
 import { SizePicker } from './SizePicker.jsx';
@@ -27,6 +28,7 @@ export function FrameBuilder({ catalog }) {
     return handoff && sizes.some((option) => option.id === handoff.sizeId) ? handoff.sizeId : sizes[0]?.id;
   });
   const [orientation, setOrientation] = useState(() => peekHandedOffPhoto()?.orientation ?? orientations[0] ?? 'portrait');
+  const [mat, setMat] = useState('none');
   const photo = usePhotoFile();
   const crop = useCropPosition(photo.previewUrl);
   const { addCustomFrame, isSubmitting, error: orderError, clearError } = useAddCustomFrame();
@@ -62,20 +64,21 @@ export function FrameBuilder({ catalog }) {
     if (photo.select(file)) clearError();
   };
 
-  const handleAddToCart = () => addCustomFrame({ file: photo.file, size, orientation, crop: crop.position, currency });
+  const handleAddToCart = () => addCustomFrame({ file: photo.file, size, orientation, mat, crop: crop.position, currency });
 
   return (
     <div className={styles.workspace}>
-      <FramePreview size={size} orientation={orientation} photoUrl={photo.previewUrl} crop={crop} inputId={inputId} />
+      <FramePreview size={size} orientation={orientation} mat={mat} photoUrl={photo.previewUrl} crop={crop} inputId={inputId} />
 
       <div className={styles.controls}>
         <BuilderStep number={1} title="Upload your photo">
           <PhotoDropzone inputId={inputId} fileName={photo.file?.name} error={photo.error} onSelect={handleSelectPhoto} onRemove={photo.clear} />
         </BuilderStep>
 
-        <BuilderStep number={2} title="Choose size & orientation" as="fieldset">
+        <BuilderStep number={2} title="Choose size, orientation & mat" as="fieldset">
           <SizePicker sizes={sizes} selectedId={size.id} currency={currency} onSelect={setSizeId} />
           <OrientationToggle options={orientations} value={orientation} onChange={setOrientation} />
+          <MatToggle options={catalog.mats ?? ['none', 'white']} value={mat} onChange={setMat} />
         </BuilderStep>
 
         <BuilderStep number={3} title="Add to cart">
@@ -83,6 +86,7 @@ export function FrameBuilder({ catalog }) {
             size={size}
             currency={currency}
             finish={finish}
+            mat={mat}
             percentOff={promotion.percentOff}
             isSubmitting={isSubmitting}
             error={orderError}

@@ -13,6 +13,9 @@ dist-ssr/
 # Customer uploads (server/uploads)
 server/uploads/
 
+# Emails saved in development instead of being sent (server/outbox)
+server/outbox/
+
 # Logs
 logs/
 *.log
@@ -24,3 +27,6 @@ npm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
+
+# Python caches (server/scripts)
+__pycache__/

@@ -1,0 +1,395 @@
+/* The bench card: rounded, with a soft shadow like the photos in other heroes. */
+.art {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  font-family: inherit;
+  filter: drop-shadow(0 26px 44px rgba(28, 31, 23, 0.18));
+}
+
+/* Lying on a page-wide cutting mat (`bare`): no card shadow. */
+.bare {
+  filter: none;
+}
+
+/* One 11s timeline (keep in step with CYCLE_MS and STEP_STARTS in FramingBench.jsx):
+   note and print → mat → bars close and join → glass → checked → packed → away. */
+.piece,
+.note,
+.shadow,
+.print,
+.mat,
+.barTop,
+.barBottom,
+.barLeft,
+.barRight,
+.joins,
+.sweep,
+.stamp,
+.carton,
+.tapeOne,
+.tapeTwo {
+  animation-duration: 11s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.paused * {
+  animation-play-state: paused;
+}
+
+.piece {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: piece;
+}
+
+@keyframes piece {
+  0%,
+  86% {
+    opacity: 1;
+    transform: none;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(240px, -24px) rotate(8deg);
+  }
+}
+
+.note {
+  animation-name: note;
+}
+
+@keyframes note {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  6%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.shadow {
+  animation-name: shadow;
+}
+
+@keyframes shadow {
+  0%,
+  26% {
+    opacity: 0;
+  }
+
+  34%,
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.print {
+  animation-name: print;
+}
+
+@keyframes print {
+  0%,
+  2% {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+
+  9%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The mat drops in around the print. */
+.mat {
+  animation-name: mat;
+}
+
+@keyframes mat {
+  0%,
+  10% {
+    opacity: 0;
+    transform: translateY(46px);
+  }
+
+  17%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.barTop {
+  animation-name: bar-top;
+}
+
+.barBottom {
+  animation-name: bar-bottom;
+}
+
+.barLeft {
+  animation-name: bar-left;
+}
+
+.barRight {
+  animation-name: bar-right;
+}
+
+@keyframes bar-top {
+  0%,
+  19% {
+    opacity: 0;
+    transform: translateY(-70px);
+  }
+
+  28%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bar-bottom {
+  0%,
+  21% {
+    opacity: 0;
+    transform: translateY(70px);
+  }
+
+  30%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bar-left {
+  0%,
+  23% {
+    opacity: 0;
+    transform: translateX(-70px);
+  }
+
+  32%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bar-right {
+  0%,
+  25% {
+    opacity: 0;
+    transform: translateX(70px);
+  }
+
+  34%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The corners join: a quick glow at each mitre. */
+.joins {
+  animation-name: joins;
+}
+
+@keyframes joins {
+  0%,
+  33% {
+    opacity: 0;
+  }
+
+  36% {
+    opacity: 1;
+  }
+
+  41%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Light across the glass. */
+.sweep {
+  opacity: 0;
+  animation-name: sweep;
+}
+
+@keyframes sweep {
+  0%,
+  39% {
+    opacity: 0;
+    transform: skewX(-18deg) translateX(0);
+  }
+
+  41% {
+    opacity: 1;
+  }
+
+  48% {
+    opacity: 1;
+    transform: skewX(-18deg) translateX(300px);
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+    transform: skewX(-18deg) translateX(300px);
+  }
+}
+
+/* "Checked": the stamp lands. */
+.stamp {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: stamp;
+}
+
+@keyframes stamp {
+  0%,
+  49% {
+    opacity: 0;
+    transform: scale(1.8) rotate(-30deg);
+  }
+
+  53% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-10deg);
+  }
+
+  56%,
+  60% {
+    opacity: 1;
+    transform: scale(1) rotate(-12deg);
+  }
+
+  /* Gone as the carton closes over the frame. */
+  64%,
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(-12deg);
+  }
+}
+
+/* Packed: the carton closes over the frame, then the tape wraps across it. */
+.carton {
+  animation-name: carton;
+}
+
+@keyframes carton {
+  0%,
+  58% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  65%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tapeOne,
+.tapeTwo {
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+.tapeOne {
+  animation-name: tape-one;
+}
+
+.tapeTwo {
+  animation-name: tape-two;
+}
+
+@keyframes tape-one {
+  0%,
+  67% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  74%,
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes tape-two {
+  0%,
+  72% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  73% {
+    opacity: 1;
+  }
+
+  79%,
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* The steps: dim, lit while under way, then done. */
+.step rect {
+  fill: rgba(255, 255, 255, 0.1);
+  stroke: rgba(255, 255, 255, 0.22);
+  transition: fill 0.3s ease;
+}
+
+.step text {
+  fill: rgba(255, 255, 255, 0.62);
+  transition: fill 0.3s ease;
+}
+
+.stepOn rect {
+  fill: #e8b33a;
+  stroke: #e8b33a;
+}
+
+.stepOn text {
+  fill: #1c1f17;
+}
+
+.stepDone rect {
+  fill: rgba(255, 255, 255, 0.24);
+}
+
+.stepDone text {
+  fill: #ffffff;
+}
+
+/* Reduced motion: a finished frame with its mat, every step done (not yet packed). */
+.still * {
+  animation: none !important;
+}
+
+.still .sweep,
+.still .joins,
+.still .carton,
+.still .tapeOne,
+.still .tapeTwo {
+  opacity: 0;
+}

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ORIENTATIONS } from '../frames/frames.catalog.js';
+import { MATS, ORIENTATIONS } from '../frames/frames.catalog.js';
 
 const customerSchema = z.object({
   name: z.string().trim().min(2, 'Please enter your full name.').max(120),
@@ -28,6 +28,7 @@ const cropSchema = z.object({
 const baseItem = {
   sizeId: z.string().trim().min(1),
   orientation: z.enum(ORIENTATIONS),
+  mat: z.enum(MATS).default('none'),
   quantity: z.number().int().min(1).max(20).default(1),
 };
 

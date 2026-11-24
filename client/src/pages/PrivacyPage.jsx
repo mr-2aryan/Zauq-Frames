@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { PageHero } from '@/components/common';
 import { MailIcon } from '@/components/icons';
 import { CtaBand, LegalDocument } from '@/components/info';
-import { PrivacyLock } from '@/components/illustrations';
+import { PrivacyEnvelope } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
         titleLight="policy."
         lead="We collect only what we need to make, deliver and support your order — and we never sell it."
         size="sm"
-        media={<PrivacyLock />}
+        media={<PrivacyEnvelope />}
       />
 
       <LegalDocument

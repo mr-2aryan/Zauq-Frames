@@ -6,7 +6,7 @@ import { ROUTES } from '@/config/routes';
 import { useCart } from '@/context/cart/useCart';
 import { useToast } from '@/context/toast/useToast';
 import { cn } from '@/utils/cn';
-import { formatSizeLabel, orientSize } from '@/utils/frames';
+import { formatSizeLabel, MAT_LABELS, orientSize } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import { DeliveryCheck } from '../DeliveryCheck/DeliveryCheck.jsx';
 import styles from './ProductPurchasePanel.module.css';
@@ -21,7 +21,10 @@ const DEFAULT_SIZE_ID = '18x24';
 export function ProductPurchasePanel({ product, catalog }) {
   const { sizes, currency, finish, promotion } = catalog;
   const sizeName = useId();
+  const matName = useId();
+  const mats = catalog.mats ?? ['none', 'white'];
   const [sizeId, setSizeId] = useState(sizes.some((size) => size.id === DEFAULT_SIZE_ID) ? DEFAULT_SIZE_ID : sizes[0].id);
+  const [mat, setMat] = useState('none');
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
   const { showToast } = useToast();
@@ -37,10 +40,13 @@ export function ProductPurchasePanel({ product, catalog }) {
       productId: product.slug,
       name: product.name,
       image: product.image,
+      // The artwork on its own (no room or frame around it), where the piece has one.
+      art: product.art ?? undefined,
       sizeId: size.id,
       sizeLabel,
       // Each artwork is composed one way (most portrait; Heritage pieces landscape).
       orientation,
+      mat,
       unitPrice: size.salePrice,
       listPrice: size.price,
       currency,
@@ -63,7 +69,7 @@ export function ProductPurchasePanel({ product, catalog }) {
         <Price amount={size.salePrice * quantity} listAmount={size.price * quantity} currency={currency} size="lg" />
         {promotion.percentOff > 0 && <Badge tone="sale">Save {promotion.percentOff}%</Badge>}
         <span className={styles.priceMeta}>
-          {sizeLabel} · {finish} frame included · ready to hang
+          {sizeLabel} · {finish} frame{mat === 'white' ? ' and white mat' : ''} included · ready to hang
           {quantity > 1 && ` · ${quantity} × ${formatPrice(size.salePrice, currency)}`}
         </span>
       </div>
@@ -84,6 +90,25 @@ export function ProductPurchasePanel({ product, catalog }) {
           })}
         </div>
         <p className={styles.sizeHint}>{size.description}</p>
+      </fieldset>
+
+      <fieldset className={styles.fieldset}>
+        <legend className={styles.legend}>Mat</legend>
+        <div className={styles.mats}>
+          {mats.map((option) => {
+            const checked = option === mat;
+            return (
+              <label key={option} className={cn(styles.sizeOption, styles.matOption, checked && styles.sizeChecked)}>
+                <input type="radio" name={matName} value={option} checked={checked} onChange={() => setMat(option)} className="sr-only" />
+                <span className={cn(styles.matSwatch, option === 'white' && styles.matSwatchWhite)} aria-hidden="true" />
+                <span className={styles.sizeLabel}>{MAT_LABELS[option] ?? option}</span>
+              </label>
+            );
+          })}
+        </div>
+        <p className={styles.sizeHint}>
+          {mat === 'white' ? 'A white border between the frame and the artwork. Free on every size.' : 'The artwork fills the frame, edge to edge.'}
+        </p>
       </fieldset>
 
       <div className={styles.buyRow}>

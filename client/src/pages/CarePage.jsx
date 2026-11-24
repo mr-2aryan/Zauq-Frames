@@ -1,7 +1,7 @@
 import { FaqList, PageHero } from '@/components/common';
 import { BoxIcon, ClockIcon, HangIcon, RulerIcon, SparkleIcon, WhatsAppIcon } from '@/components/icons';
 import { CheckList, CtaBand, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
-import { CareCloth, FramedWall } from '@/components/illustrations';
+import { CareCloth, CareWipe, FramedWall } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -45,7 +45,7 @@ export default function CarePage() {
             <WhatsAppIcon size={18} /> Ask us a question
           </Button>
         }
-        media={<CareCloth />}
+        media={<CareWipe />}
       />
 
       <InfoSection kicker="Everyday care" title="Six habits for a lasting frame">
@@ -103,8 +103,8 @@ export default function CarePage() {
           </div>
           <div className={styles.card} data-reveal="fade-up" style={{ '--reveal-delay': '120ms' }}>
             <RulerIcon size={26} />
-            <h3>24 × 36 in</h3>
-            <p>Our largest size and the heaviest. Choose a strong fixing for your wall type, and hang it with a second pair of hands.</p>
+            <h3>24 × 36 and 36 × 48 in</h3>
+            <p>Our largest sizes, and the heaviest. Choose a strong fixing for your wall type, and hang them with a second pair of hands.</p>
           </div>
         </div>
       </InfoSection>
@@ -117,7 +117,7 @@ export default function CarePage() {
 
       <CtaBand
         title="Ready for another wall?"
-        text="Every piece comes ready to hang, in five sizes."
+        text="Every piece comes ready to hang, in six sizes."
         actions={
           <>
             <Button to={ROUTES.shop} variant="light" size="lg">

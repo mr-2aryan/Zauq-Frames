@@ -4,9 +4,11 @@
  *   type: 'product' | 'custom-frame',
  *   name: string,
  *   image: string,
+ *   art?: string,
  *   sizeId: string,
  *   sizeLabel: string,
  *   orientation: 'portrait' | 'landscape',
+ *   mat?: 'none' | 'white',
  *   unitPrice: number,
  *   listPrice: number,
  *   currency: string,
@@ -31,9 +33,9 @@ export const MAX_QUANTITY = 20;
 /** @type {CartState} */
 export const initialCartState = { items: [] };
 
-/** Items are the same line only if the piece (or photo and crop), size and orientation all match. */
+/** Items are the same line only if the piece (or photo and crop), size, orientation and mat all match. */
 const lineKey = (item) =>
-  [item.type, item.productId ?? item.photo?.id, item.sizeId, item.orientation, item.crop?.x, item.crop?.y].join('|');
+  [item.type, item.productId ?? item.photo?.id, item.sizeId, item.orientation, item.mat ?? 'none', item.crop?.x, item.crop?.y].join('|');
 
 const clampQuantity = (quantity) => Math.min(MAX_QUANTITY, Math.max(1, Math.round(quantity) || 1));
 

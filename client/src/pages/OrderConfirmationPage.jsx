@@ -9,7 +9,7 @@ import { readLastOrder } from '@/features/cart/lastOrder.js';
 import { formatDayRange, ORDER_STEPS } from '@/features/orders';
 import { resolveAssetUrl } from '@/services/apiClient';
 import { getOrder } from '@/services/ordersApi';
-import { formatOrientation } from '@/utils/frames';
+import { formatOrientation, matSuffix } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './OrderConfirmationPage.module.css';
 
@@ -46,7 +46,7 @@ export default function OrderConfirmationPage() {
         image: item.image ?? resolveAssetUrl(item.photoUrl),
         crop: item.crop,
         name: item.name,
-        meta: `${item.label} · ${formatOrientation(item.orientation)}`,
+        meta: `${item.label} · ${formatOrientation(item.orientation)}${matSuffix(item.mat)}`,
         quantity: item.quantity,
         price: item.lineTotal,
       }))}

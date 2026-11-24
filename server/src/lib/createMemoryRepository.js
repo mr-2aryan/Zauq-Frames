@@ -1,22 +1,21 @@
 import { randomUUID } from 'node:crypto';
 
 /**
- * A minimal async, in-memory repository.
- *
- * Placeholder persistence until a database is chosen. Every method is async
- * and returns copies, so swapping this for a real DB-backed repository with the
- * same interface needs no changes in services or controllers.
+ * A minimal async, in-memory repository: used when no database is configured
+ * (DATABASE_URL), in development. Same interface as `createPgRepository`; every
+ * method is async and returns copies.
  *
  * @param {{ generateId?: () => string }} [options]
  */
 export function createMemoryRepository({ generateId = randomUUID } = {}) {
   /** @type {Map<string, Record<string, any>>} */
   const records = new Map();
+  const matches = (field, value) => (record) => (value == null ? record[field] == null : String(record[field]) === String(value));
 
   return {
     async create(data) {
       const now = new Date().toISOString();
-      const record = { id: generateId(), ...data, createdAt: now, updatedAt: now };
+      const record = { ...data, id: generateId(), createdAt: now, updatedAt: now };
       records.set(record.id, record);
       return structuredClone(record);
     },
@@ -26,11 +25,15 @@ export function createMemoryRepository({ generateId = randomUUID } = {}) {
       return record ? structuredClone(record) : null;
     },
 
-    async findOne(predicate) {
-      for (const record of records.values()) {
-        if (predicate(record)) return structuredClone(record);
-      }
-      return null;
+    /** The first record whose `field` equals `value`. */
+    async findOneBy(field, value) {
+      const record = [...records.values()].find(matches(field, value));
+      return record ? structuredClone(record) : null;
+    },
+
+    /** Every record whose `field` equals `value`, oldest first. */
+    async findAllBy(field, value) {
+      return [...records.values()].filter(matches(field, value)).map((record) => structuredClone(record));
     },
 
     async findAll() {
@@ -40,7 +43,7 @@ export function createMemoryRepository({ generateId = randomUUID } = {}) {
     async update(id, changes) {
       const existing = records.get(id);
       if (!existing) return null;
-      const updated = { ...existing, ...changes, id, updatedAt: new Date().toISOString() };
+      const updated = { ...existing, ...changes, id, createdAt: existing.createdAt, updatedAt: new Date().toISOString() };
       records.set(id, updated);
       return structuredClone(updated);
     },

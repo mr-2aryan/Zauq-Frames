@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { WhatsAppIcon } from '@/components/icons';
 import { whatsappLink } from '@/config/site';
 import { cn } from '@/utils/cn';
-import { formatOrientation } from '@/utils/frames';
+import { formatOrientation, matSuffix } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import { formatDay, formatDayRange, ORDER_STEPS } from '../../orderSteps.js';
 import { OrderTimeline } from '../OrderTimeline/OrderTimeline.jsx';
@@ -61,6 +61,7 @@ export function TrackedOrder({ order }) {
               <strong>{item.name}</strong>
               <span>
                 {item.label} · {formatOrientation(item.orientation)}
+                {matSuffix(item.mat)}
               </span>
             </span>
             <span className={styles.qty}>× {item.quantity}</span>

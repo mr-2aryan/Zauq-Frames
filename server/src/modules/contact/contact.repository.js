@@ -1,4 +1,4 @@
-import { createMemoryRepository } from '../../lib/createMemoryRepository.js';
+import { createRepository } from '../../lib/createRepository.js';
 
-// In-memory for now — replace with a DB-backed repository exposing the same methods.
-export const messagesRepository = createMemoryRepository();
+/** Messages from the contact form. */
+export const messagesRepository = createRepository('messages');

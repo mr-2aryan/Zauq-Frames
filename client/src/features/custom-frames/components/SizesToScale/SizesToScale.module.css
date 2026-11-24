@@ -5,7 +5,7 @@
 .sizes {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 32px 28px;
   margin: 0;
   padding: 0;
@@ -19,9 +19,15 @@
   gap: 6px;
 }
 
+/* The same height for every frame, with the frame standing on its bottom edge. */
+.stand {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
 .swatch {
   max-width: 100%;
-  margin-bottom: 8px;
   border: 7px solid #121110;
   background: #ffffff;
   box-shadow: 6px 6px 0 var(--color-sage);
@@ -45,7 +51,7 @@
 }
 
 .use {
-  max-width: 200px;
+  max-width: 150px;
   font-size: 14px;
   color: var(--color-muted);
 }

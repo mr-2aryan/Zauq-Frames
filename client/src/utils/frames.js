@@ -14,6 +14,12 @@ export function formatSizeLabel({ width, height }, { unit = false } = {}) {
 export const orientSize = (size, orientation = 'portrait') =>
   orientation === 'landscape' ? { ...size, width: size.height, height: size.width } : size;
 
+/** Mat choices, as shown to customers. */
+export const MAT_LABELS = Object.freeze({ none: 'No mat', white: 'White mat' });
+
+/** " · White mat" when a line has a mat, so it can follow a size and orientation. */
+export const matSuffix = (mat) => (mat === 'white' ? ' · White mat' : '');
+
 /** `'portrait'` → `'Portrait'` */
 export const formatOrientation = (orientation) => orientation.charAt(0).toUpperCase() + orientation.slice(1);
 

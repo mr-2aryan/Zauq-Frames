@@ -14,23 +14,22 @@ A structured product catalogue in the Zauq brand: bold headings, clear product c
 - **Centring rule:** the framed artwork is always horizontally centred in its arch or card, fully visible, with wall showing above it, below the arch curve. Crops are generated from the original photos by detecting the frame (see "Image crops" below). Never rely on `object-position` to place a frame.
 - **Product cards:** a cream image panel, then the name, a two-line description, and size and orientation tags. There are no product codes. Calligraphy pieces are framed flats in a CSS black frame. The other collections use room shots cropped so the frame is centred.
 - **No Urdu mark:** the ذوق glyph is not used as a logo. The brand mark is the ZAUQ / PREMIUM FRAMES wordmark only.
-- **Collection pages** share one template: an olive header band with an outlined number, the title, an introduction and "ideal for", plus an arch photo breaking out of the band. Product cards sit below.
+- **Collection pages** (and Custom & Branded, as range 05) share one template: an olive header band with a number, the title, an introduction and "ideal for", plus an arch photo breaking out of the band. Product cards sit below.
 - **Furniture:** the section name top-left, "Product Catalogue 2026" top-right, the website bottom-left and the page number in an olive circle bottom-right.
 
 ## Pages (12)
 
+The book reads in spreads (left | right) after the cover. The five ranges are numbered 01–05: each pair of collections shares a spread, and Custom & Branded (05) opens the next one.
+
 1. Cover
-2. Welcome and contents
-3. About
-4. Services for business
-5. Islamic Calligraphy
-6. Modern & Minimal
-7. Art & Culture, with a guide by space
-8. Custom & branded frames
-9. Quality & craftsmanship
-10. Sizes & price list
-11. How to order and FAQ
-12. Contact
+2. Welcome and contents | 3. About, with quality & craftsmanship and our promise
+4. 01 Islamic Calligraphy | 5. 02 Modern & Minimal
+6. 03 Art & Culture, with a guide by space | 7. 04 Heritage Pakistan
+8. 05 Custom & branded frames | 9. Services for business
+10. Sizes & price list | 11. How to order and FAQ
+12. Contact (back cover)
+
+Heritage pieces are landscape (24 × 18 in), shown as flats in a CSS black frame (`her-*.jpg`, cut from the white-background product photos), two to a row; its arch is `arch-her.jpg`.
 
 ## Print specification
 

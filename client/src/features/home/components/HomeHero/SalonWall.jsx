@@ -11,11 +11,11 @@ import styles from './SalonWall.module.css';
  * Collections take their name and piece count from the API when it has loaded.
  */
 const WALL = [
-  { key: 'islamic-calligraphy', name: 'Islamic Calligraphy', image: '/images/products/tawakkul-sabr-shukr-flat.jpg', size: 'md', drop: 40, tilt: -2, phone: 'right' },
+  { key: 'islamic-calligraphy', name: 'Islamic Calligraphy', image: '/images/art/tawakkul-sabr-shukr.jpg', size: 'md', drop: 40, tilt: -2, phone: 'right' },
   { key: 'modern-minimal', name: 'Modern & Minimal', image: '/images/hero/sunset-peaks.jpg', size: 'md', drop: 14, tilt: 1.2, phone: 'hidden' },
   { key: 'custom', name: 'Custom Frames', to: ROUTES.customFrames, meta: 'Your photo, framed', size: 'lg', drop: 0, tilt: 0, phone: 'top' },
   { key: 'art-culture', name: 'Art & Culture', image: '/images/hero/vinyl-dance.jpg', size: 'md', drop: 20, tilt: -1, phone: 'left' },
-  { key: 'heritage-pakistan', name: 'Heritage Pakistan', image: '/images/products/badshahi-mosque-flat.jpg', size: 'md', drop: 44, tilt: 2, phone: 'hidden' },
+  { key: 'heritage-pakistan', name: 'Heritage Pakistan', image: '/images/art/badshahi-mosque.jpg', size: 'md', drop: 44, tilt: 2, phone: 'hidden' },
 ];
 
 const pieceCount = (count) => (count > 0 ? `${count} ${count === 1 ? 'piece' : 'pieces'}` : 'Coming soon');

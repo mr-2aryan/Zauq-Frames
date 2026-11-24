@@ -1,0 +1,295 @@
+/* The phone, slightly turned, with question chips floating around it. */
+.scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 24px 0;
+}
+
+.phone {
+  position: relative;
+  width: min(100%, 340px);
+  height: 600px;
+  padding: 11px;
+  border-radius: 46px;
+  background: linear-gradient(160deg, #2c3418, var(--color-dark));
+  box-shadow:
+    0 40px 70px rgba(31, 37, 16, 0.28),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.08);
+  transform: rotate(-3deg);
+  animation: float 7s ease-in-out infinite;
+}
+
+/* The camera notch. */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  z-index: 2;
+  width: 86px;
+  height: 22px;
+  border-radius: 12px;
+  background: #0d1007;
+  transform: translateX(-50%);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-2deg) translateY(-10px);
+  }
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(62, 74, 31, 0.05) 0 2px, transparent 3px) 0 0 / 26px 26px,
+    #f1f3e8;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 50px 18px 14px;
+  border-bottom: 1px solid var(--color-line);
+  background: #ffffff;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 15px;
+}
+
+.who span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.online {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+}
+
+/* New messages push the older ones up, as in any chat. */
+.thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 0;
+  padding: 14px 14px 10px;
+  overflow: hidden;
+  /* Older messages fade out under the header. */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 36px);
+}
+
+.mine,
+.theirs {
+  flex: none;
+  max-width: 82%;
+  margin: 0;
+  padding: 10px 13px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.mine {
+  align-self: flex-end;
+  border-bottom-right-radius: 5px;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.theirs {
+  align-self: flex-start;
+  border-bottom-left-radius: 5px;
+  background: #ffffff;
+  color: var(--color-ink);
+  box-shadow: 0 1px 2px rgba(28, 31, 23, 0.08);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+}
+
+/* "Typing…": three dots. */
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  padding-block: 14px;
+}
+
+.typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9aa08a;
+  animation: dot 1s ease-in-out infinite;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dot {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* The message box: opens a real WhatsApp chat. */
+.composer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 12px 16px;
+  padding: 7px 7px 7px 18px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(28, 31, 23, 0.08);
+  font-size: 14px;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.composer:hover {
+  color: var(--color-ink);
+  box-shadow:
+    0 2px 8px rgba(28, 31, 23, 0.08),
+    0 0 0 2px var(--color-primary);
+}
+
+.send {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Questions drifting around the phone. */
+.chip {
+  position: absolute;
+  z-index: 1;
+  padding: 9px 15px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(31, 37, 16, 0.12);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+  animation: drift 6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -1.7s);
+}
+
+.chip:nth-of-type(1) {
+  top: 14%;
+  left: 2%;
+}
+
+.chip:nth-of-type(2) {
+  top: 46%;
+  right: 0;
+}
+
+.chip:nth-of-type(3) {
+  bottom: 14%;
+  left: 6%;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+
+@media (max-width: 960px) {
+  .phone {
+    width: min(100%, 320px);
+    height: 540px;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+}
+
+/* Phones: no room beside the phone for the chips. */
+@media (max-width: 600px) {
+  .chip {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phone,
+  .chip,
+  .mine,
+  .theirs,
+  .typing span {
+    animation: none;
+  }
+}

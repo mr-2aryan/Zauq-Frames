@@ -1,10 +1,21 @@
+/* A small name above the sizes, as above orientation and mat. */
+.name {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
 /* All sizes on one line, in equal tiles. */
 .grid {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .grid > * {
@@ -22,19 +33,23 @@
   font-weight: 600;
 }
 
-/* Phones: tighter, so the five still fit on one line. */
+/* Phones: tighter, so every size still fits on one line. */
 @media (max-width: 560px) {
   .grid {
-    gap: 6px;
+    gap: 5px;
+  }
+
+  .grid > * {
+    padding-inline: 2px;
   }
 
   .label {
-    font-size: 13px;
+    font-size: 12.5px;
     white-space: nowrap;
   }
 
   .price {
-    font-size: 11px;
+    font-size: 10.5px;
     white-space: nowrap;
   }
 }

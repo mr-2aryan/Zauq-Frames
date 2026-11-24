@@ -1,4 +1,3 @@
-import { createMemoryRepository } from '../../lib/createMemoryRepository.js';
+import { createRepository } from '../../lib/createRepository.js';
 
-// In-memory for now — replace with a DB-backed repository exposing the same methods.
-export const subscribersRepository = createMemoryRepository();
+export const subscribersRepository = createRepository('subscribers');

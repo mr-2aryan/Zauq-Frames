@@ -1,0 +1,298 @@
+/* A square scene. The frame's layers sit in a tilted 3D stack and move apart and
+   back together on one 9s turn (CYCLE_MS in FrameLayers.jsx). */
+.scene {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+
+.cycle {
+  position: absolute;
+  inset: 0;
+}
+
+.cycle *,
+.cycle *::before,
+.cycle *::after {
+  animation-duration: 9s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+
+.paused * {
+  animation-play-state: paused !important;
+}
+
+.floorShadow {
+  position: absolute;
+  left: 13%;
+  top: 72%;
+  width: 60%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(31, 37, 16, 0.22), rgba(31, 37, 16, 0) 70%);
+}
+
+/* The stack, seen from above at an angle. Layers rise towards the viewer (translateZ). */
+.stack {
+  position: absolute;
+  left: 43%;
+  top: 58%;
+  width: 41cqi;
+  height: 53cqi;
+  transform: translate(-50%, -50%) rotateX(56deg) rotateZ(-38deg);
+  transform-style: preserve-3d;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+/* Kraft backing, with two golden D-ring hooks and the logo sticker. */
+.back {
+  background: linear-gradient(135deg, #9c7a55, #7d6044);
+  box-shadow: 0 0 0 1px rgba(60, 40, 20, 0.4);
+  animation-name: lift-back;
+}
+
+.hook {
+  position: absolute;
+  top: 26%;
+  width: 7%;
+  height: 10%;
+  border: 2.5px solid #e0b450;
+  border-radius: 50% 50% 4px 4px;
+}
+
+.hookLeft {
+  left: 3%;
+}
+
+.hookRight {
+  right: 3%;
+}
+
+.sticker {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  padding: 4% 7%;
+  border-radius: 3px;
+  background: #fbf8f1;
+  color: #17190f;
+  font-family: var(--font-logo);
+  font-size: 3cqi;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  transform: translate(-50%, -50%);
+}
+
+.print {
+  overflow: hidden;
+  inset: 5%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  animation-name: lift-print;
+}
+
+.print img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The mat: white, with a window for the print and a fine bevelled edge. */
+.mat {
+  inset: 1%;
+  border: 4cqi solid #fbfaf6;
+  box-shadow:
+    inset 0 0 0 1px #ddd7c8,
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+  animation-name: lift-mat;
+}
+
+.frame {
+  border: 2.9cqi solid #17190f;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation-name: lift-frame;
+}
+
+/* Apart (named) → together (one piece) → apart again. */
+@keyframes lift-back {
+  0%,
+  100% {
+    transform: translateZ(0);
+  }
+}
+
+@keyframes lift-print {
+  0%,
+  14%,
+  90%,
+  100% {
+    transform: translateZ(16cqi);
+  }
+
+  36%,
+  70% {
+    transform: translateZ(1cqi);
+  }
+}
+
+@keyframes lift-mat {
+  0%,
+  14%,
+  90%,
+  100% {
+    transform: translateZ(32cqi);
+  }
+
+  38%,
+  70% {
+    transform: translateZ(1.7cqi);
+  }
+}
+
+@keyframes lift-frame {
+  0%,
+  14%,
+  90%,
+  100% {
+    transform: translateZ(48cqi);
+  }
+
+  40%,
+  70% {
+    transform: translateZ(2.4cqi);
+  }
+}
+
+/* Names for the layers, beside where each floats when apart. */
+.labels {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.labels li {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 7px 12px;
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 12px 12px 0;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(31, 37, 16, 0.1);
+  line-height: 1.25;
+  animation-name: label;
+}
+
+.labels strong {
+  font-size: clamp(11px, 2.7cqi, 14px);
+}
+
+.labels span {
+  font-size: clamp(9.5px, 2.2cqi, 11.5px);
+  color: var(--color-muted);
+}
+
+.label_frame {
+  top: 8%;
+}
+
+.label_mat {
+  top: 26%;
+}
+
+.label_print {
+  top: 44%;
+}
+
+.label_back {
+  top: 62%;
+}
+
+@keyframes label {
+  0%,
+  16%,
+  88%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+
+  30%,
+  76% {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+/* Together: the finished piece. */
+.done {
+  position: absolute;
+  left: 43%;
+  top: 93%;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  box-shadow: 0 12px 26px rgba(31, 37, 16, 0.25);
+  color: #ffffff;
+  font-size: clamp(11px, 2.7cqi, 14px);
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation-name: done;
+}
+
+@keyframes done {
+  0%,
+  40% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.9);
+  }
+
+  46%,
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  78%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Reduced motion: the layers apart, with their names. */
+.still * {
+  animation: none !important;
+}
+
+.still .print {
+  transform: translateZ(16cqi);
+}
+
+.still .mat {
+  transform: translateZ(32cqi);
+}
+
+.still .frame {
+  transform: translateZ(48cqi);
+}
+
+.still .done {
+  opacity: 0;
+}

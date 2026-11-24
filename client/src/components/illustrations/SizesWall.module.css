@@ -1,0 +1,14 @@
+/* The room card: rounded, with a soft shadow like the photos in other heroes. */
+.art {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  font-family: inherit;
+  filter: drop-shadow(0 26px 44px rgba(28, 31, 23, 0.16));
+}
+
+/* Without its own wall and floor it stands in the page's room: no card shadow. */
+.bare {
+  filter: none;
+}

@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { FaqList, PageHero } from '@/components/common';
 import { BoxIcon, ClockIcon, SearchIcon, TruckIcon, WhatsAppIcon } from '@/components/icons';
 import { CheckList, CtaBand, FactCards, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
-import { CalendarIllustration, DeliveryTruck, PackageBox } from '@/components/illustrations';
+import { CalendarIllustration, DispatchBoard, PackageBox } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -57,7 +57,7 @@ export default function ShippingPage() {
             </Button>
           </>
         }
-        media={<DeliveryTruck />}
+        media={<DispatchBoard fee={fee} leadTime={SITE.leadTime} />}
       />
 
       <InfoSection kicker="At a glance" title="Delivery in four numbers">

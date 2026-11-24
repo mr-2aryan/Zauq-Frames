@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { PageHero } from '@/components/common';
 import { WhatsAppIcon } from '@/components/icons';
 import { CtaBand, LegalDocument } from '@/components/info';
-import { ShieldCheck } from '@/components/illustrations';
+import { RefundMap } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -91,7 +91,7 @@ export default function RefundsPage() {
         titleLight="policy."
         lead="If a frame arrives damaged or different from your order, we’ll put it right. Here’s exactly how that works."
         size="sm"
-        media={<ShieldCheck />}
+        media={<RefundMap />}
       />
 
       <LegalDocument

@@ -10,6 +10,7 @@ import { CartItemRow, CartSummary } from '@/features/cart';
 import { formatDayRange } from '@/features/orders';
 import { ProductGrid, useProducts } from '@/features/products';
 import { resolveAssetUrl } from '@/services/apiClient';
+import { cn } from '@/utils/cn';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './CartPage.module.css';
 
@@ -19,6 +20,9 @@ export default function CartPage() {
   const { items, count, subtotal, savings, setQuantity, removeItem } = useCart();
   const { catalog } = useCatalog();
   const suggestions = useProducts({ sort: 'random', limit: 4 });
+  // Every piece's artwork, for the small frames in the hero (carts saved before
+  // the artwork was kept with each item still get the right picture).
+  const allProducts = useProducts({ limit: 48 });
 
   const currency = items[0]?.currency ?? catalog?.currency ?? 'PKR';
   const deliveryFee = catalog?.deliveryFee ?? null;
@@ -28,14 +32,31 @@ export default function CartPage() {
   const [today] = useState(() => Date.now());
   const DAY = 86_400_000;
   const arrives = formatDayRange(new Date(today + SITE.leadDays.min * DAY).toISOString(), new Date(today + SITE.leadDays.max * DAY).toISOString());
-  const thumbs = items.slice(0, 3).map((item) => ({ key: item.id, src: item.type === 'product' ? item.image : resolveAssetUrl(item.photo?.url ?? item.image), crop: item.crop }));
+  // Each piece as a small frame of its own shape, holding just the artwork or the
+  // customer's photo. A piece with no artwork-only shot shows its photo as it is
+  // (that photo already has the frame in it).
+  const artBySlug = new Map((allProducts.data?.items ?? []).map((product) => [product.slug, product.art]));
+  const thumbs = items.slice(0, 3).map((item) => {
+    const art = item.type === 'product' ? (artBySlug.get(item.productId) ?? item.art) : resolveAssetUrl(item.photo?.url ?? item.image);
+    return {
+      key: item.id,
+      src: art ?? item.image,
+      crop: item.crop,
+      framed: Boolean(art),
+      landscape: item.orientation === 'landscape',
+    };
+  });
 
   // The hero's right side: the order at a glance.
   const glance = (
     <div className={styles.glance}>
       <div className={styles.fan} aria-hidden="true">
         {thumbs.map((thumb, index) => (
-          <span key={thumb.key} className={styles.mini} style={{ '--i': index - (thumbs.length - 1) / 2 }}>
+          <span
+            key={thumb.key}
+            className={cn(styles.mini, thumb.framed ? thumb.landscape && styles.miniLandscape : styles.miniPhoto)}
+            style={{ '--i': index - (thumbs.length - 1) / 2 }}
+          >
             <img src={thumb.src} alt="" style={thumb.crop ? { objectPosition: `${thumb.crop.x}% ${thumb.crop.y}%` } : undefined} />
           </span>
         ))}
@@ -71,7 +92,7 @@ export default function CartPage() {
         titleLight={empty ? 'cart is empty.' : 'cart.'}
         lead={
           empty
-            ? 'Nothing here yet — find a piece you love, or frame one of your own photos in any of five sizes.'
+            ? 'Nothing here yet — find a piece you love, or frame one of your own photos in any of six sizes.'
             : 'Every frame is made to order after checkout. Check your pieces and sizes below, then head to checkout — it takes about a minute.'
         }
         actions={
@@ -108,7 +129,7 @@ export default function CartPage() {
               <ImageIcon size={34} />
             </span>
             <h2 className={styles.emptyTitle}>Your cart is empty</h2>
-            <p className={styles.emptyText}>Calligraphy, modern prints, pop culture and Heritage Pakistan — or your own photo, framed in any of five sizes.</p>
+            <p className={styles.emptyText}>Calligraphy, modern prints, pop culture and Heritage Pakistan — or your own photo, framed in any of six sizes.</p>
             <div className={styles.emptyActions}>
               <Button to={ROUTES.shop}>Shop the collection</Button>
               <Button to={ROUTES.customFrames} variant="secondary">

@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { FaqList, PageHero } from '@/components/common';
 import { CheckCircleIcon, HelpIcon, ImageIcon, WhatsAppIcon } from '@/components/icons';
 import { CheckList, CtaBand, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/components/info';
-import { PackageBox, ShieldCheck } from '@/components/illustrations';
+import { PackageBox, RepairLoop } from '@/components/illustrations';
 import { Button } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE, whatsappLink } from '@/config/site';
@@ -45,7 +45,7 @@ export default function ReturnsPage() {
             <WhatsAppIcon size={18} /> Report a problem
           </Button>
         }
-        media={<ShieldCheck />}
+        media={<RepairLoop />}
       />
 
       <InfoSection kicker="How it works" title="Three simple steps">
@@ -96,7 +96,7 @@ export default function ReturnsPage() {
           columns={3}
           items={[
             { Icon: HelpIcon, title: 'Unsure of the size?', text: 'Each product page has a size guide in centimetres, and we’re happy to help you choose on WhatsApp.' },
-            { Icon: ImageIcon, title: 'Framing a photo?', text: 'Preview it in all five sizes and drag it to set the crop before you order.' },
+            { Icon: ImageIcon, title: 'Framing a photo?', text: 'Preview it in all six sizes and drag it to set the crop before you order.' },
             { Icon: CheckCircleIcon, title: 'Check at confirmation', text: 'We confirm every order by call or WhatsApp — the perfect moment to change a size or detail.' },
           ]}
         />

@@ -35,11 +35,13 @@
 }
 
 .cards {
-  /* Pixels per inch for the frames: 24 × 36 in fills the stage height. */
-  --ppi: clamp(3.4px, 0.42vw, 5.4px);
+  /* Pixels per inch for the frames: the largest size (--maxw × --maxh, set from
+     the price list) fills its card. */
+  --ppi: clamp(2.4px, 0.28vw, 4.2px);
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 14px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -80,7 +82,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: calc(36 * var(--ppi) + 20px);
+  height: calc(var(--maxh, 36) * var(--ppi) + 20px);
   margin-bottom: 18px;
 }
 
@@ -146,14 +148,15 @@
    still to scale) beside the details; two cards a row on tablets, one on phones. */
 @media (max-width: 1080px) {
   .cards {
-    --ppi: clamp(5px, 1.55vw, 6.4px);
+    --ppi: clamp(3px, 0.62vw, 4.4px);
+    grid-auto-flow: row;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
   }
 
   .card {
     display: grid;
-    grid-template-columns: calc(24 * var(--ppi) + 8px) minmax(0, 1fr);
+    grid-template-columns: calc(var(--maxw, 24) * var(--ppi) + 8px) minmax(0, 1fr);
     grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
       'stage size'
@@ -168,7 +171,7 @@
     grid-area: stage;
     align-items: center;
     height: auto;
-    min-height: calc(36 * var(--ppi) + 8px);
+    min-height: calc(var(--maxh, 36) * var(--ppi) + 8px);
     margin: 0;
   }
 

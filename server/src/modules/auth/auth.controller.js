@@ -2,26 +2,26 @@ import { ordersService } from '../orders/orders.service.js';
 import { authService } from './auth.service.js';
 import { clearSessionCookie, createSession, deleteSession, deleteUserSessions, setSessionCookie } from './sessions.js';
 
-const signIn = (res, user) => setSessionCookie(res, createSession(user.id));
+const signIn = async (res, user) => setSessionCookie(res, await createSession(user.id));
 
 /** POST /api/auth/register */
 export const register = async (req, res) => {
   const user = await authService.register(req.body);
-  signIn(res, user);
+  await signIn(res, user);
   res.status(201).json({ data: { user } });
 };
 
 /** POST /api/auth/login */
 export const login = async (req, res) => {
   const user = await authService.login(req.body, req.ip);
-  if (req.sessionToken) deleteSession(req.sessionToken);
-  signIn(res, user);
+  if (req.sessionToken) await deleteSession(req.sessionToken);
+  await signIn(res, user);
   res.json({ data: { user } });
 };
 
 /** POST /api/auth/logout */
 export const logout = async (req, res) => {
-  if (req.sessionToken) deleteSession(req.sessionToken);
+  if (req.sessionToken) await deleteSession(req.sessionToken);
   clearSessionCookie(res);
   res.json({ data: { user: null } });
 };
@@ -39,7 +39,7 @@ export const updateProfile = async (req, res) => {
 /** POST /api/account/password — signs out every other device. */
 export const changePassword = async (req, res) => {
   await authService.changePassword(req.user.id, req.body, req.ip);
-  deleteUserSessions(req.user.id, req.sessionToken);
+  await deleteUserSessions(req.user.id, req.sessionToken);
   res.json({ data: { changed: true } });
 };
 

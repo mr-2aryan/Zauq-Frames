@@ -1,0 +1,305 @@
+/* A square scene; one 9s turn (CYCLE_MS in CareWipe.jsx): dusty → wiped → shine → habits. */
+.scene {
+  position: relative;
+  width: min(100%, 500px);
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+
+.cycle {
+  position: absolute;
+  inset: 0;
+}
+
+.cycle *,
+.cycle *::before,
+.cycle *::after {
+  animation-duration: 9s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  animation-fill-mode: both;
+}
+
+.paused * {
+  animation-play-state: paused !important;
+}
+
+/* ---------- The frame ---------- */
+
+/* Landscape, 4:3 inside its moulding, and large: most of the scene. */
+.frame {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 74%;
+  height: 56.5%;
+  overflow: hidden;
+  border: 2.6cqi solid #17190f;
+  background: #ffffff;
+  box-shadow: 0 28px 50px rgba(31, 37, 16, 0.24);
+  transform: translate(-50%, -50%);
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A dull, dusty film — greying and softening the print — cleared from the left,
+   stroke by stroke, as the cloth sweeps across. */
+.dust {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0 1.2px, transparent 1.6px) 0 0 / 9px 9px,
+    radial-gradient(circle, rgba(110, 100, 82, 0.4) 0 1px, transparent 1.4px) 4px 5px / 13px 13px,
+    radial-gradient(ellipse at 30% 40%, rgba(160, 152, 132, 0.35), transparent 45%),
+    radial-gradient(ellipse at 75% 70%, rgba(160, 152, 132, 0.3), transparent 40%),
+    rgba(205, 200, 186, 0.55);
+  -webkit-backdrop-filter: blur(1.5px) saturate(0.3) brightness(0.92);
+  backdrop-filter: blur(1.5px) saturate(0.3) brightness(0.92);
+  animation-name: dust;
+}
+
+@keyframes dust {
+  0%,
+  14% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  22% {
+    clip-path: inset(0 0 0 22%);
+  }
+
+  30% {
+    clip-path: inset(0 0 0 42%);
+  }
+
+  38% {
+    clip-path: inset(0 0 0 62%);
+  }
+
+  46%,
+  92% {
+    clip-path: inset(0 0 0 100%);
+  }
+
+  /* The dust settles again (slowly, off-stage) for the next turn. */
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.shine {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -40%;
+  width: 30%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  transform: skewX(-18deg);
+  opacity: 0;
+  animation-name: shine;
+}
+
+@keyframes shine {
+  0%,
+  48% {
+    opacity: 0;
+    left: -40%;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+    left: 120%;
+  }
+
+  62%,
+  100% {
+    opacity: 0;
+    left: 120%;
+  }
+}
+
+/* ---------- The cloth ---------- */
+
+.cloth {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 26%;
+  filter: drop-shadow(0 10px 14px rgba(31, 37, 16, 0.22));
+  opacity: 0;
+  animation-name: wipe;
+}
+
+/* In from the left, three light strokes across the frame, out to the right. */
+/* (Positions are the cloth's top-left; it is about 26 × 22 cqi.) */
+@keyframes wipe {
+  0%,
+  10% {
+    opacity: 0;
+    transform: translate(-6cqi, 70cqi) rotate(-12deg);
+  }
+
+  14% {
+    opacity: 1;
+    transform: translate(6cqi, 22cqi) rotate(-6deg);
+  }
+
+  22% {
+    transform: translate(18cqi, 46cqi) rotate(8deg);
+  }
+
+  30% {
+    transform: translate(32cqi, 20cqi) rotate(-6deg);
+  }
+
+  38% {
+    transform: translate(46cqi, 46cqi) rotate(8deg);
+  }
+
+  46% {
+    opacity: 1;
+    transform: translate(62cqi, 24cqi) rotate(-4deg);
+  }
+
+  54%,
+  100% {
+    opacity: 0;
+    transform: translate(84cqi, 10cqi) rotate(10deg);
+  }
+}
+
+/* Dust lifted off by the cloth. */
+.mote {
+  position: absolute;
+  left: calc(22% + var(--i) * 10%);
+  top: calc(30% + var(--row) * 12%);
+  z-index: 2;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(180, 170, 145, 0.85);
+  opacity: 0;
+  animation-name: mote;
+  animation-delay: calc(var(--i) * 0.45s);
+}
+
+@keyframes mote {
+  0%,
+  14% {
+    opacity: 0;
+    transform: none;
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  34%,
+  100% {
+    opacity: 0;
+    transform: translate(18px, -40px) scale(0.4);
+  }
+}
+
+/* ---------- The habits ---------- */
+
+.habit {
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px 7px 7px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(31, 37, 16, 0.12);
+  font-size: clamp(11px, 2.7cqi, 14px);
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  animation-name: habit;
+  animation-delay: calc(var(--i) * 0.35s);
+}
+
+.habit b {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.ok {
+  background: var(--color-primary);
+}
+
+.no {
+  background: #c8643b;
+}
+
+/* Two above the frame, two below it. */
+.dry {
+  left: 3%;
+  top: 4%;
+}
+
+.spray {
+  right: 3%;
+  top: 9%;
+}
+
+.sun {
+  left: 3%;
+  top: 82%;
+}
+
+.hang {
+  right: 3%;
+  top: 87%;
+}
+
+@keyframes habit {
+  0%,
+  58% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+
+  64%,
+  94% {
+    opacity: 1;
+    transform: none;
+  }
+
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+/* Reduced motion: the frame clean, the habits shown. */
+.still * {
+  animation: none !important;
+}
+
+.still .dust,
+.still .cloth,
+.still .mote,
+.still .shine {
+  opacity: 0;
+}
+
+.still .habit {
+  opacity: 1;
+}

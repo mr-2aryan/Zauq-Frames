@@ -133,6 +133,82 @@
   height: auto;
 }
 
+/* ---------- Room: the band is a room (see `room` in PageHero.jsx) ----------
+   A wall behind the text, and a wooden floor right across the bottom on which
+   the visual stands. --room-w is the visual's width; its floor line sits
+   128/520 of that above its bottom edge, so the floor here is drawn to match. */
+.room {
+  --room-w: min(560px, 40vw);
+  --floor-h: calc(var(--room-w) * 128 / 520);
+  background: linear-gradient(180deg, #f6f4ee 0%, #ebe8de 100%);
+}
+
+/* No decorative outline here: the room is the decoration. */
+.room.room::before {
+  content: none;
+}
+
+/* Skirting board, then the floor, the full width of the hero. The skirting (the
+   top border) sits above the floor line, on the wall: hence content-box. */
+.room::after {
+  content: '';
+  box-sizing: content-box;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--floor-h);
+  border-top: calc(var(--room-w) * 11 / 520) solid #fbfaf6;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 calc(var(--room-w) * 33 / 520),
+      rgba(110, 80, 40, 0.13) calc(var(--room-w) * 33 / 520) calc(var(--room-w) * 34 / 520)
+    ),
+    linear-gradient(180deg, #d9c3a0, #cdb48c);
+  box-shadow: inset 0 2px 0 rgba(90, 70, 40, 0.18);
+  pointer-events: none;
+}
+
+.room .inner {
+  z-index: 1;
+  align-items: end;
+  padding-bottom: 0;
+}
+
+/* The text hangs on the wall, clear of the floor. */
+.room .copy {
+  align-self: center;
+  padding-bottom: calc(var(--floor-h) + 28px);
+}
+
+.room .media {
+  align-self: end;
+  justify-content: flex-end;
+}
+
+/* Exactly --room-w wide (never squeezed by its column), so its floor line meets the page's floor. */
+.room .media > svg {
+  display: block;
+  flex: none;
+  width: var(--room-w);
+  max-width: none;
+}
+
+@media (max-width: 960px) {
+  .room {
+    --room-w: min(520px, calc(100vw - 2 * var(--gutter)));
+  }
+
+  .room .copy {
+    padding-bottom: 0;
+  }
+
+  .room .media {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 960px) {
   .withMedia {
     grid-template-columns: minmax(0, 1fr);

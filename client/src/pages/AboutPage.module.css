@@ -1,3 +1,35 @@
+/* The hero is a framer's bench: a green cutting mat with its grid right across
+   it, on a wooden bench (the strip along the bottom). The bench animation
+   (FramingBench, drawn without its own mat) lies on it. */
+.bench.bench {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.13) 1px, transparent 1px) -1px -1px / 90px 90px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.13) 1px, transparent 1px) -1px -1px / 90px 90px,
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px) -1px -1px / 18px 18px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px) -1px -1px / 18px 18px,
+    #43512a;
+  border-bottom: 18px solid #d2b98f;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bench.bench::before {
+  content: none;
+}
+
+/* Breadcrumbs, readable on the mat. */
+.bench nav,
+.bench nav a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bench nav a:hover {
+  color: #ffffff;
+}
+
+.bench nav [aria-current] {
+  color: #ffffff;
+}
+
 /* Collections: five link cards. */
 .collections {
   display: grid;

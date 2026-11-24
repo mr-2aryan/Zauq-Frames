@@ -10,7 +10,7 @@ import { CheckoutShell, OrderSummary, useCheckout } from '@/features/cart';
 import { resolveAssetUrl } from '@/services/apiClient';
 import { updateProfile } from '@/services/authApi';
 import { cn } from '@/utils/cn';
-import { formatOrientation } from '@/utils/frames';
+import { formatOrientation, matSuffix } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
 import styles from './CheckoutPage.module.css';
 
@@ -95,7 +95,7 @@ export default function CheckoutPage() {
         image: lineImage(item),
         crop: item.crop,
         name: item.name,
-        meta: `${item.sizeLabel} · ${formatOrientation(item.orientation)}`,
+        meta: `${item.sizeLabel} · ${formatOrientation(item.orientation)}${matSuffix(item.mat)}`,
         quantity: item.quantity,
         price: item.unitPrice * item.quantity,
       }))}

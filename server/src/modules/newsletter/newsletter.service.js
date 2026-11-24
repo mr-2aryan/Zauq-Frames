@@ -6,7 +6,7 @@ export const newsletterService = {
    * @returns {Promise<{ email: string, created: boolean }>}
    */
   async subscribe(email) {
-    const existing = await subscribersRepository.findOne((subscriber) => subscriber.email === email);
+    const existing = await subscribersRepository.findOneBy('email', email);
     if (existing) return { email, created: false };
 
     await subscribersRepository.create({ email, source: 'footer' });

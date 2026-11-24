@@ -86,6 +86,37 @@
   pointer-events: none;
 }
 
+/* With a white mat: the photo sits inside a white border (an eighth of the frame's
+   width), with the fine bevelled edge of a cut mat. */
+.matted {
+  container-type: inline-size;
+}
+
+/* An image doesn't stretch between its edges, so its size is set outright:
+   the same mat (12% of the frame's width) on all four sides. */
+.matted .photo {
+  top: 12cqi;
+  left: 12cqi;
+  width: calc(100% - 24cqi);
+  height: calc(100% - 24cqi);
+  box-shadow:
+    0 0 0 1px #e4dfd2,
+    0 0 0 3px #f6f3ea;
+}
+
+/* No photo yet: the dashed outline moves in to where the photo will sit. */
+.matted.empty {
+  outline: 0;
+}
+
+.matted.empty::after {
+  content: '';
+  position: absolute;
+  inset: 12cqi;
+  border: 2px dashed #a3a891;
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .stage {
     min-height: 460px;

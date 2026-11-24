@@ -6,8 +6,16 @@ import { saveLastOrder } from '../lastOrder.js';
 /** API order item for a cart line. Prices are not sent — the server calculates them. */
 const toOrderItem = (item) =>
   item.type === 'product'
-    ? { type: 'product', productId: item.productId, sizeId: item.sizeId, orientation: item.orientation, quantity: item.quantity }
-    : { type: 'custom-frame', photoId: item.photo.id, sizeId: item.sizeId, orientation: item.orientation, quantity: item.quantity, crop: item.crop };
+    ? { type: 'product', productId: item.productId, sizeId: item.sizeId, orientation: item.orientation, mat: item.mat ?? 'none', quantity: item.quantity }
+    : {
+        type: 'custom-frame',
+        photoId: item.photo.id,
+        sizeId: item.sizeId,
+        orientation: item.orientation,
+        mat: item.mat ?? 'none',
+        quantity: item.quantity,
+        crop: item.crop,
+      };
 
 /** Splits API validation details into per-field messages (`customer.name` → `name`) and the rest. */
 function splitErrors(details = []) {

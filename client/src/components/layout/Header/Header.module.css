@@ -5,7 +5,16 @@
   z-index: var(--z-header);
   border-bottom: 1px solid var(--color-line);
   background: #ffffff;
-  transition: box-shadow 0.25s ease;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The home page's scroll story takes the whole screen: the header slides away
+   while it plays (Experience.jsx sets this on <html>) and returns afterwards. */
+:global(html[data-immersed]) .header {
+  transform: translateY(-105%);
+  box-shadow: none;
 }
 
 .scrolled {

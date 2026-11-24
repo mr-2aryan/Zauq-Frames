@@ -1,0 +1,589 @@
+/* A square scene; everything inside is placed in % of it (see PhotoToFrame.jsx). */
+.scene {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+}
+
+.fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- The phone ---------- */
+
+.phone {
+  position: absolute;
+  left: 2%;
+  top: 39%;
+  width: 31.6%;
+  height: 57%;
+  border: 7px solid #1f2510;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow:
+    0 30px 50px rgba(31, 37, 16, 0.28),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* A little lift as the photo is sent. */
+.phoneSent {
+  transform: translateY(-4px) rotate(-1.5deg);
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px 0;
+  font-size: clamp(7px, 1.5vw, 9.5px);
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.statusIcons {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.statusIcons i {
+  display: block;
+  width: 2.5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--color-ink);
+}
+
+.statusIcons i + i {
+  height: 7px;
+}
+
+.statusIcons b {
+  display: block;
+  width: 13px;
+  height: 6px;
+  margin-left: 3px;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-ink) 70%, transparent 70%);
+}
+
+.phoneTop {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 10px 0;
+  font-size: clamp(9px, 2vw, 13px);
+  line-height: 1.2;
+}
+
+.phoneTop span {
+  font-size: 0.78em;
+  color: var(--color-muted);
+}
+
+.phoneButton {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: clamp(8px, 1.7vw, 11px);
+  font-weight: 800;
+  transition: transform 0.15s ease;
+}
+
+.phoneButtonPress {
+  animation: press 0.5s ease 0.35s both;
+}
+
+@keyframes press {
+  50% {
+    transform: scale(0.92);
+    filter: brightness(1.25);
+  }
+}
+
+.tile {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 5px;
+  transition: box-shadow 0.25s ease;
+}
+
+/* The photo being picked: an olive ring, a tick and a tap ripple. */
+.tilePicked {
+  z-index: 2;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px var(--color-primary);
+}
+
+.tilePicked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  animation: tap 0.7s ease-out both;
+}
+
+@keyframes tap {
+  from {
+    opacity: 1;
+    transform: scale(0.1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+.tileCheck {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  padding: 1px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ---------- The flight ---------- */
+
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.trail path {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+  animation: trail 2.2s ease both;
+}
+
+@keyframes trail {
+  from {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.45;
+  }
+
+  80% {
+    opacity: 0.45;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.flyer {
+  position: absolute;
+  z-index: 4;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 18px 30px rgba(31, 37, 16, 0.3);
+}
+
+.flying {
+  border-radius: 0;
+  transition:
+    left 1s cubic-bezier(0.5, 0, 0.2, 1),
+    top 1s cubic-bezier(0.3, -0.45, 0.2, 1),
+    width 1s cubic-bezier(0.5, 0, 0.2, 1),
+    height 1s cubic-bezier(0.5, 0, 0.2, 1),
+    border-radius 1s ease;
+}
+
+/* ---------- The frame on the wall ---------- */
+
+.frame {
+  position: absolute;
+  z-index: 3;
+  box-sizing: border-box;
+  /* About 2.2% of the scene, as MOULDING in PhotoToFrame.jsx. */
+  border: 12px solid #17190f;
+  background: #ffffff;
+  box-shadow:
+    0 30px 60px rgba(28, 31, 23, 0.22),
+    0 4px 10px rgba(28, 31, 23, 0.12);
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* A brass picture light above the frame, with its warm glow on the wall. */
+.lamp {
+  position: absolute;
+  left: 50%;
+  top: -40px;
+  width: 46%;
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(#d8b46a, #a9822f);
+  box-shadow: 0 3px 6px rgba(80, 60, 20, 0.3);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.lamp::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 4px;
+  height: 18px;
+  background: #a9822f;
+  transform: translateX(-50%);
+}
+
+.lamp::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  z-index: -1;
+  width: 260%;
+  height: 900%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 236, 190, 0.75) 0%, rgba(255, 236, 190, 0) 60%);
+  transform: translateX(-50%);
+}
+
+.slot {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  container-type: inline-size;
+  cursor: pointer;
+}
+
+.slot:focus-within {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    top 0.5s ease,
+    left 0.5s ease,
+    width 0.5s ease,
+    height 0.5s ease,
+    opacity 0.4s ease;
+}
+
+/* With a mat: the picture moves in, leaving a white border with a fine bevel. */
+.matted .picture {
+  top: 12cqi;
+  left: 12cqi;
+  width: calc(100% - 24cqi);
+  height: calc(100% - 24cqi);
+  box-shadow:
+    0 0 0 1px #e4dfd2,
+    0 0 0 3px #f6f3ea;
+}
+
+.sample {
+  opacity: 0;
+}
+
+.sampleShown {
+  opacity: 1;
+}
+
+.empty {
+  position: absolute;
+  inset: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 2px dashed #b4b8a4;
+  background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(62, 74, 31, 0.05) 10px 20px);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.dragging::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px dashed var(--color-primary);
+  background: rgba(238, 241, 226, 0.6);
+}
+
+/* "Try it with your photo": shows on hover, and always on touch screens. */
+.tryOwn {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(31, 37, 16, 0.85);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.slot:hover .tryOwn,
+.slot:focus-within .tryOwn {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: none) {
+  .tryOwn {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Measuring lines: the width under the frame, the height beside it. */
+.measureW,
+.measureH {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: 11.5px;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.measureW {
+  left: -12px;
+  right: -12px;
+  bottom: -38px;
+  height: 14px;
+  border-inline: 1.5px solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / 100% 1.5px no-repeat;
+}
+
+.measureH {
+  top: -12px;
+  bottom: -12px;
+  right: -40px;
+  width: 14px;
+  border-block: 1.5px solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / 1.5px 100% no-repeat;
+}
+
+.measureW span,
+.measureH span {
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-tint);
+  white-space: nowrap;
+  animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.measureH span {
+  writing-mode: vertical-rl;
+  padding: 7px 1px;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    background-color: var(--color-sage);
+  }
+}
+
+/* ---------- The order ---------- */
+
+.order {
+  position: absolute;
+  left: 39%;
+  right: 1%;
+  top: 76%;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 10px;
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(31, 37, 16, 0.16);
+}
+
+.orderThumb {
+  grid-row: span 2;
+  width: 40px;
+  height: 46px;
+  overflow: hidden;
+  border: 3px solid #17190f;
+  background: var(--color-tint);
+}
+
+.orderText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.orderMeta {
+  font-size: 11.5px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: fade 0.4s ease both;
+}
+
+.orderPrice {
+  font-size: 15px;
+  animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.orderButton {
+  grid-column: 2 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 0;
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 800;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.orderAdded {
+  background: var(--color-primary);
+  color: #ffffff;
+  animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .frame {
+    border-width: 8px;
+  }
+
+  .phone {
+    border-width: 5px;
+    border-radius: 18px;
+  }
+
+  .lamp {
+    top: -28px;
+    height: 7px;
+  }
+
+  .lamp::before {
+    top: 6px;
+    height: 13px;
+  }
+
+  .measureW {
+    bottom: -28px;
+    font-size: 10px;
+  }
+
+  .measureH {
+    right: -30px;
+    font-size: 10px;
+  }
+
+  .order {
+    left: 37%;
+    padding: 8px 9px;
+    gap: 3px 7px;
+    border-radius: 14px;
+  }
+
+  .orderThumb {
+    width: 30px;
+    height: 36px;
+  }
+
+  .orderText {
+    font-size: 11px;
+  }
+
+  .orderMeta {
+    font-size: 9.5px;
+  }
+
+  .orderPrice {
+    font-size: 12px;
+  }
+
+  .orderButton {
+    padding: 5px 0;
+    font-size: 10.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilePicked::after,
+  .phoneButtonPress,
+  .trail path,
+  .measureW span,
+  .measureH span,
+  .orderMeta,
+  .orderPrice,
+  .orderAdded {
+    animation: none;
+  }
+
+  .frame,
+  .picture,
+  .flying,
+  .phone {
+    transition: none;
+  }
+}

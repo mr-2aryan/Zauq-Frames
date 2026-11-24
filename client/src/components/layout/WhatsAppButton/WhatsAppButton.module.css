@@ -15,7 +15,25 @@
   font-size: 15px;
   font-weight: 700;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0s;
+}
+
+/* On the home page the button waits until the opening story has played out
+   (Experience.jsx sets this on <html>), then slides in. */
+:global(html[data-story]) .button {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(14px) scale(0.92);
+  transition:
+    background-color 0.15s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0s 0.3s;
 }
 
 .button:hover {
