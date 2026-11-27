@@ -1,20 +1,23 @@
 import { useState } from 'react';
 import { PageHero } from '@/components/common';
 import { CtaBand, InfoSection } from '@/components/info';
-import { Button } from '@/components/ui';
+import { Button, StatusMessage } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { PostCard } from '@/features/blog/components/PostCard/PostCard.jsx';
-import { BLOG_CATEGORIES, POSTS } from '@/features/blog/data/posts.js';
+import { useQuery } from '@/hooks/useQuery';
+import { getPosts } from '@/services/blogApi';
 import { cn } from '@/utils/cn';
 import styles from './BlogPage.module.css';
 
 /** /blog — the blog: the latest article, category filters and every post. */
 export default function BlogPage() {
   const [category, setCategory] = useState('');
-  const [latest, ...rest] = POSTS;
-  const categories = BLOG_CATEGORIES.filter((name) => POSTS.some((post) => post.category === name));
-  const shown = category ? POSTS.filter((post) => post.category === category) : rest;
+  const { status, data, error, reload } = useQuery(getPosts, 'blog');
+  const posts = data?.items ?? [];
+  const [latest, ...rest] = posts;
+  const categories = (data?.categories ?? []).filter((name) => posts.some((post) => post.category === name));
+  const shown = category ? posts.filter((post) => post.category === category) : rest;
 
   return (
     <>
@@ -30,11 +33,19 @@ export default function BlogPage() {
         media={<img src="/images/products/flowing-curves-scene1.jpg" alt="A framed abstract print in a warm living room" />}
       />
 
-      <InfoSection>
-        <div data-reveal="fade-up">
-          <PostCard post={latest} featured />
-        </div>
-      </InfoSection>
+      {status !== 'success' && (
+        <InfoSection>
+          <StatusMessage status={status} message={status === 'loading' ? 'Loading articles…' : error?.message} onRetry={reload} />
+        </InfoSection>
+      )}
+
+      {latest && (
+        <InfoSection>
+          <div data-reveal="fade-up">
+            <PostCard post={latest} featured />
+          </div>
+        </InfoSection>
+      )}
 
       <InfoSection kicker="All articles" title="Browse the blog">
         <div role="group" aria-label="Filter by category" className={styles.chips}>

@@ -1,6 +1,7 @@
 import multer from 'multer';
 import { env } from '../config/env.js';
 import { HttpError } from '../utils/HttpError.js';
+import { UPLOAD_LIMITS } from '../modules/media/media.middleware.js';
 
 const bytesToMb = (bytes) => Math.round(bytes / 1024 / 1024);
 
@@ -14,7 +15,7 @@ const normalizeError = (err) => {
 
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return new HttpError(413, `That file is too large. The maximum is ${bytesToMb(env.maxUploadBytes)} MB.`);
+      return new HttpError(413, `That file is too large. The maximum is ${bytesToMb(UPLOAD_LIMITS[err.field] ?? env.maxUploadBytes)} MB.`);
     }
     return HttpError.badRequest(err.message);
   }
@@ -22,6 +23,10 @@ const normalizeError = (err) => {
   // Errors raised by express.json()
   if (err?.type === 'entity.parse.failed') return HttpError.badRequest('Request body is not valid JSON.');
   if (err?.type === 'entity.too.large') return new HttpError(413, 'Request body is too large.');
+
+  // Static files (e.g. a missing /media image): a missing file is a 404, other send errors carry their own 4xx status.
+  if (err?.status === 404) return HttpError.notFound('Not found.');
+  if (err?.expose && err.status >= 400 && err.status < 500) return new HttpError(err.status, err.message);
 
   // PostgreSQL: a unique field already taken (two sign-ups with one email at the same moment, say).
   if (err?.code === '23505') return HttpError.conflict('That already exists.');

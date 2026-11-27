@@ -5,7 +5,7 @@ import { createPgRepository } from './createPgRepository.js';
 /**
  * A repository for one collection: in PostgreSQL when DATABASE_URL is set,
  * otherwise in memory (development). Both have the same methods:
- * create, findById, findOneBy, findAllBy, findAll and update.
+ * create, findById, findOneBy, findAllBy, findAll, update and delete.
  *
  * @param {string} table its table in the database (see db/migrations.js)
  * @param {{ generateId?: () => string }} [options]

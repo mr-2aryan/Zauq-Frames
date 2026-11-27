@@ -1,6 +1,7 @@
 import { env } from '../config/env.js';
 import { MIGRATIONS } from './migrations.js';
 import { pool } from './pool.js';
+import { seedCatalogue } from './seed.js';
 
 export { closeDb, pool, query } from './pool.js';
 
@@ -43,16 +44,18 @@ async function migrate() {
  * @returns {Promise<string>} a one-line description, for the startup log
  */
 export async function initDatabase() {
+  const seededNote = (seeded) => (seeded.length ? `; first run, added ${seeded.join(', ')}` : '');
   if (!pool) {
     if (env.isProduction) throw new Error('DATABASE_URL is not set. The API needs a database in production.');
-    return 'none (DATABASE_URL not set) — data is kept in memory and lost on restart';
+    return `none (DATABASE_URL not set) — data is kept in memory and lost on restart${seededNote(await seedCatalogue())}`;
   }
   const { rows } = await pool.query("select current_database() as name, split_part(version(), ' ', 2) as version");
   const applied = await migrate();
   // Tidy up sign-ins that have run out.
   await pool.query('delete from sessions where expires_at < now()');
+  const seeded = await seedCatalogue();
   const { name, version } = rows[0];
-  return `PostgreSQL ${version}, database "${name}"${applied.length ? ` (applied ${applied.join(', ')})` : ''}`;
+  return `PostgreSQL ${version}, database "${name}"${applied.length ? ` (applied ${applied.join(', ')})` : ''}${seededNote(seeded)}`;
 }
 
 /** For the health check: whether the database answers. */

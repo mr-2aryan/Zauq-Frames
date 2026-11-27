@@ -202,7 +202,7 @@ export function ProductReviews({ product, query }) {
       <div className={styles.main}>
         {thanks && !writing && (
           <p className={styles.thanks} role="status">
-            <CheckCircleIcon size={18} /> Thank you — your review is now live.
+            <CheckCircleIcon size={18} /> Thank you — your review will appear here once we’ve checked it.
           </p>
         )}
         {writing && <ReviewForm slug={product.slug} productName={product.name} onPosted={handlePosted} onCancel={() => setWriting(false)} />}

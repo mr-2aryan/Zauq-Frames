@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': apiTarget,
         '/uploads': apiTarget,
+        '/media': apiTarget,
       },
     },
     preview: {
@@ -29,6 +30,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': apiTarget,
         '/uploads': apiTarget,
+        '/media': apiTarget,
       },
     },
   }

@@ -1,8 +1,8 @@
 /**
- * Collections and products shown in the shop. Every piece is available in
- * every frame size, priced by size (FRAME_SIZES in frames.catalog.js). This
- * moves into the database once one is chosen; only `products.service.js`
- * reads it directly.
+ * The shop's original collections and products: first-run seed data only.
+ * On the first start they are copied into the database (db/seed.js); from then
+ * on the database is the source of truth and products are edited in the admin.
+ * Every piece is available in every frame size, priced by size.
  *
  * Images live in client/public/images/products as `<slug>-<shot>.jpg`:
  * `front` (straight on — the first image, also the product card), `scene1` and

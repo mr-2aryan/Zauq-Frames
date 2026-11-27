@@ -51,4 +51,13 @@ export const env = Object.freeze({
     bcc: process.env.MAIL_BCC?.trim() ?? '',
   }),
   outboxDir: path.resolve(SERVER_ROOT, 'outbox'),
+  /**
+   * Uploaded images and files (never in the database). `public/` is served at /media
+   * (by Nginx in production); `private/` (print-quality artwork) is never served.
+   */
+  storageDir: path.resolve(SERVER_ROOT, process.env.STORAGE_DIR ?? 'storage'),
+  /** The admin's own address (e.g. admin.zauqframes.com): the admin API answers only there. Empty = anywhere (development). */
+  adminHost: process.env.ADMIN_HOST?.trim().toLowerCase() ?? '',
+  /** Secret that signs the admin activity log so entries can't be altered unnoticed. Set a long random value. */
+  adminLogKey: process.env.ADMIN_LOG_KEY ?? '',
 });

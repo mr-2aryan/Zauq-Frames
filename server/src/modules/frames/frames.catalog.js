@@ -1,7 +1,9 @@
 /**
- * Frame catalogue — the single source of truth for sizes and prices.
- * Dimensions are in inches, prices in PKR. This moves into the database
- * once one is chosen; only `frames.service.js` reads it directly.
+ * Frame options. ORIENTATIONS and MATS are fixed (orders are validated against
+ * them). The sizes, prices, delivery fee and promotion below are the starting
+ * values only: they are copied into the database on the first start
+ * (settings key 'frames', see db/seed.js) and edited in the admin after that.
+ * Dimensions are in inches, prices in PKR.
  */
 
 export const CURRENCY = 'PKR';

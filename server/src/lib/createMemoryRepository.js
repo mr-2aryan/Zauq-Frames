@@ -40,6 +40,11 @@ export function createMemoryRepository({ generateId = randomUUID } = {}) {
       return [...records.values()].map((record) => structuredClone(record));
     },
 
+    /** Removes a record; returns whether it existed. */
+    async delete(id) {
+      return records.delete(id);
+    },
+
     async update(id, changes) {
       const existing = records.get(id);
       if (!existing) return null;

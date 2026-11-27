@@ -2,41 +2,64 @@ import { createHash, randomBytes } from 'node:crypto';
 import { env } from '../../config/env.js';
 import { pool, query } from '../../db/pool.js';
 
-export const SESSION_COOKIE = 'zauq_session';
-const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-
 /**
  * Sign-in sessions: the browser keeps a random token in a cookie; the API keeps
  * only its SHA-256 hash (so a leaked sessions table can't be used to sign in),
  * in the `sessions` table — or in memory when there's no database.
+ *
+ * Two kinds, each with its own cookie, and one can never stand in for the other:
+ * - shop:  a customer's sign-in, 30 days;
+ * - admin: the studio's admin, 12 hours at most and ended after an hour unused.
  */
+export const SCOPES = Object.freeze({
+  shop: { cookie: 'zauq_session', maxAgeMs: 30 * 24 * 60 * 60 * 1000, idleMs: 0, sameSite: 'lax' },
+  admin: { cookie: 'zauq_admin', maxAgeMs: 12 * 60 * 60 * 1000, idleMs: 60 * 60 * 1000, sameSite: 'strict' },
+});
+export const SESSION_COOKIE = SCOPES.shop.cookie;
+export const ADMIN_COOKIE = SCOPES.admin.cookie;
+
+/** Only note activity this often (not on every request). */
+const TOUCH_EVERY_MS = 60 * 1000;
+
 const hashToken = (token) => createHash('sha256').update(token).digest('hex');
 
-/** hash → { userId, expiresAt }, when there's no database. */
+/** hash → { userId, scope, expiresAt, lastSeenAt }, when there's no database. */
 const memory = new Map();
 
-export async function createSession(userId) {
+export async function createSession(userId, scope = 'shop') {
   const token = randomBytes(32).toString('base64url');
-  const expiresAt = Date.now() + MAX_AGE_MS;
-  if (pool) await query('insert into sessions (token_hash, user_id, expires_at) values ($1, $2, $3)', [hashToken(token), userId, new Date(expiresAt)]);
-  else memory.set(hashToken(token), { userId, expiresAt });
+  const expiresAt = Date.now() + SCOPES[scope].maxAgeMs;
+  if (pool) {
+    await query('insert into sessions (token_hash, user_id, expires_at, scope) values ($1, $2, $3, $4)', [hashToken(token), userId, new Date(expiresAt), scope]);
+  } else {
+    memory.set(hashToken(token), { userId, scope, expiresAt, lastSeenAt: Date.now() });
+  }
   return token;
 }
 
-/** The session for this token, or null (also when it has expired). */
-export async function findSession(token) {
+/** The session for this token and scope, or null (also when it has expired or gone unused too long). */
+export async function findSession(token, scope = 'shop') {
   if (!token) return null;
   const key = hashToken(token);
   let session;
   if (pool) {
-    const { rows } = await query('select user_id, expires_at from sessions where token_hash = $1', [key]);
-    session = rows[0] ? { userId: rows[0].user_id, expiresAt: rows[0].expires_at.getTime() } : null;
+    const { rows } = await query('select user_id, expires_at, last_seen_at from sessions where token_hash = $1 and scope = $2', [key, scope]);
+    session = rows[0] ? { userId: rows[0].user_id, scope, expiresAt: rows[0].expires_at.getTime(), lastSeenAt: rows[0].last_seen_at.getTime() } : null;
   } else {
-    session = memory.get(key) ?? null;
+    const stored = memory.get(key);
+    session = stored?.scope === scope ? stored : null;
   }
-  if (session && session.expiresAt < Date.now()) {
+  if (!session) return null;
+
+  const now = Date.now();
+  const { idleMs } = SCOPES[scope];
+  if (session.expiresAt < now || (idleMs && now - session.lastSeenAt > idleMs)) {
     await deleteSession(token);
     return null;
+  }
+  if (now - session.lastSeenAt > TOUCH_EVERY_MS) {
+    if (pool) await query('update sessions set last_seen_at = now() where token_hash = $1', [key]);
+    else session.lastSeenAt = now;
   }
   return session;
 }
@@ -47,7 +70,7 @@ export async function deleteSession(token) {
   else memory.delete(key);
 }
 
-/** Signs the user out everywhere (after a password change, say), except `keep`. */
+/** Signs the user out everywhere, shop and admin (after a password change, say), except `keep`. */
 export async function deleteUserSessions(userId, keep) {
   const kept = keep ? hashToken(keep) : '';
   if (pool) {
@@ -69,7 +92,8 @@ export function readCookie(req, name) {
   return null;
 }
 
-const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: env.isProduction, path: '/' };
+const cookieOptions = (scope) => ({ httpOnly: true, sameSite: SCOPES[scope].sameSite, secure: env.isProduction, path: '/' });
 
-export const setSessionCookie = (res, token) => res.cookie(SESSION_COOKIE, token, { ...cookieOptions, maxAge: MAX_AGE_MS });
-export const clearSessionCookie = (res) => res.clearCookie(SESSION_COOKIE, cookieOptions);
+export const setSessionCookie = (res, token, scope = 'shop') =>
+  res.cookie(SCOPES[scope].cookie, token, { ...cookieOptions(scope), maxAge: SCOPES[scope].maxAgeMs });
+export const clearSessionCookie = (res, scope = 'shop') => res.clearCookie(SCOPES[scope].cookie, cookieOptions(scope));

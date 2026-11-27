@@ -6,6 +6,7 @@ import { Button, Container, StatusMessage } from '@/components/ui';
 import { ROUTES, shopPath } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
+import { usePageHead } from '@/config/seo';
 import { ProductGrid, ShopFaq, ShopFilters, ShopHero, useCollections, useProducts } from '@/features/products';
 import { cn } from '@/utils/cn';
 import { formatPrice } from '@/utils/formatPrice';
@@ -60,6 +61,13 @@ export default function ShopPage() {
   const title = q ? `Results for “${q}”` : single ? single.name : 'Shop all frames';
   // The hero writes its own line for the whole shop; collections and searches get theirs.
   const description = q ? 'Pieces matching your search. Every one comes framed, in six sizes.' : single?.description;
+  const shopHead = usePageHead('shop');
+  // Search results aren't pages for search engines; collections and the whole shop are.
+  const head = q
+    ? { title: `${title} | ${SITE.name}`, description, robots: 'noindex, follow' }
+    : single
+      ? { title: single.seoTitle ?? `${single.name} | ${SITE.name}`, description: single.seoDescription ?? single.description }
+      : shopHead;
   const { total, pages = 1, page: shownPage = page, items } = productsQuery.data ?? {};
   const first = (shownPage - 1) * PAGE_SIZE + 1;
   const last = Math.min(shownPage * PAGE_SIZE, total ?? 0);
@@ -68,7 +76,9 @@ export default function ShopPage() {
 
   return (
     <>
-      <title>{`${title} | ${SITE.name}`}</title>
+      <title>{head.title}</title>
+      {head.description && <meta name="description" content={head.description} />}
+      {head.robots && <meta name="robots" content={head.robots} />}
       <ShopHero
         headingId={headingId}
         title={title}

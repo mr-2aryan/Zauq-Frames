@@ -16,6 +16,9 @@ server/uploads/
 # Emails saved in development instead of being sent (server/outbox)
 server/outbox/
 
+# Uploaded images and private artwork (server/storage) - files live on the server, backed up nightly
+server/storage/
+
 # Logs
 logs/
 *.log

@@ -5,7 +5,8 @@ import { CtaBand, FeatureGrid, InfoSection, SplitBlock, StepList } from '@/compo
 import { SizesWall } from '@/components/illustrations';
 import { Button, StatusMessage } from '@/components/ui';
 import { collectionPath, ROUTES } from '@/config/routes';
-import { SITE, whatsappLink } from '@/config/site';
+import { usePageHead } from '@/config/seo';
+import { whatsappLink } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
 import { formatSizeCm, formatSizeLabel } from '@/utils/frames';
 import { formatPrice } from '@/utils/formatPrice';
@@ -16,6 +17,7 @@ const PREMIUM_SIZE_ID = '18x24';
 /** /sizes — the frame sizes compared, with how to choose one. */
 export default function SizesPage() {
   const { status, catalog, error, reload } = useCatalog();
+  const head = usePageHead('sizes');
   const sizes = catalog?.sizes ?? [];
   const price = (size) => formatPrice(size.salePrice, catalog.currency);
 
@@ -40,11 +42,8 @@ export default function SizesPage() {
 
   return (
     <>
-      <title>{`Frame sizes & prices | ${SITE.name}`}</title>
-      <meta
-        name="description"
-        content="Compare Zauq Frames' six sizes — 8 × 10 to 36 × 48 in — with centimetres, prices and how to choose the right size for your wall, room and furniture."
-      />
+      <title>{head.title}</title>
+      <meta name="description" content={head.description} />
 
       <PageHero
         breadcrumbs={[{ label: 'Home', to: ROUTES.home }, { label: 'Frame sizes' }]}

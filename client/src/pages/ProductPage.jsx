@@ -1,8 +1,8 @@
 import { useId } from 'react';
-import { useParams } from 'react-router';
+import { Navigate, useParams } from 'react-router';
 import { PageMessage } from '@/components/common';
 import { Breadcrumbs, Button, Container, Section, SectionHeader, StatusMessage } from '@/components/ui';
-import { collectionPath, ROUTES } from '@/config/routes';
+import { collectionPath, productPath, ROUTES } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { useCatalog } from '@/context/catalog/useCatalog';
 import { ProductFaq, ProductGallery, ProductGrid, ProductInfoTabs, ProductPurchasePanel, useProduct } from '@/features/products';
@@ -32,10 +32,13 @@ export default function ProductPage() {
     );
   }
 
+  // Opened with an old address (the piece was renamed): go to its current one.
+  if (product.slug !== slug) return <Navigate to={productPath(product.slug)} replace />;
+
   return (
     <>
-      <title>{`${product.name} | ${SITE.name}`}</title>
-      <meta name="description" content={product.summary} />
+      <title>{product.seoTitle ?? `${product.name} | ${SITE.name}`}</title>
+      <meta name="description" content={product.seoDescription ?? product.summary} />
 
       <Container className={styles.page}>
         <Breadcrumbs

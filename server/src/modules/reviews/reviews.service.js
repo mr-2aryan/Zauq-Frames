@@ -23,7 +23,8 @@ export const reviewsService = {
   /** Newest first, with the average rating and how many reviews gave each star count. */
   async list(slug) {
     await requireProduct(slug);
-    const reviews = (await reviewsRepository.findAllBy('productId', slug)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    // Only reviews the studio has approved are shown (older ones, from before moderation, count as approved).
+    const reviews = (await reviewsRepository.findAllBy('productId', slug)).filter((review) => (review.status ?? 'approved') === 'approved').sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const count = reviews.length;
     const average = count ? Math.round((reviews.reduce((sum, review) => sum + review.rating, 0) / count) * 10) / 10 : null;
     const breakdown = [5, 4, 3, 2, 1].map((stars) => ({ stars, count: reviews.filter((review) => review.rating === stars).length }));
@@ -33,7 +34,8 @@ export const reviewsService = {
   async create(slug, { rating, name, city, text, orderId }) {
     await requireProduct(slug);
     const verified = await isVerifiedPurchase(orderId, slug);
-    const review = await reviewsRepository.create({ productId: slug, rating, name, city, text, orderId: orderId?.toUpperCase(), verified });
+    // New reviews wait for the studio's approval in the admin before they appear.
+    const review = await reviewsRepository.create({ productId: slug, rating, name, city, text, orderId: orderId?.toUpperCase(), verified, status: 'pending' });
     return toPublic(review);
   },
 };

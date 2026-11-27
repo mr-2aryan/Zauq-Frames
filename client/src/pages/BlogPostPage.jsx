@@ -3,15 +3,16 @@ import { Link, useParams } from 'react-router';
 import { PageHero, PageMessage } from '@/components/common';
 import { ArrowRightIcon } from '@/components/icons';
 import { CtaBand } from '@/components/info';
-import { Button, Container } from '@/components/ui';
+import { Button, Container, StatusMessage } from '@/components/ui';
 import { ROUTES } from '@/config/routes';
 import { SITE } from '@/config/site';
 import { BLOG_PATH, formatPostDate, headingId } from '@/features/blog/blog.js';
 import { PostCard } from '@/features/blog/components/PostCard/PostCard.jsx';
-import { POSTS } from '@/features/blog/data/posts.js';
+import { useQuery } from '@/hooks/useQuery';
+import { getPost } from '@/services/blogApi';
 import styles from './BlogPostPage.module.css';
 
-/** Renders one block of an article body (see the block types in posts.js). */
+/** Renders one block of an article body (block types: server/src/modules/blog/blog.service.js). */
 function Block({ block }) {
   switch (block.type) {
     case 'h2':
@@ -86,7 +87,15 @@ function Block({ block }) {
 /** /blog/:slug — one article with a contents list and related reading. */
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = POSTS.find((entry) => entry.slug === slug);
+  const { status, data: post, error, reload } = useQuery((options) => getPost(slug, options), slug);
+
+  if (status === 'loading' || (status === 'error' && error?.status !== 404)) {
+    return (
+      <Container>
+        <StatusMessage status={status} message={status === 'loading' ? 'Loading the article…' : error?.message} onRetry={reload} />
+      </Container>
+    );
+  }
 
   if (!post) {
     return (
@@ -110,7 +119,7 @@ export default function BlogPostPage() {
   }
 
   const headings = post.body.filter((block) => block.type === 'h2');
-  const related = [...POSTS.filter((entry) => entry.slug !== post.slug && entry.category === post.category), ...POSTS.filter((entry) => entry.slug !== post.slug && entry.category !== post.category)].slice(0, 3);
+  const { related } = post;
 
   return (
     <>

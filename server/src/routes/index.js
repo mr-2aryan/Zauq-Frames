@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { env } from '../config/env.js';
 import { loadUser } from '../modules/auth/auth.middleware.js';
+import { adminRouter } from '../modules/admin/admin.routes.js';
 import { accountRouter, authRouter } from '../modules/auth/auth.routes.js';
+import { blogRouter } from '../modules/blog/blog.routes.js';
 import contactRoutes from '../modules/contact/contact.routes.js';
 import { emailPreviewRouter } from '../modules/email/email.preview.js';
 import framesRoutes from '../modules/frames/frames.routes.js';
@@ -25,8 +27,12 @@ apiRouter.use('/uploads', uploadsRoutes);
 apiRouter.use('/orders', ordersRoutes);
 apiRouter.use('/newsletter', newsletterRoutes);
 apiRouter.use('/contact', contactRoutes);
+apiRouter.use('/blog', blogRouter);
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/account', accountRouter);
+
+// The admin (admin.zauqframes.com): its own sign-in, separate from customers'.
+apiRouter.use('/admin', adminRouter);
 
 // Development only: the order emails, in the browser.
 if (!env.isProduction) apiRouter.use('/dev/emails', emailPreviewRouter);

@@ -59,6 +59,12 @@ export function createPgRepository(table, { generateId = randomUUID } = {}) {
       return rows.map(toRecord);
     },
 
+    /** Removes a record; returns whether it existed. */
+    async delete(id) {
+      const { rowCount } = await query(`delete from ${table} where id = $1`, [id]);
+      return rowCount > 0;
+    },
+
     async update(id, changes) {
       const { rows } = await query(`update ${table} set data = data || $2::jsonb, updated_at = now() where id = $1 returning ${COLUMNS}`, [id, dataOf(changes)]);
       return toRecord(rows[0]);

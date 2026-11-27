@@ -1,6 +1,7 @@
 import { HttpError } from '../../utils/HttpError.js';
 import { framesService } from '../frames/frames.service.js';
-import { COLLECTIONS, PRODUCTS } from './products.catalog.js';
+import { collectionsRepository, productsRepository } from './products.repository.js';
+import { collectionSeo, productSeo } from '../seo/titles.js';
 
 const SORTS = {
   featured: (a, b) => Number(b.featured) - Number(a.featured),
@@ -20,7 +21,27 @@ function shuffle(items) {
   return copy;
 }
 
-const collectionBySlug = (slug) => COLLECTIONS.find((collection) => collection.slug === slug);
+/**
+ * The catalogue, from the database: collections, and the products that are in the
+ * shop (status 'active'), both in their admin order. Kept in memory between changes;
+ * the admin calls `productsService.invalidate()` after saving.
+ */
+let cached = null;
+const byOrder = (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.name.localeCompare(b.name);
+
+async function catalogue() {
+  if (!cached) {
+    const [collections, products] = await Promise.all([collectionsRepository.findAll(), productsRepository.findAll()]);
+    cached = {
+      collections: collections.sort(byOrder),
+      products: products.filter((product) => product.status === 'active').sort(byOrder),
+    };
+  }
+  return cached;
+}
+
+/** What the shop shows of a collection. */
+const toPublicCollection = ({ slug, name, shortName, description, image }) => ({ slug, name, shortName, description, image });
 
 /** Pieces are priced by frame size; summaries carry the smallest size's price ("from"). */
 async function productPrice() {
@@ -29,11 +50,11 @@ async function productPrice() {
   return { currency, price: cheapest.price, salePrice: cheapest.salePrice };
 }
 
-const toSummary = (product, price) => ({
+const toSummary = (product, price, collectionBySlug) => ({
   slug: product.slug,
   name: product.name,
   collection: product.collection,
-  collectionName: collectionBySlug(product.collection).name,
+  collectionName: collectionBySlug(product.collection)?.name ?? '',
   summary: product.summary,
   orientation: product.orientation ?? 'portrait',
   image: product.cardImage ?? product.images[0],
@@ -44,23 +65,33 @@ const toSummary = (product, price) => ({
   ...price,
 });
 
-const matchesSearch = (product, terms) => {
-  const haystack = `${product.name} ${collectionBySlug(product.collection).name} ${product.summary}`.toLowerCase();
+const matchesSearch = (product, terms, collectionBySlug) => {
+  const haystack = `${product.name} ${collectionBySlug(product.collection)?.name ?? ''} ${product.summary}`.toLowerCase();
   return terms.every((term) => haystack.includes(term));
 };
 
+async function lookups() {
+  const { collections, products } = await catalogue();
+  const bySlug = new Map(collections.map((collection) => [collection.slug, collection]));
+  return { collections, products, collectionBySlug: (slug) => bySlug.get(slug) };
+}
+
 export const productsService = {
   async listCollections() {
-    return COLLECTIONS.map((collection) => ({
-      ...collection,
-      productCount: PRODUCTS.filter((product) => product.collection === collection.slug).length,
-    }));
+    const { collections, products } = await catalogue();
+    const catalog = await framesService.getCatalog();
+    return collections.map((collection) => {
+      const { title: seoTitle, description: seoDescription } = collectionSeo(collection, catalog);
+      return { ...toPublicCollection(collection), productCount: products.filter((product) => product.collection === collection.slug).length, seoTitle, seoDescription };
+    });
   },
 
   async getCollection(slug) {
+    const { collectionBySlug } = await lookups();
     const collection = collectionBySlug(slug);
     if (!collection) throw HttpError.notFound('We could not find that collection.');
-    return collection;
+    const { title: seoTitle, description: seoDescription } = collectionSeo(collection, await framesService.getCatalog());
+    return { ...toPublicCollection(collection), seoTitle, seoDescription };
   },
 
   /**
@@ -68,15 +99,16 @@ export const productsService = {
    * @param {{ collections?: string[], q?: string, sort?: string, featured?: boolean, limit?: number, page?: number }} options
    */
   async list({ collections = [], q = '', sort = 'featured', featured = false, limit, page = 1 } = {}) {
+    const { products, collectionBySlug } = await lookups();
     const unknown = collections.find((slug) => !collectionBySlug(slug));
     if (unknown) throw HttpError.notFound(`We could not find the collection "${unknown}".`);
 
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-    let items = PRODUCTS.filter(
+    let items = products.filter(
       (product) =>
         (!collections.length || collections.includes(product.collection)) &&
         (!featured || product.featured) &&
-        (!terms.length || matchesSearch(product, terms)),
+        (!terms.length || matchesSearch(product, terms, collectionBySlug)),
     );
     // Array.prototype.sort is stable, so equal items keep catalogue order.
     items = sort === 'random' ? shuffle(items) : [...items].sort(SORTS[sort] ?? SORTS.featured);
@@ -86,23 +118,33 @@ export const productsService = {
     if (limit) items = items.slice((current - 1) * limit, current * limit);
 
     const price = await productPrice();
-    return { items: items.map((product) => toSummary(product, price)), total, page: current, pages };
+    return { items: items.map((product) => toSummary(product, price, collectionBySlug)), total, page: current, pages };
   },
 
   async getBySlug(slug) {
-    const product = PRODUCTS.find((item) => item.slug === slug);
+    const { products, collectionBySlug } = await lookups();
+    // An old link (the slug was changed in the admin) still finds the piece; the shop then moves to the new address.
+    const product = products.find((item) => item.slug === slug) ?? products.find((item) => (item.previousSlugs ?? []).includes(slug));
     if (!product) throw HttpError.notFound('We could not find that piece.');
 
     const price = await productPrice();
-    const related = PRODUCTS.filter((item) => item.collection === product.collection && item.slug !== slug)
+    const related = products
+      .filter((item) => item.collection === product.collection && item.slug !== slug)
       .slice(0, 4)
-      .map((item) => toSummary(item, price));
+      .map((item) => toSummary(item, price, collectionBySlug));
 
-    return { ...toSummary(product, price), description: product.description, images: product.images, related };
+    const { title: seoTitle, description: seoDescription } = productSeo(product, await framesService.getCatalog());
+    return { ...toSummary(product, price, collectionBySlug), description: product.description, images: product.images, seoTitle, seoDescription, related };
   },
 
-  /** Raw catalogue entry, for building order lines. */
+  /** A product in the shop (active), as stored: for building order lines. */
   async findBySlug(slug) {
-    return PRODUCTS.find((item) => item.slug === slug) ?? null;
+    const { products } = await catalogue();
+    return products.find((item) => item.slug === slug) ?? null;
+  },
+
+  /** Call after the admin changes collections or products. */
+  invalidate() {
+    cached = null;
   },
 };
